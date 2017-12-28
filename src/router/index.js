@@ -4,19 +4,30 @@ import Home from '../components/home/home'
 import Side from '../components/side/side'
 import ShopCart from '../components/shopcart/shopcart'
 import Mine from '../components/mine/mine'
-
+import login from '../components/login/login'
+import tabbar from '../components/tabbar/tabbar'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      name: 'login',
+      component: login
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     },
     {
       path: '/home',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true
+      }
     },
     {
       path: '/side',
