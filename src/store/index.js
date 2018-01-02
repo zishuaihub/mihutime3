@@ -6,18 +6,17 @@ Vue.use(Vuex)
 
 let localstorage = new LocalStorage()
 let loginuser = localstorage.getItem('login')
-
 // 创建基本状态
 const state = {
   Logined: loginuser || {}
 }
-
+console.log(state.Logined.token)
+Axios.defaults.headers.common['X-Access-Token'] = state.Logined.token
 // 创建改变状态的方法
 const mutations = {
   LOGIN (state, userInfo) {
     state.Logined = userInfo
-    localstorage.setItem('login', state)
-    console.log(state)
+    localstorage.setItem('login', state.Logined)
     Axios.defaults.headers.common['X-Access-Token'] = state.Logined.token
   },
   LOGOUT (state) {

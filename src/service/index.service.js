@@ -3,8 +3,8 @@ export default class IndexService {
   login (v, user) {
     return v.$http.post('http://test.mihutime.com/seller/v1/accounts/login', user)
   }
-  getHeroes (v) {
-    return v.$http.get(this.heroesUrl)
+  getsellers (v) {
+    return v.$http.get('http://test.mihutime.com/seller/v1/store-sellers')
   }
   getHero (v) {
     return v.$http.get(`${this.heroesUrl}/${v.id}`)

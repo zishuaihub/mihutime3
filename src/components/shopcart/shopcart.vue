@@ -5,17 +5,21 @@
 </template>
 
 <script>
-export default {
-  name: 'shopcart',
-  data () {
-    return {
+  import tabbar from '../tabbar/tabbar'
+  export default {
+    name: 'shopcart',
+    data () {
+      return {
+      }
+    },
+    components: {
+      tabbar
+    },
+    created () {
+    },
+    methods: {
     }
-  },
-  created () {
-  },
-  methods: {
   }
-}
 </script>
 
 <style lang="stylus">

@@ -5,15 +5,13 @@ import Side from '../components/side/side'
 import ShopCart from '../components/shopcart/shopcart'
 import Mine from '../components/mine/mine'
 import login from '../components/login/login'
-import tabbar from '../components/tabbar/tabbar'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'login',
-      component: login
+      redirect: '/login'
     },
     {
       path: '/login',

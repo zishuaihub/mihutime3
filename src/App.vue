@@ -5,11 +5,9 @@
 </template>
 
 <script>
-  import tabbar from './components/tabbar/tabbar'
   export default {
     name: 'App',
     components: {
-      tabbar: tabbar
     },
     data () {
       return {
