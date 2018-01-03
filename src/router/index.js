@@ -5,6 +5,7 @@ import Side from '../components/side/side'
 import ShopCart from '../components/shopcart/shopcart'
 import Mine from '../components/mine/mine'
 import login from '../components/login/login'
+import Extract from '../components/finance/extract/extract'
 Vue.use(Router)
 
 export default new Router({
@@ -41,6 +42,11 @@ export default new Router({
       path: '/mine',
       name: 'mine',
       component: Mine
+    },
+    {
+      path: '/finance/extract',
+      name: 'extract',
+      component: Extract
     }
   ]
 })

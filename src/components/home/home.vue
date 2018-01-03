@@ -26,13 +26,14 @@
         </div>
       </div>
       <div class="seller-main" v-if="finances">
-        <mt-cell
-          title="当前可提现金额"
-          to="//github.com"
-          is-link
-          :value=finances.balance >
+        <div  @click="txym()">
+          <mt-cell
+            title="当前可提现金额"
+            is-link
+            :value=finances.balance >
+          </mt-cell>
+        </div>
 
-        </mt-cell>
         <div class="seller-main-promotion">
           <p class="seller-main-promotion-title">推广助手</p>
           <div class="seller-main-promotion-items">
@@ -78,7 +79,7 @@
               <p class="seller-main-finances-item-title">累计分享</p>
             </div>
             <div class="seller-main-finances-item">
-              <p class="seller-main-finances-item-num">{{finances.yesterdayOrder}}</p>
+              <p class="seller-main-finances-item-num"> <span>{{finances.yesterdayOrder}}</span> </p>
               <p class="seller-main-finances-item-title">累计订单数</p>
             </div>
           </div>
@@ -117,11 +118,14 @@
         this.sellers = res.data
       })
       // 获取财务信息
-      this.$http.get('http://test.mihutime.com/seller/v1/finances').then(
+      this.$http.get('/finances').then(
         res => { this.finances = res.data; console.log(this.finances) }
       )
     },
     methods: {
+      txym () {
+        this.$router.push({name: 'extract', params: { userId: this.finances.balance }})
+      }
       // transarr (arr, len) {
       //   let j = 0
       //   let s = 0
@@ -216,12 +220,12 @@
         background:#f9f9f9;
         .mint-cell {
           height:.10rem ;
-          margin-bottom .2rem;
           .mint-cell-wrapper{
             padding-left .3rem
           }
         }
         .seller-main-promotion{
+          margin-top .2rem
           margin-bottom .2rem
           .seller-main-promotion-title{
             line-height .9rem
@@ -252,12 +256,19 @@
             background: #fff
           }
           .seller-main-finances-item{
-            width:33%
+            width:33.33%
             text-align center
             padding .2rem .2rem
             line-height .5rem
+            border-top: 1px solid #f4f4f4
+            border-right 1px solid #f4f4f4
             .seller-main-finances-item-num{
-              font-size .3rem
+              span{
+                font-size .3rem
+              }
+            }
+            .seller-main-finances-item-title{
+              color: #666666
             }
           }
         }

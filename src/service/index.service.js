@@ -1,10 +1,10 @@
 export default class IndexService {
   heroesUrl = 'http://localhost:3000'
   login (v, user) {
-    return v.$http.post('http://test.mihutime.com/seller/v1/accounts/login', user)
+    return v.$http.post('/accounts/login', user)
   }
   getsellers (v) {
-    return v.$http.get('http://test.mihutime.com/seller/v1/store-sellers')
+    return v.$http.get('/store-sellers')
   }
   getHero (v) {
     return v.$http.get(`${this.heroesUrl}/${v.id}`)
