@@ -124,7 +124,7 @@
     },
     methods: {
       txym () {
-        this.$router.push({name: 'extract', params: { userId: this.finances.balance }})
+        this.$router.push({name: 'extract', params: { balance: this.finances.balance }})
       }
       // transarr (arr, len) {
       //   let j = 0
