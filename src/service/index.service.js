@@ -1,5 +1,4 @@
 export default class IndexService {
-  heroesUrl = 'http://localhost:3000'
   login (v, user) {
     return v.$http.post('/accounts/login', user)
   }

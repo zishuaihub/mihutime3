@@ -19,7 +19,7 @@
               <span class="mask">¥</span>
               <span class="text">{{}}</span>
           </mt-cell>
-          <mt-cell title="交易管理:" to="//github.com" is-link>
+          <mt-cell title="交易管理:" to="/mine/traderecord" is-link>
               <span class="mask">¥</span>
               <span class="text">{{}}</span>
           </mt-cell>

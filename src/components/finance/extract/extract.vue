@@ -129,10 +129,10 @@ export default {
     },
     bankListOption () {
       let _bankCardsOptions = this.bankCardsList.map(function (res) {
-        return {label: res.bankTypeText, num: res.bankCode, value: res.bankType, ico: res.ico}
+        return {id: res.id, label: res.bankTypeText, num: res.bankCode, value: res.bankType, ico: res.ico}
       })
       this.bankCardsOptions = _bankCardsOptions.map(function (res) {
-        return {name: res.label, num: res.num, label: res.label + '(' + res.num.toString().substring(15, 19) + ')', value: res.value.toString(), ico: res.ico}
+        return {id: res.id, name: res.label, num: res.num, label: res.label + '(' + res.num.toString().substring(15, 19) + ')', value: res.value.toString(), ico: res.ico}
       })
     },
     selectBank () {
@@ -156,7 +156,7 @@ export default {
     confirm () {
       this.$http.post('/extracts', {
         extractPassword: this.extpassword,
-        bankCardId: this.currentBankCrad.num,
+        bankCardId: this.currentBankCrad.id,
         amount: this.cash
       }).then(res => console.log(res)).catch(error => console.log(error.response.data.message)
       )
