@@ -7,6 +7,9 @@ import Mine from '../components/mine/mine'
 import login from '../components/login/login'
 import Extract from '../components/finance/extract/extract'
 import Traderecord from '../components/mine/traderecord/traderecord'
+import Setting from '../components/mine/setting/setting'
+import Cardsmanage from '../components/mine/cardsmanage/cardsmanage'
+
 Vue.use(Router)
 
 export default new Router({
@@ -53,6 +56,16 @@ export default new Router({
       path: '/finance/extract',
       name: 'extract',
       component: Extract
+    },
+    {
+      path: '/mine/setting',
+      name: 'setting',
+      component: Setting
+    },
+    {
+      path: '/mine/cardsmanage',
+      name: 'cardsmanage',
+      component: Cardsmanage
     }
   ]
 })

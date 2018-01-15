@@ -5,9 +5,12 @@
       <mt-tab-item id="2" @click.native="selectTab()">收益</mt-tab-item>
       <mt-tab-item id="3" @click.native="selectTab()">提现</mt-tab-item>
     </mt-navbar>
-    <div class="main-body" :style="{ height: wrapperHeight + 'px', overflow: 'scroll'}">
+    <div class="main-body" :style="{ height: wrapperHeight + 'px', overflow: 'scroll', 'margin-top': '60px'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-        <ul class="list" v-for="(item, key) in pageList">
+        <ul class="list" v-for="(item, index) in pageList">
+          <div class="date" v-if="index===0 || item.createdAt.substring(0,7) !== pageList[index-1].createdAt.substring(0,7)">
+            {{item.createdAt.substring(0,7) }}
+          </div>
           <div class="item">
             <div class="name">{{item.name}}</div>
             <div class="desc">
