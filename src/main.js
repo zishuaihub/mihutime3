@@ -7,11 +7,13 @@ import router from './router'
 import store from './store'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 Vue.config.productionTip = false
 Axios.defaults.baseURL = 'http://test.mihutime.com/seller/v1'
 Vue.prototype.$http = Axios
 /* eslint-disable no-new */
-Vue.use(Mint)
+Vue.use(Mint, VueAwesomeSwiper)
 
 new Vue({
   el: '#app',

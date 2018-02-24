@@ -27,10 +27,10 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home,
-      meta: {
-        // 添加该字段，表示进入这个路由是需要登录的
-        requireAuth: true
-      }
+      //  meta: {
+      // 添加该字段，表示进入这个路由是需要登录的
+      // requireAuth: true
+      // }
     },
     {
       path: '/side',
