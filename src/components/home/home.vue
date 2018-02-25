@@ -14,15 +14,18 @@
           <p>{{turnoversp}}</p>
           <p>(<span>28</span>笔)</p>
         </div>
-        <div class="waveWrapper waveAnimation">
-          <div class="waveWrapperInner bgTop">
-            <div class="wave waveTop" style=""></div>
-          </div>
-          <div class="waveWrapperInner bgMiddle">
-            <div class="wave waveMiddle" style=""></div>
-          </div>
-          <div class="waveWrapperInner bgBottom">
-            <div class="wave waveBottom" style=""></div>
+        <div class="frame">
+          <div class="wave-wrapp">
+            <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+              <defs>
+                <path id="gentle-wave" d="m -160,44.4 c 30,0 58,-18 87.7,-18 30.3,0 58.3,18 87.3,18 30,0 58,-18 88,-18 30,0 58,18 88,18 l 0,34.5 -351,0 z" />
+              </defs>
+              <g class="parallax">
+                <use xlink:href="#gentle-wave" x="50" y="0" fill="rgba(255, 255, 255, 0.15)"/>
+                <use xlink:href="#gentle-wave" x="50" y="3" fill="rgba(255, 255, 255, 0.78)"/>
+                <use xlink:href="#gentle-wave" x="50" y="6" fill="rgba(255, 255, 255, 0.8)"/>
+              </g>
+            </svg>
           </div>
         </div>
       </div>
@@ -46,10 +49,6 @@
         <div class="seller-swiper">
           <swiper :options="swiperOption" ref="mySwiper" class="swiper-box">
             <!-- slides -->
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
             <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
             <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
             <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
@@ -112,7 +111,7 @@
         return this.finances.blance
       },
       turnoversp () {
-        return this.thousandBitSeparator(this.turnover.toFixed(2))
+        return this. (this.turnover.toFixed(2))
       }
       // swiper () {
       //   return this.$refs.mySwiper.swiper
@@ -226,76 +225,123 @@
             }
           }
         }
-        @keyframes move_wave {
+
+        .frame {
+          height: 100%;
+          background-image: linear-gradient( -180deg, rgb(26,195,254) 0%, rgb(83,164,255) 41%, rgb(139,133,255) 100%);
+          margin: auto;
+          position: absolute;
+          top:0;
+          bottom:0;
+          width:100%;
+        }
+
+        .wave-wrapp {
+          width: 100%;
+          height: 100px;
+          position: absolute;
+          bottom: 0px;
+        }
+        .wave-wrapp .wave {
+          display: block;
+          width: 100%;
+          margin: 0;
+          height: 100px;
+        }
+        .wave-wrapp .wave .parallax > use {
+          -webkit-animation: move-forever 12s linear infinite;
+          -moz-animation: move-forever 12s linear infinite;
+          -o-animation: move-forever 12s linear infinite;
+          animation: move-forever 12s linear infinite;
+        }
+        .wave-wrapp .wave .parallax > use:nth-child(1) {
+          animation-delay: -2s;
+          transform: translate(-110px, 0%);
+          fill: rgba(255, 255, 255, 0.1);
+        }
+        .wave-wrapp .wave .parallax > use:nth-child(2) {
+          animation-delay: -2s;
+          animation-duration: 7s;
+          fill: rgba(255, 255, 255, 0.05);
+        }
+        .wave-wrapp .wave .parallax > use:nth-child(3) {
+          animation-delay: -4s;
+          animation-duration: 4s;
+          transform: translate(-65px, 0%);
+          fill: rgba(255, 255, 255, 0.1);
+        }
+
+        @-webkit-keyframes move-forever {
           0% {
-            transform: translateX(0) translateZ(0) scaleY(1)
-          }
-          50% {
-            transform: translateX(-25%) translateZ(0) scaleY(0.55)
+            -webkit-transform: translate(-90px, 0%);
+            -moz-transform: translate(-90px, 0%);
+            -o-transform: translate(-90px, 0%);
+            transform: translate(-90px, 0%);
           }
           100% {
-            transform: translateX(-50%) translateZ(0) scaleY(1)
+            -webkit-transform: translate(85px, 0%);
+            -moz-transform: translate(85px, 0%);
+            -o-transform: translate(85px, 0%);
+            transform: translate(85px, 0%);
           }
-      }
-      .waveWrapper {
-        overflow: hidden;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        margin: auto;
-      }
-      .waveWrapperInner {
-        position: absolute;
-        width: 100%;
-        overflow: hidden;
-        height: 100%;
-        bottom: -1px;
-        background-image: linear-gradient(-180deg, rgb(26,195,254) 0%, rgb(83,164,255) 41%, rgb(139,133,255) 100%);
-      }
-      .bgTop {
-        z-index: 15;
-        opacity: 0.5;
-      }
-      .bgMiddle {
-        z-index: 10;
-        opacity: 0.75;
-      }
-      .bgBottom {
-        z-index: 5;
-        opacity: 0.5;
-      }
-      .wave {
-        position: absolute;
-        left: 0;
-        width: 200%;
-        height: 100%;
-        background-repeat: repeat no-repeat;
-        background-position: 0 bottom;
-        transform-origin: center bottom;
-      }
-      .waveTop {
-        background-image: url('../../assets/wave-top.png')
-        background-size: 60% 1rem;
-      }
-      .waveAnimation .waveTop {
-        animation: move_wave 10s linear infinite;
-      }
-      .waveMiddle {
-        background-image: url('../../assets/wave-mid.png')
-        background-size: 60% 1.3rem;
-      }
-      .waveAnimation .waveMiddle {
-        animation: move_wave 25s linear infinite;
-      }
-      .waveBottom {
-        background-image: url('../../assets/wave-bot.png')
-        background-size: 60% 1.6rem;
-      }
-      .waveAnimation .waveBottom {
-        animation: move_wave 30s linear infinite;
-      }
+        }
+        @-moz-keyframes move-forever {
+          0% {
+            -webkit-transform: translate(-90px, 0%);
+            -moz-transform: translate(-90px, 0%);
+            -o-transform: translate(-90px, 0%);
+            transform: translate(-90px, 0%);
+          }
+          100% {
+            -webkit-transform: translate(85px, 0%);
+            -moz-transform: translate(85px, 0%);
+            -o-transform: translate(85px, 0%);
+            transform: translate(85px, 0%);
+          }
+        }
+        @-ms-keyframes move-forever {
+          0% {
+            -webkit-transform: translate(-90px, 0%);
+            -moz-transform: translate(-90px, 0%);
+            -o-transform: translate(-90px, 0%);
+            transform: translate(-90px, 0%);
+          }
+          100% {
+            -webkit-transform: translate(85px, 0%);
+            -moz-transform: translate(85px, 0%);
+            -o-transform: translate(85px, 0%);
+            transform: translate(85px, 0%);
+          }
+        }
+        @-o-keyframes move-forever {
+          0% {
+            -webkit-transform: translate(-90px, 0%);
+            -moz-transform: translate(-90px, 0%);
+            -o-transform: translate(-90px, 0%);
+            transform: translate(-90px, 0%);
+          }
+          100% {
+            -webkit-transform: translate(85px, 0%);
+            -moz-transform: translate(85px, 0%);
+            -o-transform: translate(85px, 0%);
+            transform: translate(85px, 0%);
+          }
+        }
+        @keyframes move-forever {
+          0% {
+            -webkit-transform: translate(-90px, 0%);
+            -moz-transform: translate(-90px, 0%);
+            -o-transform: translate(-90px, 0%);
+            transform: translate(-90px, 0%);
+          }
+          100% {
+            -webkit-transform: translate(85px, 0%);
+            -moz-transform: translate(85px, 0%);
+            -o-transform: translate(85px, 0%);
+            transform: translate(85px, 0%);
+          }
+        }
+
     }
       .seller-main {
         .tabs{
@@ -329,6 +375,7 @@
           margin: 0 auto;
           .swiper-pagination-bullet{
             width:.15rem
+            height .06rem
             border-radius .2rem
             background #dce0fa
             opacity 1
