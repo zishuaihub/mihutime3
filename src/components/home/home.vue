@@ -111,7 +111,7 @@
         return this.finances.blance
       },
       turnoversp () {
-        return this. (this.turnover.toFixed(2))
+        return this.thousandBitSeparator(this.turnover.toFixed(2))
       }
       // swiper () {
       //   return this.$refs.mySwiper.swiper
