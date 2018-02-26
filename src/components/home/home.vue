@@ -194,8 +194,8 @@
           height: .3rem
           line-height: .3rem
           width:1rem;
-          background rgba(255,255,255,14%)
-          border-radius .15rem
+          background rgba(86,96,233,1)
+          border-radius .05rem
         }
         .seller-top{
           position relative
@@ -387,8 +387,13 @@
          }
         }
         .message-title{
+          .mint-cell-allow-right::after{
+            top:56%;
+          }
           .mint-cell-wrapper{
             background: none
+            line-height normal!important
+            padding-top .28rem
           }
           .mint-cell-text{
             color: #a0a3b2
