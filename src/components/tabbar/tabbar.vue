@@ -59,7 +59,6 @@
         font-size .22rem
         text-indent -.05rem
       }
-
     }
   }
 

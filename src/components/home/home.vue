@@ -35,7 +35,7 @@
             <div class="tabs-items">
               <div class="tabs-item">
                 <img src="../../assets/icon/fudaiicon.png" alt="">
-                <p>添加福袋</p>
+                <p>我的福袋</p>
               </div>
               <div class="tabs-item">
                 <img src="../../assets/icon/qianbaoicon.png" alt="">
