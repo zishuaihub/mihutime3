@@ -9,6 +9,8 @@ import Extract from '../components/finance/extract/extract'
 import Traderecord from '../components/mine/traderecord/traderecord'
 import Setting from '../components/mine/setting/setting'
 import Cardsmanage from '../components/mine/cardsmanage/cardsmanage'
+import register from '../components/register/register'
+import adress from '../components/adress/adress'
 
 Vue.use(Router)
 
@@ -66,6 +68,16 @@ export default new Router({
       path: '/mine/cardsmanage',
       name: 'cardsmanage',
       component: Cardsmanage
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
+    },
+    {
+      path: '/adress',
+      name: 'adress',
+      component: adress
     }
   ]
 })
