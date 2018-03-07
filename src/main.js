@@ -9,11 +9,21 @@ import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import AMap from 'vue-amap'
+
 Vue.config.productionTip = false
 Axios.defaults.baseURL = 'http://coupon.test.mihutime.com/common/v1/'
+Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$http = Axios
 /* eslint-disable no-new */
 Vue.use(Mint, VueAwesomeSwiper)
+Vue.use(AMap)
+
+AMap.initAMapApiLoader({
+  key: 'efafca828e13b5fb72b3cb6976275dc4',
+  plugin: ['AMap.Autocomplete', 'AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  v: '1.4.4'
+})
 
 new Vue({
   el: '#app',
