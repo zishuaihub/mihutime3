@@ -9,19 +9,23 @@ import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
-import AMap from 'vue-amap'
+import VueAMap from 'vue-amap'
 
 Vue.config.productionTip = false
 Axios.defaults.baseURL = 'http://coupon.test.mihutime.com/common/v1/'
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$http = Axios
 /* eslint-disable no-new */
-Vue.use(Mint, VueAwesomeSwiper)
-Vue.use(AMap)
-
-AMap.initAMapApiLoader({
-  key: 'efafca828e13b5fb72b3cb6976275dc4',
-  plugin: ['AMap.Autocomplete', 'AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+Vue.use(VueAMap)
+Vue.use(Mint)
+Vue.use(VueAwesomeSwiper)
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  // 高德的key
+  key: 'd8fc9d51b96c16a102a74fd6bc6856bb',
+  // 插件集合
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor', 'AMap.Geocoder'],
+  // 高德 sdk 版本，默认为 1.4.4
   v: '1.4.4'
 })
 
