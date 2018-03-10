@@ -11,6 +11,8 @@ import Setting from '../components/mine/setting/setting'
 import Cardsmanage from '../components/mine/cardsmanage/cardsmanage'
 import register from '../components/register/register'
 import adress from '../components/adress/adress'
+import selectcategory from '../components/selectcategory/selectcategory'
+import fudailist from '../components/fudai/fudailist'
 
 Vue.use(Router)
 
@@ -78,6 +80,16 @@ export default new Router({
       path: '/adress',
       name: 'adress',
       component: adress
+    },
+    {
+      path: '/selectcategory',
+      name: 'selectcategory',
+      component: selectcategory
+    },
+    {
+      path: '/fudailist',
+      name: 'fudailist',
+      component: fudailist
     }
   ]
 })

@@ -40,7 +40,7 @@
       </div>
     </div>
     <p style="padding-left: .3rem;color: #ea9506;line-height: .68rem">*请根据店铺实际位置进行填写</p>
-    <mt-button>确定</mt-button>
+    <mt-button class="confirm">确定</mt-button>
   </div>
 </template>
 
@@ -244,7 +244,6 @@ export default {
     }
     .adress-picker{
       .picker{
-
       }
       .picker-slot-wrapper{
 
@@ -292,6 +291,20 @@ export default {
     .amap-page-container  {
       width: 100%;
       height: 7.2rem;
+    }
+    .confirm{
+      width: 94%
+      background: #00b4fe
+      display: block
+      margin-left auto
+      margin-right auto
+      color: #ffffff
+      border-radius 0
+      font-size .32rem
+      height:.8rem
+      line-height .8rem
+      margin-top .1rem
+      margin-bottom .18rem
     }
   }
 

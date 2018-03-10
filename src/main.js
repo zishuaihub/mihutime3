@@ -10,6 +10,8 @@ import 'mint-ui/lib/style.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import VueAMap from 'vue-amap'
+import IScrollView from 'vue-iscroll-view'
+import IScroll from 'iscroll'
 
 Vue.config.productionTip = false
 Axios.defaults.baseURL = 'http://coupon.test.mihutime.com/common/v1/'
@@ -19,6 +21,7 @@ Vue.prototype.$http = Axios
 Vue.use(VueAMap)
 Vue.use(Mint)
 Vue.use(VueAwesomeSwiper)
+Vue.use(IScrollView, IScroll)
 // 初始化vue-amap
 VueAMap.initAMapApiLoader({
   // 高德的key

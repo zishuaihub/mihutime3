@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "iscroll": "^5.2.0",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
     "vue-amap": "^0.5.2",
     "vue-awesome-swiper": "^3.1.2",
+    "vue-iscroll-view": "^1.0.3",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
