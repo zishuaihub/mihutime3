@@ -13,6 +13,7 @@ import register from '../components/register/register'
 import adress from '../components/adress/adress'
 import selectcategory from '../components/selectcategory/selectcategory'
 import fudailist from '../components/fudai/fudailist'
+import addfd from '../components/fudai/addfd'
 
 Vue.use(Router)
 
@@ -90,6 +91,11 @@ export default new Router({
       path: '/fudailist',
       name: 'fudailist',
       component: fudailist
+    },
+    {
+      path: '/addfd',
+      name: 'addfd',
+      component: addfd
     }
   ]
 })
