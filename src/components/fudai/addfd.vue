@@ -29,18 +29,10 @@
       </mt-header>
       <div class="addimg">
         <div class="addimg1">
-          <mt-field label="活动描述" placeholder="请输入活动描述" v-model="username"></mt-field>
-          <div>
-            <p>消费须知(点击下方消费须知可           </p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
+          <mt-field label="活动描述" placeholder="请输入活动描述" v-model="describe"></mt-field>
+          <div class="addinfo">
+            <p>消费须知(点击下方消费须知可编辑)</p>
+            <p  ><textarea type="text" placeholder="" v-model="messages"></textarea></p>
           </div>
           <div style="width: 2.1rem;height: 1.6rem;position: relative;">
             <input type="file" class="uploadimg" style="width: 2.1rem;height: 1.6rem;opacity: 0;position: absolute;">
@@ -58,7 +50,9 @@ export default {
   name: 'addfd',
   data () {
     return {
-      popup: true
+      popup: false,
+      describe: '',
+      messages: '啊士大夫石帆胜丰士大夫士大夫首发式地方是方法就是垃圾了解离开家刻录机离开家离开'
     }
   },
   created () {
@@ -225,6 +219,16 @@ export default {
         line-height .8rem
         margin-top 1.05rem
         margin-bottom .18rem
+      }
+      .addinfo{
+        textarea{
+          border:none
+          font-size .24rem
+          line-height .42rem
+          color: #cbccd1
+          width 100%
+          height 5.7rem
+        }
       }
     }
   }

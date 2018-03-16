@@ -14,6 +14,8 @@ import adress from '../components/adress/adress'
 import selectcategory from '../components/selectcategory/selectcategory'
 import fudailist from '../components/fudai/fudailist'
 import addfd from '../components/fudai/addfd'
+import fudai from '../components/fudai/fudai'
+import fudaistate from '../components/fudai/fudaistate'
 
 Vue.use(Router)
 
@@ -96,6 +98,16 @@ export default new Router({
       path: '/addfd',
       name: 'addfd',
       component: addfd
+    },
+    {
+      path: '/fudai',
+      name: 'fudai',
+      component: fudai
+    },
+    {
+      path: '/fudaistate',
+      name: 'fudaistate',
+      component: fudaistate
     }
   ]
 })
