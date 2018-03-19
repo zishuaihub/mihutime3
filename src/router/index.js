@@ -16,6 +16,9 @@ import fudailist from '../components/fudai/fudailist'
 import addfd from '../components/fudai/addfd'
 import fudai from '../components/fudai/fudai'
 import fudaistate from '../components/fudai/fudaistate'
+import noticelist from '../components/notice/noticelist'
+import pending from '../components/notice/pending'
+import paymentdetail from '../components/notice/paymentdetail'
 
 Vue.use(Router)
 
@@ -108,6 +111,21 @@ export default new Router({
       path: '/fudaistate',
       name: 'fudaistate',
       component: fudaistate
+    },
+    {
+      path: '/noticelist',
+      name: 'noticelist',
+      component: noticelist
+    },
+    {
+      path: '/pending',
+      name: 'pending',
+      component: pending
+    },
+    {
+      path: '/paymentdetail',
+      name: 'paymentdetail',
+      component: paymentdetail
     }
   ]
 })
