@@ -19,6 +19,11 @@ import fudaistate from '../components/fudai/fudaistate'
 import noticelist from '../components/notice/noticelist'
 import pending from '../components/notice/pending'
 import paymentdetail from '../components/notice/paymentdetail'
+import update from '../components/notice/update'
+import notice from '../components/notice/notice'
+import withdraw from '../components/notice/withdraw'
+import balance from '../components/mine/balance/balance'
+import balancedetails from '../components/mine/balance/balancedetails'
 
 Vue.use(Router)
 
@@ -61,6 +66,11 @@ export default new Router({
       path: '/mine/traderecord',
       name: 'traderecord',
       component: Traderecord
+    },
+    {
+      path: '/mine/balance',
+      name: 'balance',
+      component: balance
     },
     {
       path: '/finance/extract',
@@ -126,6 +136,26 @@ export default new Router({
       path: '/paymentdetail',
       name: 'paymentdetail',
       component: paymentdetail
+    },
+    {
+      path: '/update',
+      name: 'update',
+      component: update
+    },
+    {
+      path: '/notice',
+      name: 'notice',
+      component: notice
+    },
+    {
+      path: '/withdraw',
+      name: 'withdraw',
+      component: withdraw
+    },
+    {
+      path: '/balancedetails',
+      name: 'balancedetails',
+      component: balancedetails
     }
   ]
 })
