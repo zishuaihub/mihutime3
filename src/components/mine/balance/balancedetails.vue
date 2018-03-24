@@ -135,11 +135,11 @@
 <style lang="stylus">
   #balancedetails
     .navbar
-      position: fixed
-      width:100%
-      top:0
-      left:0
-      z-index: 2
+      /*position: fixed*/
+      /*width:100%*/
+      /*top:0*/
+      /*left:0*/
+      /*z-index: 2*/
     .item
       background-color: #fff
       padding: 10px 15px

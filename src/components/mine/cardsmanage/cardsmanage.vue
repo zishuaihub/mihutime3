@@ -1,6 +1,6 @@
 <template>
   <div id="cardsmanage">
-    <mt-header fixed title="银行卡管理">
+    <mt-header fixed title="结算卡">
       <mt-button icon="back" slot="left" @click.native="bankListPopupVisible = false"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add" @cilck="bankListPopupVisible = true">添加银行卡</mt-button>

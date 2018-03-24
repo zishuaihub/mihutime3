@@ -24,6 +24,12 @@ import notice from '../components/notice/notice'
 import withdraw from '../components/notice/withdraw'
 import balance from '../components/mine/balance/balance'
 import balancedetails from '../components/mine/balance/balancedetails'
+import cardslist from '../components/mine/cardsmanage/cardslist'
+import carddetails from '../components/mine/cardsmanage/carddetails'
+import addcard from '../components/mine/cardsmanage/addcards/addcard'
+import verification from '../components/mine/cardsmanage/addcards/verification'
+import setpassword from '../components/mine/cardsmanage/addcards/setpassword'
+import repeatpassword from '../components/mine/cardsmanage/addcards/repeatpassword'
 
 Vue.use(Router)
 
@@ -156,6 +162,36 @@ export default new Router({
       path: '/balancedetails',
       name: 'balancedetails',
       component: balancedetails
+    },
+    {
+      path: '/mine/cardsmanage/cardslist',
+      name: 'cardslist',
+      component: cardslist
+    },
+    {
+      path: '/mine/cardsmanage/carddetails',
+      name: 'carddetails',
+      component: carddetails
+    },
+    {
+      path: '/mine/cardsmanage/addcards/addcard',
+      name: 'addcard',
+      component: addcard
+    },
+    {
+      path: '/mine/cardsmanage/addcards/verification',
+      name: 'verification',
+      component: verification
+    },
+    {
+      path: '/mine/cardsmanage/addcards/setpassword',
+      name: 'setpassword',
+      component: setpassword
+    },
+    {
+      path: '/mine/cardsmanage/addcards/repeatpassword',
+      name: 'repeatpassword',
+      component: repeatpassword
     }
   ]
 })

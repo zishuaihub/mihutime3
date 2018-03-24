@@ -1,7 +1,9 @@
 <template>
   <div id="mine">
     <mt-header title="我的">
-      <mt-button icon="back"></mt-button>
+      <router-link to="/" slot="left">
+        <mt-button icon="back">返回</mt-button>
+      </router-link>
       <router-link to="" slot="right">
         <mt-button icon="add">设置</mt-button>
       </router-link>

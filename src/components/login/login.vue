@@ -18,7 +18,6 @@
     <div class="bottom">
       <p>纸象优惠 V20.0正式版</p>
     </div>
-
   </div>
 </template>
 
