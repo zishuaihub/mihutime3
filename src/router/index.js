@@ -24,6 +24,8 @@ import notice from '../components/notice/notice'
 import withdraw from '../components/notice/withdraw'
 import balance from '../components/mine/balance/balance'
 import balancedetails from '../components/mine/balance/balancedetails'
+import remainder from '../components/mine/balance/remainder'
+import query from '../components/mine/balance/query'
 import cardslist from '../components/mine/cardsmanage/cardslist'
 import carddetails from '../components/mine/cardsmanage/carddetails'
 import addcard from '../components/mine/cardsmanage/addcards/addcard'
@@ -159,7 +161,17 @@ export default new Router({
       component: withdraw
     },
     {
-      path: '/balancedetails',
+      path: '/mine/remainder',
+      name: 'remainder',
+      component: remainder
+    },
+    {
+      path: '/mine/query',
+      name: 'query',
+      component: query
+    },
+    {
+      path: '/mine/balancedetails',
       name: 'balancedetails',
       component: balancedetails
     },
