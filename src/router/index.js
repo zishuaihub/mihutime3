@@ -32,6 +32,8 @@ import addcard from '../components/mine/cardsmanage/addcards/addcard'
 import verification from '../components/mine/cardsmanage/addcards/verification'
 import setpassword from '../components/mine/cardsmanage/addcards/setpassword'
 import repeatpassword from '../components/mine/cardsmanage/addcards/repeatpassword'
+import waitingforsettlement from '../components/mine/settlement/waitingforsettlement'
+import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
 
 Vue.use(Router)
 
@@ -204,6 +206,16 @@ export default new Router({
       path: '/mine/cardsmanage/addcards/repeatpassword',
       name: 'repeatpassword',
       component: repeatpassword
+    },
+    {
+      path: '/mine/waitingforsettlement',
+      name: 'waitingforsettlement',
+      component: waitingforsettlement
+    },
+    {
+      path: '/mine/waitingforsettlementdetails',
+      name: 'waitingforsettlementdetails',
+      component: waitingforsettlementdetails
     }
   ]
 })

@@ -1,19 +1,22 @@
 <template>
-  <div id="traderecord">
-    <mt-navbar v-model="selected" class="navbar">
-      <mt-tab-item id="" @click.native="selectTab()">全部</mt-tab-item>
-      <mt-tab-item id="2" @click.native="selectTab()">收益</mt-tab-item>
-      <mt-tab-item id="3" @click.native="selectTab()">提现</mt-tab-item>
-    </mt-navbar>
-    <div class="main-body" :style="{ height: wrapperHeight + 'px', 'overflow': 'scroll', 'margin-top': '60px'}">
+  <div id="waitingforsettlementdetails">
+    <mt-header title="基本信息">
+      <router-link to="/" slot="left">
+        <mt-button icon="back"></mt-button>
+      </router-link>
+      <mt-button slot="right">联系客服</mt-button>
+    </mt-header>
+    <div class="main-body" :style="{ height: wrapperHeight + 'px', 'overflow': 'scroll'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
         <ul class="list" v-for="(item, index) in pageList">
           <div class="date" v-if="index===0 || item.createdAt.substring(0,7) !== pageList[index-1].createdAt.substring(0,7)">
-            {{item.createdAt.substring(0,7) }}
+            <p>{{item.createdAt.substring(0,7) }}</p>
+            <p>待结算1000.00元</p>
           </div>
           <div class="item">
             <div class="name">{{item.name}}</div>
             <div class="desc">
+              <div class="state"><span>已到账</span><span>未到账</span></div>
               <div class="order-sn">
                 <div class="sn">订单流水号: {{item.sn}}</div>
                 <div class="amount">{{item.amount}}</div>
@@ -30,7 +33,7 @@
 <script>
   import {Loadmore} from 'mint-ui'
   export default {
-    name: 'traderecord',
+    name: 'waitingforsettlementdetails',
     data: function () {
       return {
         //  分页属性
@@ -111,44 +114,57 @@
         if (isHaveMore < this.searchCondition.pageSize) {
           this.allLoaded = true
         }
-      },
-      contentReset () {
-        this.pageList = []
-        this.searchCondition.pageNo = 1
-        this.allLoaded = false
-        this.loadPageList(this.selected)
-      },
-      selectTab () {
-        this.contentReset()
       }
     }
   }
 </script>
 
 <style lang="stylus">
-  #traderecord
-      .navbar
-        position: fixed
-        width:100%
-        top:0
-        left:0
-        z-index: 2
-      .item
+  #waitingforsettlementdetails
+    .mint-header{
+      height: .88rem
+      .mint-header-title{
+        font-size .32rem
+      }
+      .mint-button-text{
+        font-size .24rem
+      }
+    }
+    .item
         background-color: #fff
-        padding: 10px 15px
+        padding: .3rem
+        border-bottom 1px solid #f0f2f8
         .name
           font-size: .24rem
           font-weight: bold
+        .state{
+          font-size .26rem
+          color: #000
+        }
         .order-sn
           display: flex
           justify-content: space-between
-          font-size: .18rem
-          line-height: .18rem
-          margin: 10px 0
-          .amount
-            color: palevioletred
-            font-size: .24rem
-        .createdAt
-          height: 25px
           font-size: .24rem
+          line-height: .18rem
+          margin: .18rem 0
+          color: #a0a3b2
+          .amount
+            color: #33a1ff
+            font-size: .36rem
+        .createdAt
+          font-size: .24rem
+          color: #a0a3b2
+    .date{
+      padding: .3rem
+      background: #f7faff
+      p:first-child{
+        margin-bottom .2rem
+        font-size .26rem
+      }
+      p:last-child{
+        font-size .24rem
+        color: #a0a3b2
+      }
+
+    }
 </style>

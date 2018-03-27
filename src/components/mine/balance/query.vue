@@ -8,35 +8,27 @@
       </mt-header>
       <div class="process">
         <div class="process-icon">
-          <i class="iconfont icon-selected" :style="[{color:false ? '#33a1ff' : '#a0a3b2'}]"></i>
-          <div class="line" :style="[{borderColor:false ? '#33a1ff' : '#a0a3b2'}]"></div>
-          <i class="iconfont icon-selected" :style="[{color:false ? '#33a1ff' : '#a0a3b2'}]"></i>
+          <i class="iconfont icon-selected" :style="[{color:true ? '#33a1ff' : '#a0a3b2'}]"></i>
           <div class="line" :style="[{borderColor:true ? '#33a1ff' : '#a0a3b2'}]"></div>
+          <div class="line" :style="[{borderColor:false ? '#33a1ff' : '#a0a3b2'}]"></div>
           <i class="iconfont icon-selected" :style="[{color:false ? '#33a1ff' : '#a0a3b2'}]"></i>
         </div>
         <div class="process-info">
           <div class="process-info-item">
-            <div>提现申请已提交，平台已受理</div>
-            <div v-if="cpt">已完成</div>
-            <div v-if="!cpt" style="color: #eb9704;">未完成</div>
+            <div style="margin-bottom: .2rem" :style="[{color:true ? '#33a1ff' : '#a0a3b2'}]">提现申请已提交，平台已受理</div>
+            <div style="margin-bottom: .1rem;color: #a0a3b2;">工商银行（0149）</div>
+            <div style="color: #a0a3b2;">1000元</div>
           </div>
           <div class="process-info-item">
-            <div>开通店铺</div>
-            <div v-if="cpt">已完成</div>
-            <div v-if="!cpt" style="color: #eb9704;" >未完成</div>
-          </div>
-          <div class="process-info-item">
-            <div>审核成功</div>
-            <div v-if="cpt">已完成</div>
-            <div v-if="!cpt" style="color: #eb9704;">未完成</div>
+            <div style="margin-bottom: .2rem">预计7天内到账，等待银行处理</div>
+            <div style="color: #a0a3b2;">2018-03-13 24:00 之前到账</div>
           </div>
         </div>
+        <div class="border" style="width:6.94rem;height: 1px;border-bottom: 1px solid #eff1f7"></div>
       </div>
-      <div class="button">
-        <mt-button v-if="true">等待验证</mt-button>
-        <mt-button v-if="true">审核通过</mt-button>
-      </div>
-
+    <div class="check">
+      <p>查看账单</p>
+    </div>
   </div>
 
 </template>
@@ -64,12 +56,12 @@
 
 <style lang="stylus">
   #query{
+    background: #f7faff
+    height: 100vh
     .mint-header{
       height:.88rem
     }
-    background: #f7faff
-    height: 100vh
-      .process{
+    .process{
         padding .66rem .3rem
         margin-top .3rem
         background: #fff
@@ -77,6 +69,7 @@
         display: flex
         align-items center
         justify-content flex-start
+        position: relative
         .process-icon{
           height 100%
           margin-right .25rem
@@ -109,36 +102,18 @@
           margin-left auto
           margin-right auto
         }
-      }
-      .button{
-        button:first-child{
-          width:94%;
-          display: block
-          margin-left auto
-          margin-right auto
-          box-shadow none
-          background: #e8e9f3
-          line-height .8rem
-          .mint-button-text{
-            font-size .32rem
-            color: #a0a3b2
-          }
-        }
-        button:last-child{
-          width:94%;
-          display: block
-          margin-left auto
-          margin-right auto
-          box-shadow none
-          background: #33a1ff
-          line-height .8rem
-          .mint-button-text{
-            font-size .32rem
-            color: #ffffff
-          }
+        .border{
+          position: absolute
+          bottom:0
         }
       }
-
+    .check{
+        text-align center
+        line-height 1.04rem
+        color: #33a1ff
+        font-size .24rem
+        background: #ffffff
+      }
   }
 
 </style>

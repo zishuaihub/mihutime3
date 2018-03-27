@@ -82,7 +82,13 @@
 <style lang="stylus">
   #register{
     .mint-header{
-      height:.88rem
+      height: .88rem
+      .mint-header-title{
+        font-size .32rem
+      }
+      .mint-button-text{
+        font-size .24rem
+      }
     }
     background: #f7faff
     height: 100vh
