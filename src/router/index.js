@@ -34,6 +34,7 @@ import setpassword from '../components/mine/cardsmanage/addcards/setpassword'
 import repeatpassword from '../components/mine/cardsmanage/addcards/repeatpassword'
 import waitingforsettlement from '../components/mine/settlement/waitingforsettlement'
 import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
+import storemanage from '../components/mine/storemanage/storemanage'
 
 Vue.use(Router)
 
@@ -216,6 +217,11 @@ export default new Router({
       path: '/mine/waitingforsettlementdetails',
       name: 'waitingforsettlementdetails',
       component: waitingforsettlementdetails
+    },
+    {
+      path: '/mine/storemanage/storemanage',
+      name: 'storemanage',
+      component: storemanage
     }
   ]
 })
