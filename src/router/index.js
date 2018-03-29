@@ -35,6 +35,7 @@ import repeatpassword from '../components/mine/cardsmanage/addcards/repeatpasswo
 import waitingforsettlement from '../components/mine/settlement/waitingforsettlement'
 import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
 import storemanage from '../components/mine/storemanage/storemanage'
+import servicecenter from '../components/servicecenter/servicecenter'
 
 Vue.use(Router)
 
@@ -222,6 +223,11 @@ export default new Router({
       path: '/mine/storemanage/storemanage',
       name: 'storemanage',
       component: storemanage
+    },
+    {
+      path: '/servicecenter/servicecenter',
+      name: 'servicecenter',
+      component: servicecenter
     }
   ]
 })
