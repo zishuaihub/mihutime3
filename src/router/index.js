@@ -36,6 +36,8 @@ import waitingforsettlement from '../components/mine/settlement/waitingforsettle
 import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
 import storemanage from '../components/mine/storemanage/storemanage'
 import servicecenter from '../components/servicecenter/servicecenter'
+import seranrtemp from '../components/servicecenter/seranrtemp'
+import record from '../components/bill/record'
 
 Vue.use(Router)
 
@@ -228,6 +230,16 @@ export default new Router({
       path: '/servicecenter/servicecenter',
       name: 'servicecenter',
       component: servicecenter
+    },
+    {
+      path: '/servicecenter/seranrtemp',
+      name: 'seranrtemp',
+      component: seranrtemp
+    },
+    {
+      path: '/bill/record',
+      name: 'record',
+      component: record
     }
   ]
 })
