@@ -8,6 +8,10 @@ import login from '../components/login/login'
 import Extract from '../components/finance/extract/extract'
 import Traderecord from '../components/mine/traderecord/traderecord'
 import Setting from '../components/mine/setting/setting'
+import cgpn from '../components/mine/setting/cgpn/cgpn'
+import odpn from '../components/mine/setting/cgpn/odpn'
+
+import qrcode from '../components/mine/setting/qrcode'
 import Cardsmanage from '../components/mine/cardsmanage/cardsmanage'
 import register from '../components/register/register'
 import adress from '../components/adress/adress'
@@ -92,9 +96,14 @@ export default new Router({
       component: Extract
     },
     {
-      path: '/mine/setting',
+      path: '/mine/setting/setting',
       name: 'setting',
       component: Setting
+    },
+    {
+      path: '/mine/setting/qrcode',
+      name: 'qrcode',
+      component: qrcode
     },
     {
       path: '/mine/cardsmanage',
@@ -240,6 +249,16 @@ export default new Router({
       path: '/bill/record',
       name: 'record',
       component: record
+    },
+    {
+      path: '/mine/setting/cgpn/cgpn',
+      name: 'cgpn',
+      component: cgpn
+    },
+    {
+      path: '/mine/setting/cgpn/odpn',
+      name: 'odpn',
+      component: odpn
     }
   ]
 })
