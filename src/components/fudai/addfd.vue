@@ -74,11 +74,15 @@ export default {
 
     }
     .mint-header{
-      height:.88rem
+      height: .88rem
       .mint-header-title{
         font-size .32rem
       }
+      .mint-button-text{
+        font-size .24rem
+      }
     }
+
     .addfd-info{
       padding: .4rem .58rem .4rem .83rem
       background: rgba(255,255,255,0.9)

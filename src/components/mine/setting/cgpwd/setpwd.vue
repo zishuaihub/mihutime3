@@ -1,45 +1,32 @@
 <template>
-  <div id="setpassword">
-    <mt-header title="身份验证">
+  <div id="setpwd">
+    <mt-header title="修改支付密码">
       <mt-button icon="back" slot="left"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
     <div class="pwd-box" v-if="fstdis">
-          <h1>设置支付密码：</h1>
-          <h3>请输入支付密码,完成绑定银行卡</h3>
+          <h1>修改支付密码：</h1>
+          <h3>请输入就支付密码，完成身份验证</h3>
           <div class="write-input">
             <input type="password"  ref="input1" maxlength="6" class="realInput" v-model="realInput1" autofocus >
           </div>
     </div>
 
     <mt-popup v-if="!fstdis" v-model="vis" position="right">
-      <mt-header title="添加银行卡">
+      <mt-header title="修改支付密码">
         <mt-button icon="back" slot="left" @click.native=""></mt-button>
         <router-link to="" slot="right">
           <mt-button icon="add"></mt-button>
         </router-link>
       </mt-header>
       <div class="pwd-box">
-        <h1>重新输入密码：</h1>
-        <h3>再次输入密码，保证密码一致</h3>
+        <h1>重新输入新支付密码：</h1>
+        <h3>再次输入新密码，保证密码一致</h3>
         <div class="write-input">
           <input type="password"  ref="input2" maxlength="6" class="realInput" v-model="realInput2" autofocus >
         </div>
-      </div>
-    </mt-popup>
-    <mt-popup v-model="carddone" position="right">
-      <mt-header title="提示">
-        <mt-button icon="back" slot="left" @click.native=""></mt-button>
-        <router-link to="" slot="right">
-          <mt-button icon="add"></mt-button>
-        </router-link>
-      </mt-header>
-      <div class="pwd-box">
-        <img src="../../../../assets/icon/sucess@3x.png" alt="" style="width: .8rem;height: .8rem;margin-bottom: .4rem">
-        <p style="color: #333;font-size: .3rem;margin-bottom: 4.95rem">添加银行卡成功</p>
-        <mt-button>完成</mt-button>
       </div>
     </mt-popup>
   </div>
@@ -48,14 +35,13 @@
 <script>
 import '../../../../assets/icon/iconfont.css'
 export default {
-  name: 'setpassword',
+  name: 'setpwd',
   data () {
     return {
       realInput1: '',
       realInput2: '',
       fstdis: true,
-      vis: !this.fstdis,
-      carddone: false
+      vis: !this.fstdis
     }
   },
   watch: {
@@ -105,7 +91,7 @@ export default {
       font-size .56rem
     }
   }
-  #setpassword{
+  #setpwd{
     .mint-popup{
       width: 100%
       height:100vh

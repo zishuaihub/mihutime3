@@ -7,14 +7,17 @@
       <mt-button slot="right">联系客服</mt-button>
     </mt-header>
     <div class="information">
-      <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="username"></mt-field>
-      <mt-field label="店铺地址" placeholder="请选择" type="text" v-model="email"></mt-field>
-      <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="password"></mt-field>
-      <mt-field label="经营品类" placeholder="请选择" type="text" v-model="phone"></mt-field>
+      <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeinfo.storename"></mt-field>
+      <mt-field @click.native="sadress" label="店铺地址" placeholder="请选择" type="text" v-model="storeinfo.storeadress" :disabled="true"></mt-field>
+      <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="storeinfo.phonenum"></mt-field>
+      <mt-field @click.native="scategory" label="经营品类" placeholder="请选择" type="text" v-model="storeinfo.category" :disabled="true"></mt-field>
+      <mt-field @click.native="scategory" label="营业日" placeholder="请选择" type="text" v-model="storeinfo.days" :disabled="true"></mt-field>
+
+
       <mt-button>提交审核</mt-button>
     </div>
     <mt-popup
-      v-model="popupHold"
+      v-model="popuphold"
       class="popup-hold"
       closeOnClickModal="false">
       <mt-header title="等待验证">
@@ -64,17 +67,32 @@
     name: 'register',
     data () {
       return {
-        popupHold: true,
-        username: '',
-        password: '',
-        email: '',
-        phone: 1,
-        cpt: true
+        popuphold: false,
+        cpt: true,
+        storeinfo: {
+          storename: '',
+          storeadress: '',
+          phonenum: '',
+          category: '',
+          days: []
+        }
+      }
+    },
+    watch: {
+      storeinfo () {
+        return this.$store.state.Store
       }
     },
     created () {
     },
     methods: {
+      sadress () {
+        this.$router.push('')
+        console.log(this.$store.state)
+      },
+      scategory () {
+
+      }
     }
   }
 </script>
@@ -89,6 +107,9 @@
       .mint-button-text{
         font-size .24rem
       }
+    }
+    input[type="text" i]:disabled{
+      background: transparent
     }
     background: #f7faff
     height: 100vh

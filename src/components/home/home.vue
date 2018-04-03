@@ -81,11 +81,8 @@
 
 <script>
   import tabbar from '../tabbar/tabbar'
-  import IndexService from '../../service/index.service'
   import 'swiper/dist/css/swiper.css'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
-
-  const indexService = new IndexService()
   export default {
     name: 'home',
     components: {
@@ -120,14 +117,14 @@
     created () {
     },
     mounted () {
-      indexService.getsellers(this).then(res => {
-        console.log(res.data)
+      this.$http.get('/store/v1/stores').then(res => {
+        console.log(res)
         this.sellers = res.data
-      })
+      }).catch(error => console.log(error.response))
       // 获取财务信息
-      this.$http.get('/finances').then(
-        res => { this.finances = res.data; console.log(this.finances) }
-      )
+      // this.$http.get('/finances').then(
+      //   res => { this.finances = res.data; console.log(this.finances) }
+      // )
     },
     methods: {
       txym () {

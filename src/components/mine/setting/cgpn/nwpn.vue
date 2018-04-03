@@ -1,24 +1,27 @@
 <template>
-  <div id="odpn">
-    <mt-header title="身份验证">
+  <div id="nwpn">
+    <mt-header title="修改手机号">
       <mt-button icon="back" slot="left"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
     <div class="addcard-content">
-      <p class="content-header">绑定银行卡需要短信确认,验证码已发送至手机:189*****2480
-        请按提示操作</p>
+      <p class="content-header">更换手机号后，下次登录可使用新手机号登陆，当前手机号：189******22</p>
       <div class="list">
+        <div class="item">
+          <span class="left">手机号</span>
+          <mt-field type="number" placeholder="请输入新的手机号" v-model="phonenum" disableClear></mt-field>
+        </div>
         <div class="item">
           <span class="left">验证码</span>
           <mt-field type="number" placeholder="请输入验证码" v-model="code" disableClear></mt-field>
-          <div class="odpn" :class="{ 'clicked': clicked}"> <span v-if="clicked">{{sendMseDisabled}}s</span> </div>
+          <div class="nwpn" :class="{ 'clicked': clicked}"> <span v-if="clicked">{{sendMseDisabled}}s</span> </div>
         </div>
       </div>
       <mt-button class="next"  @click="clickedFun(60)" v-if="!clicked">获取验证码</mt-button>
 
-      <mt-button class="next" v-if="clicked" :disabled="!code" @click="test()">确认</mt-button>
+      <mt-button class="next" v-if="clicked" :disabled="!code" @click="test()">确认更换</mt-button>
 
     </div>
   </div>
@@ -26,10 +29,11 @@
 
 <script>
   export default {
-    name: 'odpn',
+    name: 'nwpn',
     data () {
       return {
         code: '',
+        phonenum: '',
         clicked: false,
         sendMember: true,
         sendMseDisabled: 0
@@ -62,7 +66,7 @@
 </script>
 
 <style lang="stylus">
-  #odpn{
+  #nwpn{
     .mint-header{
       height: .88rem
       .mint-header-title{
@@ -97,7 +101,7 @@
           .left{
             width:1.15rem
           }
-          .odpn{
+          .nwpn{
             background: transparent
             span{
               width:1.4rem

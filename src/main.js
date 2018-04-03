@@ -14,7 +14,7 @@ import IScrollView from 'vue-iscroll-view'
 import IScroll from 'iscroll'
 
 Vue.config.productionTip = false
-Axios.defaults.baseURL = 'http://test.mihutime.com/seller/v1'
+Axios.defaults.baseURL = 'http://coupon.test.mihutime.com/'
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$http = Axios
 /* eslint-disable no-new */

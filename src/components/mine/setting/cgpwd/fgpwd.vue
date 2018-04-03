@@ -1,19 +1,22 @@
 <template>
-  <div id="odpn">
-    <mt-header title="身份验证">
+  <div id="fgpwd">
+    <mt-header title="忘记密码">
       <mt-button icon="back" slot="left"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
     <div class="addcard-content">
-      <p class="content-header">绑定银行卡需要短信确认,验证码已发送至手机:189*****2480
-        请按提示操作</p>
+
       <div class="list">
+        <div class="item">
+          <span class="left">手机号码</span>
+          <mt-field type="number" placeholder="请输入验证码" v-model="code" disableClear></mt-field>
+        </div>
         <div class="item">
           <span class="left">验证码</span>
           <mt-field type="number" placeholder="请输入验证码" v-model="code" disableClear></mt-field>
-          <div class="odpn" :class="{ 'clicked': clicked}"> <span v-if="clicked">{{sendMseDisabled}}s</span> </div>
+          <button @click="clickedFun(60)" :disabled="clicked" class="fgpwd" :class="{ 'clicked': clicked}"> <span v-if="!clicked" style="width: 1.4rem;color: #33a1ff">发送验证码</span> <span v-if="clicked">{{sendMseDisabled}}s</span> </button>
         </div>
       </div>
       <mt-button class="next"  @click="clickedFun(60)" v-if="!clicked">获取验证码</mt-button>
@@ -26,7 +29,7 @@
 
 <script>
   export default {
-    name: 'odpn',
+    name: 'fgpwd',
     data () {
       return {
         code: '',
@@ -62,7 +65,7 @@
 </script>
 
 <style lang="stylus">
-  #odpn{
+  #fgpwd{
     .mint-header{
       height: .88rem
       .mint-header-title{
@@ -97,7 +100,7 @@
           .left{
             width:1.15rem
           }
-          .odpn{
+          .fgpwd{
             background: transparent
             span{
               width:1.4rem
@@ -144,7 +147,7 @@
         font-size .32rem
         height:.8rem
         line-height .8rem
-        margin-top 3rem
+        margin-top 1.2rem
       }
 
     }

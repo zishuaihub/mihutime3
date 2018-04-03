@@ -3,15 +3,15 @@
     <div class="loginarea">
       <div class="inputarea">
         <div class="inputarea-user">
-          <input type="text" placeholder="请输入手机号" v-model="userInfo.username">
+          <input type="text" placeholder="请输入手机号" v-model="userInfo.phone">
           <img class="inputarea-icon" src="../../assets/icon/phone@3x.png" alt="" >
         </div>
         <div class="inputarea-password">
-          <input type="password" placeholder="请输入验证码" v-model="userInfo.password">
+          <input type="password" placeholder="请输入验证码" v-model="userInfo.code">
           <img class="inputarea-icon"  src="../../assets/icon/lock@3x.png" alt="" >
           <button @click="clickedFun(60)" :disabled="clicked" class="verification" :class="{ 'clicked': clicked}">发送验证码 <span v-if="clicked">{{sendMseDisabled}}s</span> </button>
         </div>
-        <button @click="login" :disabled="!(userInfo.username && userInfo.password)">登录</button>
+        <button @click="login" :disabled="!(userInfo.phone && userInfo.code)">登录</button>
       </div>
     </div>
 
@@ -22,15 +22,14 @@
 </template>
 
 <script>
-  import IndexService from '../../service/index.service'
-  let indexservice = new IndexService()
   export default {
     name: 'login',
     data () {
       return {
         userInfo: {
-          username: '',
-          password: ''
+          phone: '',
+          code: '',
+          loginType: 2
         },
         clicked: false,
         sendMember: true,
@@ -41,17 +40,28 @@
     },
     methods: {
       login () {
-        indexservice.login(this, this.userInfo).then(
+        this.$http.post('/common/v1/accounts/login', this.userInfo).then(
           res => {
             console.log(res.data)
             this.$store.dispatch('login', res.data)
-            this.$router.push('home')
+            if (res.data.store) {
+              this.$router.push('home')
+            } else {
+              this.$router.push('register')
+            }
           }
           )
       },
       clickedFun (s) {
-        this.clicked = !this.clicked
-        this.sendOver(s)
+        if (this.userInfo.phone.length === 11) {
+          this.clicked = !this.clicked
+          this.$http.post('/common/v1/login-codes', this.userInfo).then(
+            res => console.log(res)
+          )
+          this.sendOver(s)
+        } else {
+          alert('请输入正确的手机号')
+        }
       },
       sendOver (sendMseDisabled) {
         if (sendMseDisabled === 0) {

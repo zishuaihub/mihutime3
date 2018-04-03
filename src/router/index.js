@@ -10,6 +10,10 @@ import Traderecord from '../components/mine/traderecord/traderecord'
 import Setting from '../components/mine/setting/setting'
 import cgpn from '../components/mine/setting/cgpn/cgpn'
 import odpn from '../components/mine/setting/cgpn/odpn'
+import nwpn from '../components/mine/setting/cgpn/nwpn'
+import cgpwd from '../components/mine/setting/cgpwd/cgpwd'
+import setpwd from '../components/mine/setting/cgpwd/setpwd'
+import fgpwd from '../components/mine/setting/cgpwd/fgpwd'
 
 import qrcode from '../components/mine/setting/qrcode'
 import Cardsmanage from '../components/mine/cardsmanage/cardsmanage'
@@ -259,6 +263,26 @@ export default new Router({
       path: '/mine/setting/cgpn/odpn',
       name: 'odpn',
       component: odpn
+    },
+    {
+      path: '/mine/setting/cgpn/nwpn',
+      name: 'nwpn',
+      component: nwpn
+    },
+    {
+      path: '/mine/setting/cgpwd/cgpwd',
+      name: 'cgpwd',
+      component: cgpwd
+    },
+    {
+      path: '/mine/setting/cgpwd/setpwd',
+      name: 'setpwd',
+      component: setpwd
+    },
+    {
+      path: '/mine/setting/cgpwd/fgpwd',
+      name: 'fgpwd',
+      component: fgpwd
     }
   ]
 })
