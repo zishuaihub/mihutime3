@@ -1,23 +1,21 @@
 <template>
   <div id="selectcategory">
     <mt-header title="选择品类">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+        <mt-button icon="back"  slot="left" @click = $router.back()></mt-button>
       <mt-button slot="right">联系客服</mt-button>
     </mt-header>
       <div class="scroller">
         <div class="scroller-left">
           <iscroll-view ref="iscroll" class="scroll-view" :options="{click : true}">
             <ul>
-              <li v-for="item in list" :class="{active : (select===item)}" @click="selected(item)">{{ item }}</li>
+              <li v-for="item in list" :class="{active : (select===item)}" @click="selected(item)">{{ item.name }}</li>
             </ul>
           </iscroll-view>
         </div>
         <div class="scroller-right">
           <iscroll-view class="scroll-view">
             <ul>
-              <li v-for="item in list">{{ item }}</li>
+              <li v-for="item in list2" @click="selected2(item)">{{ item.name }}</li>
             </ul>
           </iscroll-view>
         </div>
@@ -26,28 +24,53 @@
 </template>
 
 <script>
+// TODO: 添加联系客服
 export default {
   name: 'selectcategory',
   data () {
     return {
-      select: '',
+      select: {},
+      select2: {},
       topStatus: '',
       loading: false,
       isActive: true,
-      list: ['示例1', '示例2', '示例3', '示例4', '示例5', '示例6', '示例8', '示例9', '示例10', '示例11', '示例12', '示例13', '示例14', '示例15', '示例16', '示例17', '示例18', '示例19', '示例20', '示例21', '示例22', '示例23', '示例24', '示例25', '示例26', '示例27']
+      list: [],
+      list2: [],
+      storeInfo: {}
     }
   },
   created () {
   },
   mounted () {
-
+    // 获取状态管理中的店铺信息
+    this.storeInfo = this.$store.state.Store
+    this.getList()
   },
   methods: {
-    selected (item) {
-      console.log(1)
-      this.select = item
+    // 获取首屏一级菜单数据
+    getList () {
+      this.$http.get('/common/v1/categories').then(res => { this.list = res.data; this.select = this.list[0]; this.getList2(res.data[0].id) })
     },
-    active () {
+    // 获取首屏二级菜单数据
+    getList2 (id) {
+      this.$http.put(`/common/v1/categories/${id}/child`).then(
+        res => { this.list2 = res.data }
+      )
+    },
+    selected (item) {
+      this.select = item
+      this.getList2(item.id)
+    },
+    selected2 (item) {
+      this.select2 = item
+      this.jobdone()
+    },
+    jobdone () {
+      this.storeInfo.categoryId = this.select2.id
+      this.storeInfo.categoryText = this.select2.name
+      // 提交信息
+      this.$store.dispatch('storeinfochange', this.storeInfo)
+      this.$router.push('register')
     }
   }
 }
@@ -55,13 +78,22 @@ export default {
 
 <style lang="stylus">
   #selectcategory{
+    .mint-header{
+      height: .88rem
+      .mint-header-title{
+        font-size .32rem
+      }
+      .mint-button-text{
+        font-size .24rem
+      }
+    }
     .scroller{
       height:calc(100% - .88rem)
       .scroller-left{
         height:100%
         width:2.5rem
         .scroll-view {
-          /*background #f0f0f0*/
+          background #f0f0f0
           width:2.5rem
           /* -- Attention: This line is extremely important in chrome 55+! -- */
           touch-action: none;

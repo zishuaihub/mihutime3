@@ -1,9 +1,7 @@
 <template>
   <div id="adress">
     <mt-header title="地址">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button slot="left" icon="back" @click="$router.back()"></mt-button>
       <mt-button slot="right">联系客服</mt-button>
     </mt-header>
     <div class="adressInfo">
@@ -31,7 +29,7 @@
 
     <div class="adress-form">
       <mt-cell title="省/市/区" is-link @click.native="popupBottom = !popupBottom">
-        <span style="color: #161829" v-if="regeo.province">{{regeo.province}}&nbsp;{{regeo.city}}&nbsp;{{regeo.district}}</span>
+        <div class="adress-form-reg" ><p v-if="regeoID.province">{{regeoID.province.name}}</p><p v-if="regeoID.city">{{regeoID.city.name}}</p><p v-if="regeoID.district">{{regeoID.district.name}}</p></div>
       </mt-cell>
       <div>
         <div class="input">
@@ -40,7 +38,7 @@
       </div>
     </div>
     <p style="padding-left: .3rem;color: #ea9506;line-height: .68rem">*请根据店铺实际位置进行填写</p>
-    <mt-button class="confirm">确定</mt-button>
+    <mt-button class="confirm" @click = commitInfo()>确定</mt-button>
   </div>
 </template>
 
@@ -153,18 +151,38 @@ export default {
       valuesP: {},
       values0: {},
       values1: {},
-      _values2: ''
+      values2: {},
+      // 手动选择
+      regeoID: {
+        province: '请选择省市区',
+        city: '',
+        district: ''
+      },
+      storeInfo: {}
     }
   },
   watch: {
     values0 (newValue, oldValue) {
-      if (newValue.id) {
+      if (newValue) {
         this.getRegionsProvince(newValue.id, 2)
+        this.regeoID.province = newValue
       }
     },
     values1 (newValue, oldValue) {
-      if (newValue.id) {
+      if (newValue) {
         this.getRegionsProvince(newValue.id, 4)
+        this.regeoID.city = newValue
+      } else {
+        this.slots[2].values = ['无']
+        this.slots[4].values = ['无']
+        this.regeoID.city = null
+      }
+    },
+    values2 (newValue, oldValue) {
+      if (newValue.id) {
+        this.regeoID.district = newValue
+      } else {
+        this.regeoID.district = null
       }
     },
     center (newValue, oldValue) {
@@ -174,48 +192,52 @@ export default {
     }
   },
   created () {
+    // 获取省市区
     this.getRegions()
   },
   mounted () {
+    // 获取状态管理中的店铺信息
+    this.storeInfo = this.$store.state.Store
+    // 获取经纬度
     this.getPosition()
   },
   methods: {
     onValuesChange (picker, values) {
-      if (picker.getSlotValue(0)) {
-        this.values0 = picker.getSlotValue(0)
-      }
-      if (picker.getSlotValue(1)) {
-        this.values1 = picker.getSlotValue(1)
-      }
+      this.values0 = picker.getSlotValue(0)
+      this.values1 = picker.getSlotValue(1)
+      this.values2 = picker.getSlotValue(2)
     },
     getRegions () {
-      this.$http.get('/regions').then(
+      this.$http.get('/common/v1/regions').then(
         res => {
           this.slots[0].values = res.data.children
+          console.log(res.data.children)
         }
       )
     },
     getRegionsProvince (id, num) {
-      if (num === 2) {
-        this.$http.get(`/regions/${id}`).then(
+      if (num === 2 && id) {
+        this.$http.get(`/common/v1/regions/${id}`).then(
           res => { this.slots[2].values = res.data.children }
         )
-      } else if (num === 4) {
-        this.$http.get(`/regions/${id}`).then(
+      } else if (num === 4 && id) {
+        this.$http.get(`/common/v1/regions/${id}`).then(
           res => {
             if (res.data.children.length > 0) { this.slots[4].values = res.data.children } else { this.slots[4].values = ['无'] }
           })
       }
     },
     getPosition () {
-      this.$http.get('/locations/ip-location').then(
+      this.$http.get('/common/v1/locations/ip-location').then(
         res => {
           this.center = res.data.location
+          // TODO
+          this.storeInfo.lat = res.data.location[0]
+          this.storeInfo.lon = res.data.location[1]
           this.circle.center = res.data.location
           this.marker.position = res.data.location
           this.mywindow.position = res.data.location
-        }
-      )
+        }).catch(() => this.$toast('定位失败，请检查是否开启定位，并重新注册'))
     },
     addressRender (newValue) {
       let self2 = this
@@ -229,6 +251,31 @@ export default {
           // 获取地址失败
         }
       })
+    },
+    commitInfo () {
+      // 经纬度定位
+      if (!this.storeInfo.lat || !this.storeInfo.lon) {
+        return false
+      }
+      // 地址选择器
+      if (this.regeoID.district && this.regeoID.city && this.regeoID.province) {
+        this.storeInfo.regionId = this.regeoID.district.id
+        this.storeInfo.cityId = this.regeoID.city.id
+        this.storeInfo.provinceId = this.regeoID.province.id
+      } else {
+        this.$toast('您选择的区域尚未开通')
+        return false
+      }
+      // 详细地址
+      if (this.adressDetails.length > 0) {
+        this.storeInfo.address = this.adressDetails
+      } else {
+        this.$toast('请输入你店铺的详细地址')
+        return false
+      }
+      // 提交信息
+      this.$store.dispatch('storeinfochange', this.storeInfo)
+      this.$router.push('register')
     }
   }
 }
@@ -240,7 +287,7 @@ export default {
     background #f7faff
     .popup-bottom{
       width:100%;
-      height:5rem
+      height:auto
     }
     .adress-picker{
       .picker{
@@ -262,7 +309,18 @@ export default {
         padding: 0 .3rem;
         line-height 1rem
         .mint-cell-value.is-link{
-          margin-right 2.65rem
+          flex 2.2
+        }
+      }
+      .adress-form-reg{
+        color: #161829
+        display: flex
+        p{
+          width: 1rem
+          text-overflow:ellipsis
+          white-space:nowrap
+          overflow: hidden
+          margin-right .1rem
         }
       }
     }

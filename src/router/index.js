@@ -46,6 +46,7 @@ import storemanage from '../components/mine/storemanage/storemanage'
 import servicecenter from '../components/servicecenter/servicecenter'
 import seranrtemp from '../components/servicecenter/seranrtemp'
 import record from '../components/bill/record'
+import weekpicker from '../components/weekpicker/weekpicker'
 
 Vue.use(Router)
 
@@ -283,6 +284,11 @@ export default new Router({
       path: '/mine/setting/cgpwd/fgpwd',
       name: 'fgpwd',
       component: fgpwd
+    },
+    {
+      path: '/weekpicker/weekpicker',
+      name: 'weekpicker',
+      component: weekpicker
     }
   ]
 })

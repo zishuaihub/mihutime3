@@ -5,7 +5,7 @@ class LocalStorage {
   setItem (item, obj) {
     localStorage.setItem(item, JSON.stringify(obj))
   }
-  claerItem (item) {
+  clearItem (item) {
     localStorage.removeItem(item)
   }
 }

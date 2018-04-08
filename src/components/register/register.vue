@@ -4,17 +4,24 @@
       <router-link to="/" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
+
       <mt-button slot="right">联系客服</mt-button>
+
     </mt-header>
     <div class="information">
-      <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeinfo.storename"></mt-field>
-      <mt-field @click.native="sadress" label="店铺地址" placeholder="请选择" type="text" v-model="storeinfo.storeadress" :disabled="true"></mt-field>
-      <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="storeinfo.phonenum"></mt-field>
-      <mt-field @click.native="scategory" label="经营品类" placeholder="请选择" type="text" v-model="storeinfo.category" :disabled="true"></mt-field>
-      <mt-field @click.native="scategory" label="营业日" placeholder="请选择" type="text" v-model="storeinfo.days" :disabled="true"></mt-field>
+      <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeInfo.name"></mt-field>
+      <mt-field @click.native="sadress" label="店铺地址" placeholder="请选择" type="text" v-model="storeInfo.address" :disabled="true"></mt-field>
+      <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="storeInfo.phone"></mt-field>
+      <mt-field @click.native="scategory" label="经营品类" placeholder="请选择" type="text" v-model="storeInfo.categoryText" :disabled="true"></mt-field>
+      <mt-field @click.native="weekpicker" label="营业日" placeholder="请选择" type="text" v-model="storeInfo.days" :disabled="true"></mt-field>
+      <div class="time">
+        <p>营业时间</p>
+        <p><span  @click="pickeropen(1)"><input type="text" v-model="workAt"></span></p>
+        <p><span  @click="pickeropen(2)"><input type="text" v-model="workendAt"></span></p>
+      </div>
 
 
-      <mt-button>提交审核</mt-button>
+      <mt-button @click = checkin()>提交审核</mt-button>
     </div>
     <mt-popup
       v-model="popuphold"
@@ -57,41 +64,68 @@
         <mt-button v-if="true">审核通过</mt-button>
       </div>
     </mt-popup>
+    <mt-datetime-picker ref="timepicker"
+      v-model="pickerVisible"
+      type="time"
+      @confirm="handleConfirm">
+    </mt-datetime-picker>
   </div>
 
 </template>
 
 <script>
   import '../../assets/icon/iconfont.css'
+  // TODO: 添加联系客服
   export default {
     name: 'register',
     data () {
       return {
+        pickerVisible: '',
         popuphold: false,
         cpt: true,
-        storeinfo: {
-          storename: '',
-          storeadress: '',
-          phonenum: '',
-          category: '',
-          days: []
-        }
+        storeInfo: {},
+        workAt: '开始时间',
+        workendAt: '结束时间',
+        time1: '',
+        time2: '',
+        pickerflag: ''
       }
     },
     watch: {
-      storeinfo () {
-        return this.$store.state.Store
-      }
+
     },
     created () {
+      this.storeInfo = this.$store.state.Store
+      console.log(this.storeInfo)
     },
     methods: {
+      commitInfo () {
+        this.$store.dispatch('storeinfochange', this.storeInfo)
+      },
       sadress () {
-        this.$router.push('')
+        this.$router.push('adress')
         console.log(this.$store.state)
+        this.commitInfo()
       },
       scategory () {
-
+        this.$router.push('selectcategory')
+        this.commitInfo()
+      },
+      weekpicker () {
+        this.$router.push({name: 'weekpicker'})
+        this.commitInfo()
+      },
+      checkin () {
+        console.log(this.workAt)
+      },
+      pickeropen (para) {
+        this.$refs.timepicker.open()
+        this.pickerflag = para
+      },
+      handleConfirm (p) {
+        if (this.pickerflag === 1) {
+          this.time1 = p
+        }
       }
     }
   }
@@ -112,7 +146,7 @@
       background: transparent
     }
     background: #f7faff
-    height: 100vh
+    min-height: 100vh
     .information{
       padding-top .3rem
       .mint-cell-wrapper{
@@ -137,6 +171,23 @@
         display block
         .mint-button-text{
           font-size .32rem
+        }
+      }
+      .time{
+        display: flex
+        align-items:center
+        line-height .9rem
+        padding-left: .3rem
+        padding-right: .3rem
+        background: #ffffff
+        p{
+          margin-right:.4rem
+          color: #cbccd1
+        }
+        p:first-child{
+          color: #000000
+          margin-right: .85rem
+          white-space: nowrap
         }
       }
     }
