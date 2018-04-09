@@ -1,10 +1,7 @@
 <template>
   <div id="register">
     <mt-header title="基本信息">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
-
+        <mt-button icon="back" slot="left" @click = $back ></mt-button>
       <mt-button slot="right">联系客服</mt-button>
 
     </mt-header>
@@ -12,16 +9,25 @@
       <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeInfo.name"></mt-field>
       <mt-field @click.native="sadress" label="店铺地址" placeholder="请选择" type="text" v-model="storeInfo.address" :disabled="true"></mt-field>
       <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="storeInfo.phone"></mt-field>
-      <mt-field @click.native="scategory" label="经营品类" placeholder="请选择" type="text" v-model="storeInfo.categoryText" :disabled="true"></mt-field>
-      <mt-field @click.native="weekpicker" label="营业日" placeholder="请选择" type="text" v-model="storeInfo.days" :disabled="true"></mt-field>
+      <mt-field @click.native="scategory" label="经营品类" placeholder="请选择" type="tesxt" v-model="storeInfo.categoryText" :disabled="true"></mt-field>
+      <div class="time weeks"  @click="weekpicker">
+        <p>营业日</p>
+        <p>
+          <span v-for="item in storeInfo.weekstext">{{item.value}}</span>
+        </p>
+      </div>
       <div class="time">
         <p>营业时间</p>
-        <p><span  @click="pickeropen(1)"><input type="text" v-model="workAt"></span></p>
-        <p><span  @click="pickeropen(2)"><input type="text" v-model="workendAt"></span></p>
+        <p><span  @click="pickeropen(1)" >{{workAt}}</span></p>
+        <p @click="pickeropen(1)"><img src="../../assets/icon/rili@3x.png" alt=""></p>
+        <p style="margin-left: 1.3rem"><span @click="pickeropen(2)">{{workendAt}}</span></p>
+        <p @click="pickeropen(2)"><img src="../../assets/icon/rili@3x.png" alt=""></p>
       </div>
-
-
-      <mt-button @click = checkin()>提交审核</mt-button>
+      <div class="time" @click = selectservice>
+        <p>提供服务</p>
+        <p><span style="margin-right: .1rem" v-for="item in storeInfo.servicestext">{{item.name}}</span></p>
+      </div>
+      <mt-button @click = checkin() class="checkin">提交审核</mt-button>
     </div>
     <mt-popup
       v-model="popuphold"
@@ -74,6 +80,7 @@
 </template>
 
 <script>
+  // TODO: 提供服务小右箭头
   import '../../assets/icon/iconfont.css'
   // TODO: 添加联系客服
   export default {
@@ -86,9 +93,8 @@
         storeInfo: {},
         workAt: '开始时间',
         workendAt: '结束时间',
-        time1: '',
-        time2: '',
-        pickerflag: ''
+        pickerflag: '',
+        services: ['请选择']
       }
     },
     watch: {
@@ -103,20 +109,22 @@
         this.$store.dispatch('storeinfochange', this.storeInfo)
       },
       sadress () {
-        this.$router.push('adress')
+        this.$router.push({name: 'adress'})
         console.log(this.$store.state)
         this.commitInfo()
       },
       scategory () {
-        this.$router.push('selectcategory')
+        this.$router.push({name: 'selectcategory'})
         this.commitInfo()
       },
       weekpicker () {
-        this.$router.push({name: 'weekpicker'})
+        this.$router.push({name: 'weekpicker', params: { page: 'weeks' }})
         this.commitInfo()
       },
       checkin () {
-        console.log(this.workAt)
+        this.$http.post('/store/v1/store-manages', this.storeInfo).then(
+          res => { if (res.data.status) { } }
+        )
       },
       pickeropen (para) {
         this.$refs.timepicker.open()
@@ -124,8 +132,15 @@
       },
       handleConfirm (p) {
         if (this.pickerflag === 1) {
-          this.time1 = p
+          this.workAt = p
+          this.storeInfo.workAt = this.workAt
+        } else if (this.pickerflag === 2) {
+          this.workendAt = p
+          this.storeInfo.workendAt = this.workendAt
         }
+      },
+      selectservice () {
+        this.$router.push({name: 'weekpicker', params: { page: 'service' }})
       }
     }
   }
@@ -146,7 +161,7 @@
       background: transparent
     }
     background: #f7faff
-    min-height: 100vh
+    height: 100vh
     .information{
       padding-top .3rem
       .mint-cell-wrapper{
@@ -181,15 +196,38 @@
         padding-right: .3rem
         background: #ffffff
         p{
-          margin-right:.4rem
-          color: #cbccd1
+          color: rgb(84,84,84)
+          display flex
+          align-items center
+          img{
+            height:.35rem
+            width:.4rem
+            display block
+            margin-left:.45rem
+          }
+          span{
+            display: block
+            width: 1rem
+          }
         }
         p:first-child{
           color: #000000
-          margin-right: .85rem
-          white-space: nowrap
+          margin-right: .9rem
+          /*white-space: nowrap*/
+          width: 1rem
+          display: block
         }
       }
+      .time.weeks{
+        p{
+          span{
+            width: .65rem
+          }
+        }
+      }
+    }
+    .checkin{
+      margin-top 1rem
     }
     .popup-hold{
       width: 100%

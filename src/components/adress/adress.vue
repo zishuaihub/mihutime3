@@ -232,8 +232,8 @@ export default {
         res => {
           this.center = res.data.location
           // TODO
-          this.storeInfo.lat = res.data.location[0]
-          this.storeInfo.lon = res.data.location[1]
+          this.storeInfo.lat = res.data.location[1]
+          this.storeInfo.lon = res.data.location[0]
           this.circle.center = res.data.location
           this.marker.position = res.data.location
           this.mywindow.position = res.data.location

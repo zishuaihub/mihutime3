@@ -1,15 +1,17 @@
 <template>
   <div id="weekpicker">
     <div class="popup-content">
-      <mt-header title="营业日">
+      <mt-header :title="title">
           <mt-button icon="back" slot="left" @click = $router.go(-1)></mt-button>
         <mt-button slot="right"></mt-button>
       </mt-header>
-      <mt-checklist
-        align="right"
-        v-model="weekvalue"
-        :options=options>
-      </mt-checklist>
+      <div v-if="render">
+        <mt-checklist
+          align="right"
+          v-model = "weekvalue"
+          :options = options>
+        </mt-checklist>
+      </div>
       <mt-button class="confirm" @click = commit()>确认</mt-button>
     </div>
   </div>
@@ -20,53 +22,92 @@ export default {
   name: 'weekpicker',
   data () {
     return {
-      options: [
-        {
-          label: '周一',
-          value: 1
-        },
-        {
-          label: '周二',
-          value: 2
-        },
-        {
-          label: '周三',
-          value: 3
-        },
-        {
-          label: '周四',
-          value: 4
-        },
-        {
-          label: '周五',
-          value: 5
-        },
-        {
-          label: '周六',
-          value: 6
-        },
-        {
-          label: '周日',
-          value: 7
-        }
-      ],
+      title: '',
+      options: [],
       weekvalue: [],
-      storeInfo: {}
+      storeInfo: {},
+      services: [],
+      servicestext: [],
+      weeks: [],
+      weekstext: [],
+      render: false
     }
   },
   created () {
     // 获取状态管理中的店铺信息
     this.storeInfo = this.$store.state.Store
+    // 判断来源，获取数据
+    this.getData()
   },
   methods: {
+    getData () {
+      if (this.$route.params.page) {
+        if (this.$route.params.page === 'service') {
+          this.title = '提供服务'
+          this.$http.get('/store/v1/store-manages/services').then(
+            res => {
+              this.services = res.data
+              let _options = []
+              this.services.map((item, index) => {
+                _options[index] = {label: item.name, value: item.id}
+              })
+              this.options = _options
+            }
+          )
+        } else {
+          this.title = '营业日'
+          this.$http.get('/store/v1/store-manages/weeks').then(
+            res => {
+              this.weeks = res.data
+              let _options = []
+              this.weeks.map((item, index) => {
+                if (_options[index]) {
+                  _options[index].label = item.value
+                  _options[index].value = item.key
+                } else {
+                  _options[index] = {label: item.value, value: item.key}
+                }
+              })
+              this.options = _options
+            }
+          )
+        }
+      }
+    },
     commit () {
-      if (this.weekvalue.length > 0) {
-        this.storeInfo.weeks = this.weekvalue
-        // 提交信息
-        this.$store.dispatch('storeinfochange', this.storeInfo)
-        this.$router.push({name: 'register'})
+      if (this.$route.params.page === 'weeks') {
+        if (this.weekvalue.length > 0) {
+          this.storeInfo.weeks = this.weekvalue
+          this.weekstext = this.weekvalue.map((item) => {
+            return this.weeks.filter((item2) => {
+              return item2.key === item
+            })[0]
+          })
+          this.storeInfo.weekstext = this.weekstext
+          this.storeInfo.weeks = this.weekvalue
+          // 提交信息
+          this.$store.dispatch('storeinfochange', this.storeInfo)
+          this.$router.push({name: 'register'})
+        } else {
+          this.$toast('请选择营业日')
+        }
       } else {
-        this.$toast('请选择营业日')
+        if (this.weekvalue.length > 0) {
+          this.storeInfo.services = this.weekvalue
+          console.log(this.services)
+          this.servicestext = this.weekvalue.map((item) => {
+            return this.services.filter((item2) => {
+              return item2.id === item
+            })[0]
+          })
+          this.storeInfo.servicestext = this.servicestext
+          this.storeInfo.services = this.weekvalue
+          // 提交信息
+          this.$store.dispatch('storeinfochange', this.storeInfo)
+          this.$router.push({name: 'register'})
+        } else {
+          this.$toast('请选择提供的服务')
+        }
       }
     }
   }

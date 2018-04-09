@@ -17,6 +17,10 @@ Vue.config.productionTip = false
 Axios.defaults.baseURL = 'http://coupon.test.mihutime.com/'
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$http = Axios
+Vue.prototype.$back = function () {
+  router.go(-1)
+}
+
 /* eslint-disable no-new */
 Vue.use(VueAMap)
 Vue.use(Mint)
