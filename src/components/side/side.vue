@@ -44,11 +44,17 @@
       </div>
 
     </div>
+    <tabbar></tabbar>
+
   </div>
 </template>
 
 <script>
+  import tabbar from '../tabbar/tabbar'
   export default {
+    components: {
+      tabbar
+    },
     name: 'side',
     data () {
       return {

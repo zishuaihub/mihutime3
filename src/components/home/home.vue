@@ -3,12 +3,12 @@
     <div class="container">
 
       <div class="seller">
-        <mt-header fixed title="Lady主题餐厅">
+        <mt-header fixed :title="store.name">
           <router-link to="/trade-record" slot="right">
-            <mt-button >明细</mt-button>
+            <mt-button >十</mt-button>
           </router-link>
         </mt-header>
-        <h3 class="category">餐饮美食</h3>
+        <h3 class="category">{{store.categoryText}}</h3>
         <div class="seller-top">
           <p>今日成交额（元）</p>
           <p>{{turnoversp}}</p>
@@ -42,6 +42,12 @@
                 <p>我的钱包</p>
               </div>
               <div class="tabs-item">
+                <img src="../../assets/icon/skm.png" alt="">
+                <p>店铺二维码</p>
+              </div>
+              <div class="tabs-item">
+                <img src="../../assets/icon/gdgn.png" alt="">
+                <p>更多功能</p>
               </div>
             </div>
           <div class="tabs-bottom"></div>
@@ -92,8 +98,8 @@
     },
     data () {
       return {
-        sellers: null,
-        finances: null,
+        store: {},
+        finances: {},
         turnover: 15000.10,
         swiperOption: {
           pagination: {
@@ -119,12 +125,12 @@
     mounted () {
       this.$http.get('/store/v1/stores').then(res => {
         console.log(res)
-        this.sellers = res.data
+        this.store = res.data
       }).catch(error => console.log(error.response))
       // 获取财务信息
-      // this.$http.get('/finances').then(
-      //   res => { this.finances = res.data; console.log(this.finances) }
-      // )
+      this.$http.get('/store/v1/finances').then(
+        res => { this.finances = res.data; console.log(this.finances) }
+      )
     },
     methods: {
       txym () {
@@ -164,6 +170,15 @@
   #home {
     padding: 0 0 .9rem 0;
     background #f7faff
+    .mint-header{
+      height: .88rem
+      .mint-header-title{
+        font-size .32rem
+      }
+      .mint-button-text{
+        font-size .24rem
+      }
+    }
     .container {
       .mint-header{
         position: absolute
@@ -173,11 +188,12 @@
         .mint-header-title{
           font-size .3rem
           font-weight: bold
+          line-height .8rem
         }
       }
       .seller {
         position: relative
-        padding-top 2.1rem
+        padding-top 1.7rem
         padding-bottom 1.2rem
         .category {
           position: absolute
@@ -347,7 +363,6 @@
             padding: .4rem .54rem;
             display: flex
             .tabs-item{
-              margin-right 1.75rem
               img {
                 display: block
                 width .5rem
