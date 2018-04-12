@@ -44,12 +44,14 @@
           res => {
             console.log(res.data)
             this.$store.dispatch('login', res.data)
-            if (res.data.store && res.data.store.status === 1) {
+            if (res.data.store && res.data.store.status === 1 && res.data.store.step === 0) {
               this.$router.push({name: 'register', params: { register: 'success' }})
             } else if (res.data.store && res.data.store.status === 0) {
               this.$router.push({name: 'register', params: { register: 'holdon' }})
-            } else {
+            } else if (res.data.store && res.data.store.status === 1 && res.data.store.step === 1) {
               this.$router.push({name: 'home'})
+            } else {
+              this.$router.push({name: 'register'})
             }
           }
           ).catch(err => {

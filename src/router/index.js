@@ -47,6 +47,7 @@ import servicecenter from '../components/servicecenter/servicecenter'
 import seranrtemp from '../components/servicecenter/seranrtemp'
 import record from '../components/bill/record'
 import weekpicker from '../components/weekpicker/weekpicker'
+import imgcut from '../components/imgcut/imgcut'
 
 Vue.use(Router)
 
@@ -289,6 +290,11 @@ export default new Router({
       path: '/weekpicker/weekpicker',
       name: 'weekpicker',
       component: weekpicker
+    },
+    {
+      path: '/imgcut/imgcut',
+      name: 'imgcut',
+      component: imgcut
     }
   ]
 })

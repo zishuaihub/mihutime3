@@ -4,7 +4,7 @@
       <router-link to="/" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
-      <mt-button slot="right">添加福袋</mt-button>
+      <mt-button slot="right" @click.native = addfd()>添加福袋</mt-button>
     </mt-header>
     <div class="content">
         <div class="list">
@@ -39,6 +39,9 @@ export default {
   created () {
   },
   methods: {
+    addfd () {
+      this.$router.push({name: 'addfd'})
+    }
   }
 }
 </script>

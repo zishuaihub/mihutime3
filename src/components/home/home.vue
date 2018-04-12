@@ -1,13 +1,20 @@
 <template>
-  <div id="home">
+  <div id="home" @click="clearpop">
     <div class="container">
 
       <div class="seller">
         <mt-header fixed :title="store.name">
-          <router-link to="/trade-record" slot="right">
-            <mt-button >十</mt-button>
-          </router-link>
+            <mt-button slot="right" @click.native.stop = more()>✛</mt-button>
         </mt-header>
+        <div class="tip" v-if="moreflag">
+          <div class="inner"></div>
+          <div>
+            <ul>
+              <li><img src="../../assets/icon/homedetail@3x.png" alt="">明细</li>
+              <li><img src="../../assets/icon/homeewm@3x.png" alt="">收款码</li>
+            </ul>
+          </div>
+        </div>
         <h3 class="category">{{store.categoryText}}</h3>
         <div class="seller-top">
           <p>今日成交额（元）</p>
@@ -33,7 +40,7 @@
 
         <div class="tabs">
             <div class="tabs-items">
-              <div class="tabs-item">
+              <div class="tabs-item" @click="fudai">
                 <img src="../../assets/icon/fudaiicon.png" alt="">
                 <p>我的福袋</p>
               </div>
@@ -106,7 +113,8 @@
             el: '.swiper-pagination',
             clickable: true
           }
-        }
+        },
+        moreflag: false
       }
     },
     computed: {
@@ -133,8 +141,19 @@
       )
     },
     methods: {
+      fudai () {
+        this.$router.push({name: 'fudailist'})
+      },
       txym () {
         this.$router.push({name: 'extract', params: { balance: this.finances.balance }})
+      },
+      more () {
+        this.moreflag = !this.moreflag
+      },
+      clearpop () {
+        if (this.moreflag === true) {
+          this.moreflag = false
+        }
       },
       // transarr (arr, len) {
       //   let j = 0
@@ -176,7 +195,7 @@
         font-size .32rem
       }
       .mint-button-text{
-        font-size .24rem
+        font-size .35rem
       }
     }
     .container {
@@ -195,6 +214,41 @@
         position: relative
         padding-top 1.7rem
         padding-bottom 1.2rem
+        .tip{
+          width:2.3rem;
+          height:1.72rem;
+          position: absolute
+          z-index: 9999
+          background: rgba(108, 112, 132, 0.9)
+          right .15rem
+          top: 1.05rem
+          border-radius .05rem
+          padding: 0 .25rem
+          li{
+            display: flex
+            padding .3rem 0
+            border-bottom 1px solid #79839b
+            color: #ffffff
+            img{
+              width:.25rem
+              height: .25rem
+              display block
+              margin-right:.3rem
+            }
+          }
+          /* 提示框小角的小方块 */
+          .inner{
+            /* 旋转小方块并调整位置形成尖角 */
+            position:absolute;
+            left:1.85rem;
+            top:-.2rem;
+            width: 0;
+            height: 0;
+            border-left: .15rem solid transparent;
+            border-right: .15rem solid transparent;
+            border-bottom: .2rem solid rgba(108, 112, 132, 0.9);
+          }
+        }
         .category {
           position: absolute
           z-index 999
@@ -360,20 +414,26 @@
         .tabs{
           background #fff
           .tabs-items{
-            padding: .4rem .54rem;
+            padding: .4rem 0rem;
             display: flex
+            justify-content space-around
             .tabs-item{
               img {
                 display: block
-                width .5rem
+                width: .5rem
+                height .72rem
                 margin-left auto
                 margin-right auto
               }
               p{
                 font-size .24rem
                 color: #000
-                width 1.1rem
+                width 1.2rem
+                text-align center
               }
+            }
+            .tabs-item:last-child p {
+              color: #a0a3b2
             }
           }
           .tabs-bottom{

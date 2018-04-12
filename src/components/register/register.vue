@@ -5,7 +5,7 @@
       <mt-button slot="right">联系客服</mt-button>
 
     </mt-header>
-    <div class="information">
+    <div v-if="blank" class="information">
       <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeInfo.name"></mt-field>
       <mt-field @click.native="sadress" label="店铺地址" placeholder="请选择" type="text" v-model="storeInfo.address" :disabled="true"></mt-field>
       <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="storeInfo.phone"></mt-field>
@@ -28,7 +28,7 @@
         <p><span style="margin-right: .1rem" v-for="item in storeInfo.servicestext">{{item.name}}</span></p>
       </div>
       <mt-button @click = checkin() class="checkin">提交审核</mt-button>
-    </div>
+    </div >
     <mt-popup
       v-model="popuphold"
       class="popup-hold"
@@ -87,6 +87,7 @@
     name: 'register',
     data () {
       return {
+        blank: false,
         pickerVisible: '',
         popuphold: false,
         cpt: true,
@@ -102,6 +103,9 @@
     },
     watch: {
 
+    },
+    mounted () {
+      this.selectpage()
     },
     created () {
       this.storeInfo = this.$store.state.Store
@@ -120,7 +124,6 @@
         this.storeInfo.weekstext = [{value: '请选择'}]
       }
       console.log(this.storeInfo)
-      this.selectpage()
     },
     methods: {
       selectpage () {
@@ -133,7 +136,21 @@
           this.popuphold = true
           this.audit = true
           this.cpt = false
+        } else {
         }
+        this.$http.get('/store/v1/store-manages/status').then(res => {
+          if (res.data.status === 1) {
+            this.popuphold = true
+            this.audit = true
+            this.cpt = false
+          } else if (res.data.status === 0) {
+            this.popuphold = true
+            this.audit = true
+            this.cpt = true
+          }
+        }).catch(erro => {
+          console.log(erro.response.message)
+        }).then(() => { this.blank = true })
       },
       commitInfo () {
         this.$store.dispatch('storeinfochange', this.storeInfo)
@@ -209,6 +226,7 @@
       },
       auditsuccess () {
         this.$router.push({name: 'home'})
+        this.$http.post('/store/v1/stores/step').then()
       }
     }
   }

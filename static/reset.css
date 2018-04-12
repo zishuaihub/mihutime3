@@ -124,4 +124,18 @@ html {
   max-width: 100%;
   top: 0;
 }
+.mint-header{
+  padding-left: .3rem !important;
+  padding-right: .3rem !important;
+}
+.mint-header{
+  height: .88rem
+}
+.mint-header .mint-button-text{
+}
+
+.mint-header .mint-header-title{
+  font-size: .3rem;
+  line-height: .8rem
+}
 
