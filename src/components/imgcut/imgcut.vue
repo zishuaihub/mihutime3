@@ -1,12 +1,10 @@
 <template>
   <div id="imgcut">
     <mt-header title="照片切割">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+        <mt-button icon="back" slot="left" @click="$back"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
-    <input type="file" @change="uploadImg($event)">
+    <input type="file" @change="uploadImg($event)" ref="ipt" id="ipt">
     <vueCropper
       ref="cropper2"
       :img="options.img"
@@ -49,6 +47,8 @@ export default {
     }
   },
   created () {
+    this.$nextTick(() => {
+    })
   },
   methods: {
     uploadImg (e) {

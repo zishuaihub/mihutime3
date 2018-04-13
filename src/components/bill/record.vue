@@ -44,7 +44,7 @@
           pageNo: 1,
           pageSize: 10
         },
-        selected: '',
+        selected: '1',
         pageList: [],
         allLoaded: false, //  是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
         scrollMode: 'auto', //  移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
@@ -83,7 +83,7 @@
       },
       loadPageList: function (index) {
         // 查询数据
-        return this.$http.get('/trading-records', {
+        return this.$http.get('/store/v1/wallets', {
           params: {
             'pre-page': this.searchCondition.pageSize,
             'page': this.searchCondition.pageNo,
