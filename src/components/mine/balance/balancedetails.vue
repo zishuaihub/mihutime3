@@ -1,24 +1,21 @@
 <template>
   <div id="balancedetails">
     <mt-header title="提现明细">
-      <mt-button icon="back"></mt-button>
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
-    <mt-navbar v-model="selected" class="navbar">
-      <mt-tab-item id="" @click.native="selectTab()">全部</mt-tab-item>
-      <mt-tab-item id="2" @click.native="selectTab()">收益</mt-tab-item>
-      <mt-tab-item id="3" @click.native="selectTab()">提现</mt-tab-item>
-    </mt-navbar>
-    <div class="main-body" :style="{ height: wrapperHeight + 'px', overflow: 'scroll', 'margin-top': '60px'}">
+
+    <div class="main-body" :style="{ height: wrapperHeight + 'px', overflow: 'scroll'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-        <ul class="list" v-for="(item, index) in pageList">
-          <div class="date" v-if="index===0 || item.createdAt.substring(0,7) !== pageList[index-1].createdAt.substring(0,7)">
-            {{item.createdAt.substring(0,7) }}
+        <ul class="list" v-for="(items, index) in pageList">
+          <div class="date" v-if="index === 0 || items.time !== pageList[index-1].time">
+            <p>{{items.time}}</p>
+            <p>待结算{{items.monthAmount}}元</p>
           </div>
-          <div class="item">
-            <div class="name">{{item.name}}</div>
+          <div class="item" v-for="item in items.data">
+            <div class="name"><span>未到账</span><span>已到账</span> </div>
             <div class="desc">
               <div class="order-sn">
                 <div class="sn">订单流水号: {{item.sn}}</div>
@@ -67,10 +64,7 @@
       // 推荐应用组件时用a-b形式起名
     },
     mounted () {
-      this.loadPageList(this.selected)  //  初次访问查询列表
-      setTimeout(() => this.$refs.loadmore.onBottomLoaded() // 固定方法，查询完要调用一次，用于重新定位
-        , 300)
-      console.log(this.$refs.loadmore)
+      this.loadPageList()  //  初次访问查询列表
       this.wrapperHeight = document.documentElement.clientHeight - this.$refs.loadmore.$el.getBoundingClientRect().top
     },
     methods: {
@@ -82,51 +76,46 @@
       loadBottom: function () {
         // 上拉加载
         this.more() // 上拉触发的分页查询
+        console.log(this.$refs.loadmore)
       },
-      loadPageList: function (index) {
+      loadPageList: function () {
         // 查询数据
-        this.$http.get('/trading-records', {
+        return this.$http.get('/store/v1/extracts', {
           params: {
             'pre-page': this.searchCondition.pageSize,
-            'page': this.searchCondition.pageNo,
-            'type': index
+            'page': this.searchCondition.pageNo
           }
         }).then(res => {
-          if (index === this.selected) {
-            console.log(res.data)
-            // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
-            this.isHaveMore(res.data.length)
-            this.pageList = this.pageList.concat(res.data)
-            this.$nextTick(function () {
-              // 原意是DOM更新循环结束时调用延迟回调函数，大意就是DOM元素在因为某些原因要进行修改就在这里写，要在修改某些数据后才能写，
-              // 这里之所以加是因为有个坑，iphone在使用-webkit-overflow-scrolling属性，就是移动端弹性滚动效果时会屏蔽loadmore的上拉加载效果，
-              // 花了好久才解决这个问题，就是用这个函数，意思就是先设置属性为auto，正常滑动，加载完数据后改成弹性滑动，安卓没有这个问题，移动端弹性滑动体验会更好
-              this.scrollMode = 'touch'
-            })
-          }
-        }).then(() => this.$refs.loadmore.onBottomLoaded())
+          console.log(res.data)
+          // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
+          this.isHaveMore(res.data)
+          this.pageList = this.pageList.concat(res.data)
+          console.log(this.pageList)
+          this.$nextTick(function () {
+            // 原意是DOM更新循环结束时调用延迟回调函数，大意就是DOM元素在因为某些原因要进行修改就在这里写，要在修改某些数据后才能写，
+            // 这里之所以加是因为有个坑，iphone在使用-webkit-overflow-scrolling属性，就是移动端弹性滚动效果时会屏蔽loadmore的上拉加载效果，
+            // 花了好久才解决这个问题，就是用这个函数，意思就是先设置属性为auto，正常滑动，加载完数据后改成弹性滑动，安卓没有这个问题，移动端弹性滑动体验会更好
+            this.scrollMode = 'touch'
+          })
+        })
       },
       more: function () {
         // 分页查询
         this.searchCondition.pageNo = this.searchCondition.pageNo + 1
-        setTimeout(() => this.loadPageList(this.selected), 500)
+        setTimeout(() => this.loadPageList(this.selected).then(() => this.$refs.loadmore.onBottomLoaded()
+        ), 500)
         // this.isHaveMore(data.result.haveMore)
       },
-      isHaveMore: function (isHaveMore) {
+      isHaveMore: function (data) {
         // 是否还有下一页，如果没有就禁止上拉刷新
         // this.allLoaded = true //  true是禁止上拉加载
-        if (isHaveMore < this.searchCondition.pageSize) {
+        let len = 0
+        data.map(res => {
+          len += res.data.length
+        })
+        if (len < this.searchCondition.pageSize) {
           this.allLoaded = true
         }
-      },
-      contentReset () {
-        this.pageList = []
-        this.searchCondition.pageNo = 1
-        this.allLoaded = false
-        this.loadPageList(this.selected)
-      },
-      selectTab () {
-        this.contentReset()
       }
     }
   }
@@ -134,12 +123,6 @@
 
 <style lang="stylus">
   #balancedetails
-    .navbar
-      /*position: fixed*/
-      /*width:100%*/
-      /*top:0*/
-      /*left:0*/
-      /*z-index: 2*/
     .item
       background-color: #fff
       padding: 10px 15px
@@ -158,4 +141,17 @@
       .createdAt
         height: 25px
         font-size: .24rem
+    .date{
+          padding: .3rem
+          background: #f7faff
+          p:first-child{
+            margin-bottom .2rem
+            font-size .26rem
+          }
+          p:last-child{
+            font-size .24rem
+            color: #a0a3b2
+          }
+
+        }
 </style>

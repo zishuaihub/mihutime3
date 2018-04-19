@@ -1,9 +1,7 @@
 <template>
   <div id="fudai">
     <mt-header title="添加福袋">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back" slot="left" @click.native = $back></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
     <div class="wallet-preview">
@@ -12,16 +10,15 @@
         <div class="wallet_preview_header">
           <div class="item">
             <div class="label">活动描述</div>
-            <div class="value">凭本券进店消费满50元享有抵扣</div>
+            <div class="value">{{wallet.title}}</div>
           </div>
           <div class="item">
             <div class="label">消费须知</div>
-            <div class="value">消费须知消费须知消费须知消费须知消费
-              须知消费须知消费须知消费须知…</div>
+            <div class="value">{{wallet.describe}}</div>
           </div>
           <div class="item">
             <div class="label">活动滚动图</div>
-            <div class="value">凭本券进店消费满50元享有抵扣</div>
+            <div class="value"><img style="width: 1.05rem;height: .8rem;" :src= "wallet.modelSrc" alt=""></div>
           </div>
         </div>
         <div class="driver"></div>
@@ -31,7 +28,7 @@
               <p>红包区间</p>
             </div>
             <div class="wallet_item_value">
-              <p>¥2.00-¥10.00</p>
+              <p>¥{{parseInt(wallet.minValue).toFixed(2)}}-¥{{parseInt(wallet.maxValue).toFixed(2)}}</p>
             </div>
           </div>
           <div class="wallet_body_item">
@@ -39,7 +36,7 @@
               <p>红包数量</p>
             </div>
             <div class="wallet_item_value">
-              <p>¥2.00-¥10.00</p>
+              <p>{{wallet.number}}个</p>
             </div>
           </div>
           <div class="wallet_body_item">
@@ -47,7 +44,7 @@
               <p>活动截止</p>
             </div>
             <div class="wallet_item_value">
-              <p>¥2.00-¥10.00</p>
+              <p>至{{wallet.activityEndAt}}</p>
             </div>
           </div>
           <div class="wallet_body_item">
@@ -55,7 +52,7 @@
               <p>有效时间</p>
             </div>
             <div class="wallet_item_value">
-              <p>¥2.00-¥10.00</p>
+              <p>至{{wallet.effectiveEndAt}}</p>
             </div>
           </div>
           <div class="wallet_body_item">
@@ -63,7 +60,7 @@
               <p>使用门槛</p>
             </div>
             <div class="wallet_item_value">
-              <p>¥2.00-¥10.00</p>
+              <p>满{{wallet.attainAmount}}可用</p>
             </div>
           </div>
           <div class="wallet_body_item">
@@ -71,13 +68,13 @@
               <p>每人限领</p>
             </div>
             <div class="wallet_item_value">
-              <p>¥2.00-¥10.00</p>
+              <p>{{wallet.limitNum}}张</p>
             </div>
           </div>
         </div>
       </div>
       <div class="confirm_btn">
-        <button class="btn">发布</button>
+        <button class="btn" @click="comfirm">发布</button>
       </div>
     </div>
   </div>
@@ -88,11 +85,30 @@ export default {
   name: 'fudai',
   data () {
     return {
+      wallet: {}
     }
+  },
+  mounted () {
+    this.wallet = this.$store.state.Wallet
+    console.log(typeof (this.wallet.minValue))
   },
   created () {
   },
   methods: {
+    comfirm () {
+      if (this.wallet.status && this.wallet.status === 1) {
+        this.$http.put(`/store/v1/wallets/${this.wallet.id}`, this.wallet).then(
+          () => this.$router.push({name: 'fudailist'})
+        )
+      } else {
+        this.$http.post('/store/v1/wallets', this.wallet).then(
+          res => {
+            console.log(res)
+            this.$router.push({name: 'fudailist'})
+          }
+        ).catch(error => this.$toast(error.response.data.message))
+      }
+    }
   }
 }
 </script>

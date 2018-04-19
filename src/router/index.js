@@ -40,6 +40,7 @@ import addcard from '../components/mine/cardsmanage/addcards/addcard'
 import verification from '../components/mine/cardsmanage/addcards/verification'
 import setpassword from '../components/mine/cardsmanage/addcards/setpassword'
 import repeatpassword from '../components/mine/cardsmanage/addcards/repeatpassword'
+import settlementdetail from '../components/mine/settlement/settlementdetail'
 import waitingforsettlement from '../components/mine/settlement/waitingforsettlement'
 import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
 import storemanage from '../components/mine/storemanage/storemanage'
@@ -200,6 +201,11 @@ export default new Router({
       path: '/mine/cardsmanage/cardslist',
       name: 'cardslist',
       component: cardslist
+    },
+    {
+      path: '/mine/settlement/settlementdetail',
+      name: 'settlementdetail',
+      component: settlementdetail
     },
     {
       path: '/mine/cardsmanage/carddetails',

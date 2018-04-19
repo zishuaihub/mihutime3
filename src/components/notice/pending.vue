@@ -1,13 +1,14 @@
 <template>
   <div id="pending">
     <mt-header title="满50可用">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
-      <mt-button slot="right" @click.native="popupVisible = !popupVisible">●●●</mt-button>
+      <mt-button icon="back"  slot="left" @click="fixback"></mt-button>
+      <mt-button v-if="!(wallet.status === 3)" slot="right" @click.native="popupVisible = !popupVisible">●●●</mt-button>
+      <mt-button v-if="wallet.status === 3" slot="right" @click.native="deleteit">删除</mt-button>
     </mt-header>
     <div class="state">
-      <p>即将在 2018-01-13 自动发布</p>
+      <p v-if="wallet.status === 2"> <span>到期时间{{wallet.activityEndAt}}</span> <span>剩余数量/{{wallet.remainingQty}}个</span> </p>
+      <p v-if="wallet.status === 1"> <span>即将在{{wallet.activityEndAt}}自动发布</span> </p>
+      <p v-if="wallet.status === 3"> <span>{{wallet.activityEndAt}}(已结束)</span></p>
     </div>
     <div class="details">
       <div class="list">
@@ -15,7 +16,7 @@
           <p>红包区间</p>
         </div>
         <div class="right">
-          <p>¥2.00-¥10.00</p>
+          <p>¥{{parseInt(wallet.minValue).toFixed(2)}}-¥{{parseInt(wallet.maxValue).toFixed(2)}}</p>
         </div>
       </div>
       <div class="list">
@@ -23,7 +24,7 @@
           <p>红包数量</p>
         </div>
         <div class="right">
-          <p>80个</p>
+          <p>{{wallet.number}}个</p>
         </div>
       </div>
       <div class="list">
@@ -31,7 +32,7 @@
           <p>活动截止</p>
         </div>
         <div class="right">
-          <p>至2018-01-13 24:00</p>
+          <p>至{{wallet.activityEndAt}}</p>
         </div>
       </div>
       <div class="list">
@@ -39,7 +40,7 @@
           <p>有效时间</p>
         </div>
         <div class="right">
-          <p>至2018-01-13 24:00</p>
+          <p>至{{wallet.effectiveEndAt}}</p>
         </div>
       </div>
       <div class="list">
@@ -47,7 +48,7 @@
           <p>每人限领</p>
         </div>
         <div class="right">
-          <p>1张</p>
+          <p>{{wallet.limitNum}}张</p>
         </div>
       </div>
       <div class="list">
@@ -55,13 +56,13 @@
           <p>活动滚动图</p>
         </div>
         <div class="right">
-          <p><img style="width: 1.05rem;height:.8rem;" alt=""></p>
+          <p><img :src="wallet.walletImg" style="width: 1.05rem;height:.8rem;" alt=""></p>
         </div>
       </div>
       <div class="list">
         <div class="left" style="display: block">
-          <p>每人限领</p>
-          <p style="color: #000;margin-top: .15rem">凭本券进店消费满50元享有抵扣</p>
+          <p>活动描述</p>
+          <p style="color: #000;margin-top: .15rem">{{wallet.title}}</p>
         </div>
         <div class="right">
         </div>
@@ -69,38 +70,94 @@
       <div class="list">
         <div class="left" style="display: block">
           <p>消费须知</p>
-          <p style="color: #000;margin-top: .15rem">消费须知消费须知消费须知消费须知消费须知消费须知消费
-            须知消费须知消费须知消费须知</p>
+          <p style="color: #000;margin-top: .15rem">{{wallet.describe}}</p>
         </div>
         <div class="right">
         </div>
       </div>
     </div>
+
+    <mt-button v-if="wallet.status ===3" @click="again">再次发布</mt-button>
     <mt-popup
       v-model="popupVisible"
       position="bottom">
-      <div class="popup-menu" @click="revise">修改福袋</div>
-      <div class="popup-menu" @click="deleteit">删除福袋</div>
+      <div v-if="this.wallet.status ===1" class="popup-menu" @click="revise">修改福袋</div>
+      <div v-if="this.wallet.status ===1" class="popup-menu" @click="deleteit">删除福袋</div>
+      <div v-if="this.wallet.status ===2" class="popup-menu" @click="terminate">终止福袋</div>
+      <div v-if="this.wallet.status ===2" class="popup-menu" @click="shared">分享福袋</div>
     </mt-popup>
   </div>
 </template>
 
 <script>
+// TODO: 按钮样式
 export default {
   name: 'holdlist',
   data () {
     return {
-      popupVisible: false
+      popupVisible: false,
+      wallet: {},
+      routerflag: true
     }
   },
   created () {
   },
+  mounted () {
+    this.wallet = this.$store.state.Wallet
+    console.log(this.wallet)
+  },
   methods: {
     revise () {
       this.popupVisible = false
+      this.routerflag = false
+      this.$store.dispatch('')
+      this.$router.push({name: 'addfd'})
     },
     deleteit () {
       this.popupVisible = false
+      this.routerflag = false
+      this.$http.put(`/store/v1/wallets/${this.wallet.id}/delete`).then(
+        res => {
+          this.$router.push({name: 'fudailist'})
+        }
+      ).catch(
+        erro => {
+          this.$toast(erro.response.data.message)
+        }
+      )
+    },
+    terminate () {
+      this.popupVisible = false
+      this.routerflag = false
+      this.$http.put(`/store/v1/wallets/${this.wallet.id}/stop`).then(
+        res => {
+          this.$router.push({name: 'fudailist'})
+        }
+      ).catch(
+        erro => {
+          this.$toast(erro.response.data.message)
+        }
+      )
+    },
+    again () {
+      this.$router.push({name: 'addfd'})
+    },
+    shared () {},
+    fixback () {
+      this.routerflag = false
+      this.$back()
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.popupVisible && this.routerflag) {
+      next(false)
+      this.popupVisible = false
+      console.log('导航被阻止了')
+    } else if (this.routerflag) {
+      next(false)
+      console.log('导航被阻止了')
+    } else {
+      next()
     }
   }
 }
@@ -126,6 +183,14 @@ export default {
       font-size .22rem
       line-height:.9rem
       padding-left .3rem
+      padding-right: .3rem
+      p{
+        display: flex
+        justify-content space-between
+        span{
+          display: block
+        }
+      }
     }
     .details{
       background: #fff

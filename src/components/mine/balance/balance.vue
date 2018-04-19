@@ -9,11 +9,11 @@
       </mt-header>
       <div class="balance-top-num">
         <p>账户余额/元</p>
-        <p>156854.21</p>
+        <p>{{balance.liquidated}}</p>
       </div>
     </div>
     <div class="balance-bottom">
-      <mt-cell title="提现" to="//github.com" is-link>
+      <mt-cell title="提现" to="/mine/balancedetails" is-link>
         <i slot="icon" class="icon iconfont icon-jinbitixian" style="color: #f76165;"></i>
         <span class="text"></span>
       </mt-cell>
@@ -26,9 +26,15 @@ export default {
   name: 'balance',
   data () {
     return {
+      balance: {}
     }
   },
   created () {
+  },
+  mounted () {
+    this.$http.get('/store/v1/finances').then(
+      res => { this.balance = res.data }
+    )
   },
   methods: {
   }

@@ -1,18 +1,19 @@
 <template>
   <div id="fudailist">
     <mt-header title="福袋列表">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+        <mt-button icon="back" slot="left" @click="$back"></mt-button>
       <mt-button slot="right" @click.native = addfd()>添加福袋</mt-button>
     </mt-header>
     <div class="main-body" :style="{ height: wrapperHeight + 'px', 'overflow': 'scroll'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
         <div class="content">
-          <div class="list" v-for="item in pageList">
-            <p><span>满50元享有折扣</span><span>2018.03.02-2018.03.11</span> </p>
-            <p>¥2.00~¥10.00 <span>|</span> 80个  </p>
-            <p><span>状态：</span><span :class="{active : true}">正在进行</span></p>
+          <div class="list" v-for="item in pageList" @click="goDetails(item)">
+            <p><span>满50元享有折扣</span><span>{{item.activityAt.slice(0,10)}}-{{item.activityEndAt.slice(0,10)}}</span> </p>
+            <p>¥{{item.minValue}}~¥{{item.maxValue}} <span>|</span> {{item.number}}个  </p>
+            <p>
+              <span>状态：</span>
+              <span :class="{active : item.status === 2}">{{item.statusText}}</span>
+            </p>
             <p><i class="mint-cell-allow-right"></i></p>
           </div>
         </div>
@@ -42,7 +43,8 @@ export default {
       pageList: [],
       allLoaded: false, //  是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
       scrollMode: 'auto', //  移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
-      wrapperHeight: 0
+      wrapperHeight: 0,
+      wallet: {}
     }
   },
   watch: {
@@ -107,6 +109,11 @@ export default {
         this.allLoaded = true
       }
     },
+    goDetails (item) {
+      // 福袋未开始
+      this.$store.dispatch('walletinfochange', item)
+      this.$router.push({name: 'pending'})
+    },
     addfd () {
       this.$router.push({name: 'addfd'})
     }
@@ -167,7 +174,7 @@ export default {
           }
           span:last-child{
             font-size .24rem
-            color: #a0a3b2
+            color: #d5d7df
           }
           span:last-child.active{
             color: #33a1ff

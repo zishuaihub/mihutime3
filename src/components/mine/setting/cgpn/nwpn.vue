@@ -1,17 +1,17 @@
 <template>
   <div id="nwpn">
     <mt-header title="修改手机号">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
     <div class="addcard-content">
-      <p class="content-header">更换手机号后，下次登录可使用新手机号登陆，当前手机号：189******22</p>
+      <p class="content-header">更换手机号后，下次登录可使用新手机号登陆，当前手机号：{{phone.slice(0,3)}}*****{{phone.slice(7,11)}}</p>
       <div class="list">
         <div class="item">
           <span class="left">手机号</span>
-          <mt-field type="number" placeholder="请输入新的手机号" v-model="phonenum" disableClear></mt-field>
+          <mt-field type="number" placeholder="请输入新的手机号" v-model="newphone" disableClear></mt-field>
         </div>
         <div class="item">
           <span class="left">验证码</span>
@@ -19,9 +19,9 @@
           <div class="nwpn" :class="{ 'clicked': clicked}"> <span v-if="clicked">{{sendMseDisabled}}s</span> </div>
         </div>
       </div>
-      <mt-button class="next"  @click="clickedFun(60)" v-if="!clicked">获取验证码</mt-button>
+      <mt-button class="next"  @click="clickedFun(60)" v-if="gain">获取验证码</mt-button>
 
-      <mt-button class="next" v-if="clicked" :disabled="!code" @click="test()">确认更换</mt-button>
+      <mt-button class="next" v-if="!gain" :disabled="!code" @click="test()">确认更换</mt-button>
 
     </div>
   </div>
@@ -32,6 +32,9 @@
     name: 'nwpn',
     data () {
       return {
+        gain: true,
+        phone: '',
+        newphone: '',
         code: '',
         phonenum: '',
         clicked: false,
@@ -40,11 +43,26 @@
       }
     },
     created () {
+      this.phone = this.$route.params.phone
+      this.modify = this.$route.params.modify
     },
     methods: {
       clickedFun (s) {
-        this.clicked = !this.clicked
-        this.sendOver(s)
+        this.$http.post('/common/v1/auth-codes', {
+          phone: this.newphone,
+          type: 5
+        }).then(res => {
+          this.$toast(res.data.message)
+          this.clicked = !this.clicked
+          // this.gain = !this.gain
+          this.gain = !this.gain
+          this.sendOver(s)
+        }).catch(
+          err => {
+            this.$toast(err.response.data.message)
+            this.gain = !this.gain
+          }
+      )
       },
       sendOver (sendMseDisabled) {
         if (sendMseDisabled === 0) {
@@ -59,7 +77,23 @@
         }, 1000)
       },
       test () {
-        console.log(this.clicked)
+        console.log({code: this.code,
+          modify: this.modify,
+          phone: this.newphone})
+        this.$http.post('/common/v1/phones/binging-phone', {
+          code: this.code,
+          modify: this.modify,
+          phone: this.newphone
+        }).then(
+          res => {
+            this.$store.dispatch('logout')
+            this.$router.push({name: '/login'})
+          }
+        ).catch(
+          err => {
+            this.$toast(err.response.data.message)
+          }
+        )
       }
     }
   }

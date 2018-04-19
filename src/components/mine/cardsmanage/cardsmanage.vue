@@ -1,23 +1,21 @@
 <template>
   <div id="cardsmanage">
-    <mt-header fixed title="结算卡">
+    <mt-header title="结算卡">
       <mt-button icon="back" slot="left" @click.native="bankListPopupVisible = false"></mt-button>
-      <router-link to="" slot="right">
-        <mt-button icon="add" @cilck="bankListPopupVisible = true">添加银行卡</mt-button>
-      </router-link>
+        <mt-button icon="add" @cilck="bankListPopupVisible = true" slot="right" v-if="!cards.length">添加银行卡</mt-button>
     </mt-header>
     <div v-if="cards">
-      <div v-for="item in cards" class="cardslist">
+      <div v-for="item in cards" :class='["bankItem-"+item.bankTypeId, "cardslist"]'>
         <div class="card">
-          <img :src="item.ico" alt="">
-          <p>{{item.bankTypeText}}</p>
+          <img :src="item.bankType.ico" alt="">
+          <p>{{item.bankType.name}}</p>
         </div>
-        <p>{{item.bankCode}}</p>
+        <p class="cardnum"><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span> <span>{{item.bankCode.slice(-4)}}</span></p>
       </div>
     </div>
 
     <mt-popup
-      v-if="cards"
+      v-if="!cards.length"
       class="mint-popup-1"
       v-model="bankListPopupVisible"
       position="right"
@@ -48,7 +46,7 @@ export default {
   name: 'cardsmanage',
   data () {
     return {
-      cards: null,
+      cards: [],
       bankListPopupVisible: true,
       cardnum: '',
       username: '',
@@ -70,7 +68,7 @@ export default {
           value: '值B'
         }
       ],
-      checkedcard: 1
+      checkedcard: []
     }
   },
   mounted () {
@@ -81,7 +79,7 @@ export default {
   },
   methods: {
     getCards () {
-      this.$http.get('/bank-cards').then(res => {
+      this.$http.get('/store/v1/bank-cards').then(res => {
         this.cards = res.data
         console.log(res.data)
       }
@@ -93,6 +91,7 @@ export default {
 
 <style lang="stylus">
   #cardsmanage{
+    color: #f7faff
     padding-top .8rem
     .mint-popup-1{
       width:100%;
@@ -107,7 +106,10 @@ export default {
       padding-left .25rem
       font-size .28rem
       border 1px solid #cccccc
+      margin-top: .3rem
       margin-bottom .2rem
+      border-radius .1rem
+      color: #ffffff
       .card{
         display flex
         align-items center
@@ -122,7 +124,78 @@ export default {
           width:80%;
         }
       }
+      .cardnum{
+        padding-right: .3rem
+        display: flex
+        justify-content space-between
+        align-items center
+        span{
+          display block
+          img{
+            width 1rem
+          }
+        }
+      }
     }
 
+    .bankItem-1{
+      background-color: #e35364
+    }
+    .bankItem-2 {
+      background-color: #078f74
+      box-shadow: 0px 3px 10px 0px rgba(22, 24, 41, 0.3);
+    }
+    .bankItem-3 {
+      background-color: #ab2537
+    }
+    .bankItem-4 {
+      background-color: #21428a
+    }
+    .bankItem-5 {
+      background-color: #2d3080
+    }
+    .bankItem-6 {
+      background-color: #c72c33
+    }
+    .bankItem-7 {
+      background-color: #39868d
+    }
+    .bankItem-8 {
+      background-color: #be242f
+    }
+    .bankItem-9 {
+      background-color: #ecba07
+    }
+    .bankItem-10 {
+      background-color: #004685
+    }
+
+    .bankItem-11 {
+      background-color: #2d3080
+    }
+
+    .bankItem-12 {
+      background-color: #bd0016
+    }
+
+    .bankItem-13 {
+      background-color: #e76d10
+    }
+
+    .bankItem-14 {
+      background-color: #293c8f
+    }
+
+    .bankItem-15 {
+      background-color: #e3131b
+    }
+
+    .bankItem-16 {
+      background-color: #e40012
+    }
+
+    .bankItem-17 {
+      background-color: #2d3080
+    }
   }
 </style>

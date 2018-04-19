@@ -4,8 +4,8 @@
       <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
-      <router-link to="" slot="right">
-        <mt-button icon="add">设置</mt-button>
+      <router-link to="/mine/setting/setting" slot="right">
+        <mt-button icon="add" >设置</mt-button>
       </router-link>
     </mt-header>
     <div class="mine-info">
@@ -19,11 +19,11 @@
       </div>
     </div>
     <div class="mine-list">
-      <mt-cell title="账户余额" to="//github.com" is-link>
+      <mt-cell title="账户余额" to="/mine/balance" is-link>
         <i slot="icon" class="icon iconfont icon-qian" style="color: #f76165;"></i>
           <span class="text">{{mineList.get}}</span>
       </mt-cell>
-          <mt-cell title="待结算金额" to="//github.com" is-link>
+          <mt-cell title="待结算金额" to="/mine/waitingforsettlement" is-link>
             <i slot="icon" class="icon iconfont icon-qianbao" style="color: #59aaff;"></i>
               <span class="text">{{mineList.balance}}</span>
           </mt-cell>

@@ -7,10 +7,12 @@ Vue.use(Vuex)
 let localstorage = new LocalStorage()
 let loginuser = localstorage.getItem('login')
 let storeinfo = localstorage.getItem('storeinfo')
+let walletinfo = localstorage.getItem('wallentinfo')
 // 创建基本状态
 const state = {
   Logined: loginuser || {},
-  Store: storeinfo || {}
+  Store: storeinfo || {},
+  Wallet: walletinfo || {}
 }
 console.log(state.Logined.token)
 Axios.defaults.headers.common['X-Access-Token'] = state.Logined.token
@@ -23,12 +25,17 @@ const mutations = {
     Axios.defaults.headers.common['X-Access-Token'] = state.Logined.token
   },
   LOGOUT (state) {
-    localstorage.clearItem(state)
+    localstorage.clearItem('login')
   },
   // 店铺注册录入信息
   STOREINFO  (state, storeinfo) {
     state.Store = storeinfo
-    localstorage.setItem('login', state.Logined)
+    localstorage.setItem('storeinfo', state.Logined)
+  },
+  // 福袋相关信息
+  WALLETINFO  (state, walletinfo) {
+    state.Wallet = walletinfo
+    localstorage.setItem('wallentinfo', state.Wallet)
   }
 }
 
@@ -42,6 +49,9 @@ const actions = {
   },
   storeinfochange ({commit}, info) {
     commit('STOREINFO', info)
+  },
+  walletinfochange ({commit}, info) {
+    commit('WALLETINFO', info)
   }
 }
 

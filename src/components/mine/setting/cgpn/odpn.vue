@@ -1,13 +1,13 @@
 <template>
   <div id="odpn">
     <mt-header title="身份验证">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
     <div class="addcard-content">
-      <p class="content-header">绑定银行卡需要短信确认,验证码已发送至手机:189*****2480
+      <p class="content-header">更换手机号后，下次登录可新手机登陆，但前手机号：{{phone.slice(0,3)}}*****{{phone.slice(7,11)}}
         请按提示操作</p>
       <div class="list">
         <div class="item">
@@ -16,9 +16,9 @@
           <div class="odpn" :class="{ 'clicked': clicked}"> <span v-if="clicked">{{sendMseDisabled}}s</span> </div>
         </div>
       </div>
-      <mt-button class="next"  @click="clickedFun(60)" v-if="!clicked">获取验证码</mt-button>
+      <mt-button class="next"  @click="clickedFun(60)" v-if="gain">获取验证码</mt-button>
 
-      <mt-button class="next" v-if="clicked" :disabled="!code" @click="test()">确认</mt-button>
+      <mt-button class="next" v-if="!gain" :disabled="!code" @click="test()">确认</mt-button>
 
     </div>
   </div>
@@ -29,6 +29,8 @@
     name: 'odpn',
     data () {
       return {
+        gain: true,
+        phone: '',
         code: '',
         clicked: false,
         sendMember: true,
@@ -36,11 +38,26 @@
       }
     },
     created () {
+      this.phone = this.$store.state.Logined.phone
     },
     methods: {
       clickedFun (s) {
-        this.clicked = !this.clicked
-        this.sendOver(s)
+        this.$http.post('/common/v1/auth-codes', {
+          phone: this.phone,
+          type: 4
+        }).then(res => {
+          this.$toast(res.data.message)
+          this.clicked = !this.clicked
+          this.gain = !this.gain
+          // TODO: test
+          this.sendOver(s)
+        }).catch(
+          error => {
+            console.log(error.response.data.message)
+            this.$toast(error.response.data.message)
+            this.gain = !this.gain
+          }
+        )
       },
       sendOver (sendMseDisabled) {
         if (sendMseDisabled === 0) {
@@ -56,6 +73,16 @@
       },
       test () {
         console.log(this.clicked)
+        this.$http.post('/common/v1/phones/modify-phone', {code: this.code}).then(
+          res => {
+            console.log(res.data)
+            this.$router.push({name: 'nwpn', params: {modify: res.data.modify, phone: this.phone}})
+          }
+        ).catch(
+          err => {
+            this.$toast(err.response.data.message)
+          }
+        )
       }
     }
   }

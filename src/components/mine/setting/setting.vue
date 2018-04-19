@@ -9,7 +9,7 @@
     <div class="popup-content" >
       <div class="third">
         <div class="third-child">
-          <p @click="as(1)">修改手机号<i class="mint-cell-allow-right"></i></p>
+          <p @click="cgpn(1)">修改手机号<i class="mint-cell-allow-right"></i></p>
           <p @click="as(2)">修改支付密码<i class="mint-cell-allow-right"></i></p>
         </div>
         <div class="third-child">
@@ -76,6 +76,9 @@ export default {
     },
     about () {
       this.popup = true
+    },
+    cgpn () {
+      this.$router.push({name: 'cgpn'})
     },
     logout () {
       this.popbottom = true
