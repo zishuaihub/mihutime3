@@ -39,7 +39,7 @@ import carddetails from '../components/mine/cardsmanage/carddetails'
 import addcard from '../components/mine/cardsmanage/addcards/addcard'
 import verification from '../components/mine/cardsmanage/addcards/verification'
 import setpassword from '../components/mine/cardsmanage/addcards/setpassword'
-import repeatpassword from '../components/mine/cardsmanage/addcards/repeatpassword'
+import auth from '../components/mine/cardsmanage/addcards/auth'
 import settlementdetail from '../components/mine/settlement/settlementdetail'
 import waitingforsettlement from '../components/mine/settlement/waitingforsettlement'
 import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
@@ -228,9 +228,9 @@ export default new Router({
       component: setpassword
     },
     {
-      path: '/mine/cardsmanage/addcards/repeatpassword',
-      name: 'repeatpassword',
-      component: repeatpassword
+      path: '/mine/cardsmanage/addcards/auth',
+      name: 'auth',
+      component: auth
     },
     {
       path: '/mine/waitingforsettlement',

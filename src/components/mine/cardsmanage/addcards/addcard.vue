@@ -11,6 +11,9 @@
       <div class="list">
         <div class="item">
           <span class="left">银行类型</span> <span class="sp">请选择</span>
+          <select name="bankcards" id="bankcards">
+            <option :value="item.id" v-for="item in bankcards">{{item.name}}</option>
+          </select>
           <i class="mint-cell-allow-right"></i>
         </div>
         <div class="item">
@@ -38,10 +41,16 @@ export default {
     return {
       username: '',
       cardnum: '',
-      value: []
+      value: [],
+      bankcards: []
     }
   },
   created () {
+  },
+  mounted () {
+    this.$http.get('/store/v1/bank-cards/types').then(
+      res => { this.bankcards = res.data }
+    )
   },
   methods: {
     radioFun () {

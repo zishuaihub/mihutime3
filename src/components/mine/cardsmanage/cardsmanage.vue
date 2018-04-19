@@ -1,11 +1,11 @@
 <template>
   <div id="cardsmanage">
     <mt-header title="结算卡">
-      <mt-button icon="back" slot="left" @click.native="bankListPopupVisible = false"></mt-button>
+      <mt-button icon="back" slot="left" @click.native="$router.back()"></mt-button>
         <mt-button icon="add" @cilck="bankListPopupVisible = true" slot="right" v-if="!cards.length">添加银行卡</mt-button>
     </mt-header>
     <div v-if="cards">
-      <div v-for="item in cards" :class='["bankItem-"+item.bankTypeId, "cardslist"]'>
+      <div @click="carddetail(item)" v-for="item in cards" :class='["bankItem-"+item.bankTypeId, "cardslist"]'>
         <div class="card">
           <img :src="item.bankType.ico" alt="">
           <p>{{item.bankType.name}}</p>
@@ -13,9 +13,13 @@
         <p class="cardnum"><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span> <span>{{item.bankCode.slice(-4)}}</span></p>
       </div>
     </div>
-
+    <div class="none" v-if="!cards.length">
+      <img src="../../../assets/cards@3x.png" alt="" class="img-responsive card-logo">
+      <p>您还没有添加银行卡</p>
+      <mt-button @click="addcard">添加银行卡</mt-button>
+    </div>
     <mt-popup
-      v-if="!cards.length"
+      v-if="false"
       class="mint-popup-1"
       v-model="bankListPopupVisible"
       position="right"
@@ -84,6 +88,24 @@ export default {
         console.log(res.data)
       }
     )
+    },
+    carddetail (item) {
+      this.$router.push({name: 'carddetails', params: {item: item}})
+    },
+    addcard () {
+      this.$http.get('/store/v1/ext-passwords').then(
+        res => {
+          console.log(res.data)
+          if (res.data.code === 0) {
+            this.$toast(res.data.message)
+            setTimeout(res => {
+              this.$router.push({name: 'verification'})
+            }, 600)
+          } else if (res.data.code === 1) {
+            this.$router.push({name: 'auth'})
+          }
+        }
+      )
     }
   }
 }
@@ -91,11 +113,33 @@ export default {
 
 <style lang="stylus">
   #cardsmanage{
-    color: #f7faff
-    padding-top .8rem
+    background: #f7faff
+    min-height:100vh
     .mint-popup-1{
       width:100%;
       height:calc(100vh)
+    }
+    .none{
+      text-align center
+      .card-logo{
+        width: 2.65rem
+        margin-left auto
+        margin-right auto
+      }
+      padding-top 2.2rem
+      p{
+        color: #a0a3b2
+        text-align center
+        margin-top .4rem
+        margin-bottom 3.1rem
+      }
+      .mint-button--normal{
+        width:6.94rem
+        box-shadow none
+        height:.8rem
+        background: #33a1ff
+        color: #fff
+      }
     }
     .cardslist{
       width: 6.9rem;

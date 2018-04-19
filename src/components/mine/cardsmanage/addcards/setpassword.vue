@@ -67,9 +67,9 @@ export default {
     },
     realInput2 (n, o) {
       console.log(n)
-      if (n.length === 6) {
+      if (n.length === 6 && this.realInput1 === this.realInput2) {
         this.nextStep()
-      } else {
+      } else if (n.length === 6) {
         this.consoleErr()
       }
     }
@@ -82,16 +82,25 @@ export default {
       console.log(this.realInput)
     },
     nextStep () {
-      this.$toast({
-        message: '操作成功',
-        iconClass: 'iconfont icon-selected',
-        duration: -1
+      this.$http.post('/store/v1/ext-passwords', {
+        password: this.realInput1,
+        rePassword: this.realInput2,
+        validateCode: this.$route.params.validateCode
+      }).then(res => {
+        this.$toast({
+          message: '操作成功',
+          iconClass: 'iconfont icon-selected',
+          duration: 1000
+        })
+        this.$router.push({name: 'cardsmanage'})
+      }).catch(erro => {
+        this.$toast(erro.response.data.message)
       })
     },
     consoleErr () {
       this.$toast({
         message: '两次输入密码不一致',
-        duration: -1
+        duration: 1000
       })
     }
   }

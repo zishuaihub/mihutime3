@@ -1,5 +1,5 @@
 <template>
-  <div id="carddetails">
+  <div id="carddetails" :class='["bankItem-"+item.bankTypeId]'>
       <mt-header title="银行卡管理">
         <mt-button icon="back" slot="left"></mt-button>
         <router-link to="" slot="right">
@@ -9,10 +9,10 @@
 
     <div class="card-item">
             <div class="top">
-              <img alt=""><p>中国工商银行储蓄卡</p>
+              <img :src= item.bankType.ico alt=""><p>{{item.bankType.name}}储蓄卡</p>
             </div>
             <div class="cardnum">
-              <p><span>● ● ● ●</span><span>● ● ● ●</span><span>● ● ● ●</span> <span>6688</span></p>
+              <p><span>● ● ● ●</span><span>● ● ● ●</span><span>● ● ● ●</span> <span>{{item.bankCode.slice(-4)}}</span></p>
             </div>
           </div>
     <div class="limit">
@@ -36,14 +36,22 @@ export default {
   name: 'carddetails',
   data () {
     return {
-      popupVisible: false
+      popupVisible: false,
+      item: {}
     }
   },
   created () {
   },
+  mounted () {
+    console.log(this.item = this.$route.params.item)
+  },
   methods: {
-    cancel () {},
-    relieve () {}
+    cancel () {
+      this.popupVisible = false
+    },
+    relieve () {
+      this.$http.post('')
+    }
   }
 }
 </script>
@@ -51,8 +59,6 @@ export default {
 <style lang="stylus">
   #carddetails{
       min-height 100vh
-      background-image: linear-gradient( 330deg, rgb(199,59,73) 0%, rgb(235,90,108) 100%);
-      box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.3);
     .mint-header{
       height: .88rem
       background transparent
@@ -157,4 +163,64 @@ export default {
     }
   }
 
+  .bankItem-1{
+    background-image: linear-gradient( 330deg, rgb(199,59,73) 0%, rgb(235,90,108) 100%);
+    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.3);
+  }
+  .bankItem-2 {
+    background-color: #078f74
+    box-shadow: 0px 3px 10px 0px rgba(22, 24, 41, 0.3);
+  }
+  .bankItem-3 {
+    background-color: #ab2537
+  }
+  .bankItem-4 {
+    background-color: #21428a
+  }
+  .bankItem-5 {
+    background-color: #2d3080
+  }
+  .bankItem-6 {
+    background-color: #c72c33
+  }
+  .bankItem-7 {
+    background-color: #39868d
+  }
+  .bankItem-8 {
+    background-color: #be242f
+  }
+  .bankItem-9 {
+    background-color: #ecba07
+  }
+  .bankItem-10 {
+    background-color: #004685
+  }
+
+  .bankItem-11 {
+    background-color: #2d3080
+  }
+
+  .bankItem-12 {
+    background-color: #bd0016
+  }
+
+  .bankItem-13 {
+    background-color: #e76d10
+  }
+
+  .bankItem-14 {
+    background-color: #293c8f
+  }
+
+  .bankItem-15 {
+    background-color: #e3131b
+  }
+
+  .bankItem-16 {
+    background-color: #e40012
+  }
+
+  .bankItem-17 {
+    background-color: #2d3080
+  }
 </style>

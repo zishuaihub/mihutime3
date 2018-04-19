@@ -1,58 +1,91 @@
 <template>
   <div id="verification">
-      <mt-header title="身份验证">
-        <mt-button icon="back" slot="left"></mt-button>
-        <router-link to="" slot="right">
-          <mt-button icon="add"></mt-button>
-        </router-link>
-      </mt-header>
-      <div class="addcard-content">
-        <p class="content-header">绑定银行卡需要短信确认,验证码已发送至手机:189*****2480
-          请按提示操作</p>
-        <div class="list">
-          <div class="item">
-            <span class="left">验证码</span>
-            <mt-field type="number" placeholder="请输入验证码" v-model="code" disableClear></mt-field>
-            <button @click="clickedFun(60)" :disabled="clicked" class="verification" :class="{ 'clicked': clicked}"> <span v-if="!clicked" style="width: 1.4rem;color: #33a1ff">发送验证码</span> <span v-if="clicked">{{sendMseDisabled}}s</span> </button>
-          </div>
+    <mt-header title="身份验证">
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
+      <router-link to="" slot="right">
+        <mt-button icon="add"></mt-button>
+      </router-link>
+    </mt-header>
+    <div class="addcard-content">
+      <p class="content-header">首次设置安全密码，需要验证，您的当前绑定手机号是：{{phone.slice(0,3)}}*****{{phone.slice(7,11)}}，
+        请按提示操作</p>
+      <div class="list">
+        <div class="item">
+          <span class="left">验证码</span>
+          <mt-field type="number" placeholder="请输入验证码" v-model="code" disableClear></mt-field>
+          <div class="verification" :class="{ 'clicked': clicked}"> <span v-if="clicked">{{sendMseDisabled}}s</span> </div>
         </div>
-        <mt-button class="next" :disabled="!code">设置支付密码</mt-button>
       </div>
+      <mt-button class="next"  @click="clickedFun(60)" v-if="gain">获取验证码</mt-button>
+
+      <mt-button class="next" v-if="!gain" :disabled="!code" @click="test()">确认</mt-button>
+
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'verification',
-  data () {
-    return {
-      code: '',
-      clicked: false,
-      sendMember: true,
-      sendMseDisabled: 0
-    }
-  },
-  created () {
-  },
-  methods: {
-    clickedFun (s) {
-      this.clicked = !this.clicked
-      this.sendOver(s)
-    },
-    sendOver (sendMseDisabled) {
-      if (sendMseDisabled === 0) {
-        this.clicked = false
-        return false
-      } else {
-        sendMseDisabled--
+  export default {
+    name: 'verification',
+    data () {
+      return {
+        gain: true,
+        phone: '',
+        code: '',
+        clicked: false,
+        sendMember: true,
+        sendMseDisabled: 0
       }
-      this.sendMseDisabled = sendMseDisabled
-      setTimeout(() => {
-        this.sendOver(sendMseDisabled)
-      }, 1000)
+    },
+    created () {
+      this.phone = this.$store.state.Logined.phone
+    },
+    methods: {
+      clickedFun (s) {
+        this.$http.post('/common/v1/auth-codes', {
+          phone: this.phone,
+          type: 2
+        }).then(res => {
+          this.$toast(res.data.message)
+          this.clicked = !this.clicked
+          this.gain = !this.gain
+          // TODO: test
+          this.sendOver(s)
+        }).catch(
+          error => {
+            console.log(error.response.data.message)
+            this.$toast(error.response.data.message)
+            this.gain = !this.gain
+          }
+        )
+      },
+      sendOver (sendMseDisabled) {
+        if (sendMseDisabled === 0) {
+          this.clicked = false
+          return false
+        } else {
+          sendMseDisabled--
+        }
+        this.sendMseDisabled = sendMseDisabled
+        setTimeout(() => {
+          this.sendOver(sendMseDisabled)
+        }, 1000)
+      },
+      test () {
+        console.log(this.clicked)
+        this.$http.post('/store/v1/ext-passwords/validate-create', {code: this.code}).then(
+          res => {
+            console.log(res.data)
+            this.$router.push({name: 'setpassword', params: {validateCode: res.data.validateCode, phone: this.phone}})
+          }
+        ).catch(
+          err => {
+            this.$toast(err.response.data.message)
+          }
+        )
+      }
     }
   }
-}
 </script>
 
 <style lang="stylus">

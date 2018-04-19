@@ -31,7 +31,7 @@
     <div class="main-body" :style="{ height: wrapperHeight + 'px', 'overflow': 'scroll', 'margin-top': '1.3rem'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
         <ul class="list" v-for="(items, index) in pageList">
-          <div class="item" v-for="item in items.data" @click="goDetail(item)">
+          <div class="item" v-for="item in items.data" @click="goDetail(item.id)">
             <div class="name"><span>{{item.settlementText}}</span><span></span> </div>
             <div>{{item.tradingTypeText}}</div>
             <div class="desc">
@@ -160,9 +160,11 @@
         // 是否还有下一页，如果没有就禁止上拉刷新
         // this.allLoaded = true //  true是禁止上拉加载
         let len = 0
-        data.map(res => {
-          len += res.data.length
-        })
+        if (data.length > 0) {
+          data.map(res => {
+            len += res.data.length
+          })
+        }
         if (len < this.searchCondition.pageSize) {
           this.allLoaded = true
         }
@@ -183,8 +185,8 @@
       selectdate () {
         this.popupVisible = true
       },
-      goDetail (item) {
-        this.$router.push({name: 'settlementdetail', params: {item: item}})
+      goDetail (id) {
+        this.$router.push({name: 'settlementdetail', params: {id: id}})
       }
     },
     beforeRouteLeave (to, from, next) {

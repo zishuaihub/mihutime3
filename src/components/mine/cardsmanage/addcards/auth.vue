@@ -7,10 +7,10 @@
         </router-link>
       </mt-header>
       <div class="pwd-box">
-        <h1>重新输入密码：</h1>
-        <h3>再次输入密码，保证密码一致</h3>
+        <h1>请输入安全密码：</h1>
+        <h3>绑定银行卡前，请先验证安全密码</h3>
         <div class="write-input">
-          <input type="password"  ref="input2" maxlength="6" class="realInput" v-model="realInput2" autofocus >
+          <input type="password"  ref="input" maxlength="6" class="realInput" v-model="realInput" autofocus >
         </div>
       </div>
   </div>
@@ -21,12 +21,27 @@ export default {
   name: 'repeatpassword',
   data () {
     return {
-      realInput2: ''
+      realInput: ''
     }
   },
   created () {
   },
   methods: {
+    validate () {
+      this.$http.post('/store/v1/ext-passwords/validate', {oldPassword: this.realInput}).then(
+        res => {
+          this.$router.push({name: 'addcard', params: {validateCode: res.data.validateCode}})
+        }
+      ).catch(erro => { this.$toast(erro.response.data.message) })
+    }
+  },
+  watch: {
+    realInput (n, o) {
+      console.log(n)
+      if (n.length === 6) {
+        this.validate()
+      }
+    }
   }
 }
 </script>

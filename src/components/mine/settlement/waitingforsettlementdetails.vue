@@ -108,9 +108,11 @@
         // 是否还有下一页，如果没有就禁止上拉刷新
         // this.allLoaded = true //  true是禁止上拉加载
         let len = 0
-        data.map(res => {
-          len += res.data.length
-        })
+        if (data.length > 0) {
+          data.map(res => {
+            len += res.data.length
+          })
+        }
         if (len < this.searchCondition.pageSize) {
           this.allLoaded = true
         }
