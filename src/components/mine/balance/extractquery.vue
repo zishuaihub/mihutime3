@@ -1,10 +1,8 @@
 <template>
   <div id="query">
       <mt-header title="结果查询">
-        <router-link to="/" slot="left">
-          <mt-button icon="back"></mt-button>
-        </router-link>
-        <mt-button slot="right">完成</mt-button>
+        <mt-button icon="back" slot="left" @click="$router.push({name: 'extract'})"></mt-button>
+        <mt-button slot="right" @click="$router.push({name: 'balance'})">完成</mt-button>
       </mt-header>
       <div class="process">
         <div class="process-icon">
@@ -14,19 +12,19 @@
           <i class="iconfont icon-selected" :style="[{color:false ? '#33a1ff' : '#a0a3b2'}]"></i>
         </div>
         <div class="process-info">
-          <div class="process-info-item">
+          <div class="process-info-item" v-if="item.bankCode">
             <div style="margin-bottom: .2rem" :style="[{color:true ? '#33a1ff' : '#a0a3b2'}]">提现申请已提交，平台已受理</div>
-            <div style="margin-bottom: .1rem;color: #a0a3b2;">工商银行（0149）</div>
-            <div style="color: #a0a3b2;">1000元</div>
+            <div style="margin-bottom: .1rem;color: #a0a3b2;">{{item.bankType}}（{{item.bankCode.slice(-4)}}）</div>
+            <div style="color: #a0a3b2;">{{item.amount}}元</div>
           </div>
           <div class="process-info-item">
             <div style="margin-bottom: .2rem">预计7天内到账，等待银行处理</div>
-            <div style="color: #a0a3b2;">2018-03-13 24:00 之前到账</div>
+            <div style="color: #a0a3b2;">{{item.expectAt}} 之前到账</div>
           </div>
         </div>
         <div class="border" style="width:6.94rem;height: 1px;border-bottom: 1px solid #eff1f7"></div>
       </div>
-    <div class="check">
+    <div class="check" @click="$router.push({name: 'extractdetail', params: {item: item}})">
       <p>查看账单</p>
     </div>
   </div>
@@ -44,10 +42,12 @@
         password: '',
         email: '',
         phone: 1,
-        cpt: true
+        cpt: true,
+        item: {}
       }
     },
-    created () {
+    mounted () {
+      this.item = this.$route.params.item
     },
     methods: {
     }

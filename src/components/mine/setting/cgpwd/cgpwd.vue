@@ -1,16 +1,14 @@
 <template>
   <div id="cgpwd">
     <mt-header title="修改支付密码">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
     <div class="popup-content" >
       <div class="third">
         <div class="third-child">
-          <p @click="as(1)">修改支付密码<i class="mint-cell-allow-right"></i></p>
-          <p @click="as(1)">忘记密码<i class="mint-cell-allow-right"></i></p>
+          <p @click="cgpwd()">修改支付密码<i class="mint-cell-allow-right"></i></p>
+          <p @click="fgpwd()">忘记密码<i class="mint-cell-allow-right"></i></p>
           <p @click="cs()">联系客服<i class="mint-cell-allow-right"></i></p>
         </div>
       </div>
@@ -44,6 +42,12 @@
       },
       cs () {
         this.popbottom = true
+      },
+      cgpwd () {
+        this.$router.push({name: 'setpwd'})
+      },
+      fgpwd () {
+        this.$router.push({name: 'fgpwd'})
       }
     },
     beforeRouteLeave (to, from, next) {

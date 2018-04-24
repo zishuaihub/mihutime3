@@ -275,7 +275,11 @@ export default {
       }
       // 提交信息
       this.$store.dispatch('storeinfochange', this.storeInfo)
-      this.$router.push('register')
+      if (this.$route.params.page === 'storechange') {
+        this.$router.push({name: 'storechange'})
+      } else {
+        this.$router.push('register')
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div id="repeatpassword">
+  <div id="auth">
       <mt-header title="添加银行卡">
-        <mt-button icon="back" slot="left" @click.native=""></mt-button>
+        <mt-button icon="back" slot="left" @click.native="$router.back()"></mt-button>
         <router-link to="" slot="right">
           <mt-button icon="add"></mt-button>
         </router-link>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'repeatpassword',
+  name: 'auth',
   data () {
     return {
       realInput: ''
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="stylus">
-  #repeatpassword{
+  #auth{
     background: #f7faff
     height 100vh
     .mint-header{

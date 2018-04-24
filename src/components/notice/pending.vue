@@ -8,7 +8,7 @@
     <div class="state">
       <p v-if="wallet.status === 2"> <span>到期时间{{wallet.activityEndAt}}</span> <span>剩余数量/{{wallet.remainingQty}}个</span> </p>
       <p v-if="wallet.status === 1"> <span>即将在{{wallet.activityEndAt}}自动发布</span> </p>
-      <p v-if="wallet.status === 3"> <span>{{wallet.activityEndAt}}(已结束)</span></p>
+      <p v-if="wallet.status === 3" > <span style="color: #000000">{{wallet.activityEndAt}}(已结束)</span> <span style="color: #a0a3b2">剩余数量/{{wallet.remainingQty}}个</span> </p>
     </div>
     <div class="details">
       <div class="list">
@@ -76,8 +76,8 @@
         </div>
       </div>
     </div>
-
-    <mt-button v-if="wallet.status ===3" @click="again">再次发布</mt-button>
+<div>    <mt-button class="next" v-if="wallet.status ===3" @click="again">再次发布</mt-button>
+</div>
     <mt-popup
       v-model="popupVisible"
       position="bottom">
@@ -90,7 +90,6 @@
 </template>
 
 <script>
-// TODO: 按钮样式
 export default {
   name: 'holdlist',
   data () {
@@ -111,7 +110,7 @@ export default {
       this.popupVisible = false
       this.routerflag = false
       this.$store.dispatch('')
-      this.$router.push({name: 'addfd'})
+      this.$router.push({name: 'addfd', params: {change: true}})
     },
     deleteit () {
       this.popupVisible = false
@@ -232,6 +231,18 @@ export default {
         border-top-right-radius:.15rem;
         border-bottom 1px solid #e2e4e9
       }
+    }
+    .next{
+      width: 94%
+      background: #33a1ff
+      display: block
+      margin-left auto
+      margin-right auto
+      color: #ffffff
+      border-radius 0
+      font-size .32rem
+      height:.8rem
+      line-height .8rem
     }
   }
 

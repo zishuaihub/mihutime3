@@ -1,17 +1,17 @@
 <template>
-  <div id="remainder">
+  <div id="extract" v-if="display">
     <mt-header title="提现">
-      <mt-button icon="back" @click.native="$router.back()" slot="left"></mt-button>
-      <router-link to="/trade-record" slot="right">
-        <mt-button >提现明细</mt-button>
+      <mt-button icon="back" @click.native="$router.push({name: 'balance'})" slot="left"></mt-button>
+      <router-link to="" slot="right">
+        <mt-button ></mt-button>
       </router-link>
     </mt-header>
-    <div class="remainder-content">
-      <div class="card">
-        <img alt="">
+    <div class="extract-content">
+      <div class="card" @click="goCardDetail">
+        <img alt="" :src="bankcard.bankType.ico">
         <div class="card-info">
-          <p>中国工商银行</p>
-          <p>尾号6688储蓄卡</p>
+          <p>{{bankcard.bankType.name}}</p>
+          <p>尾号{{bankcard.bankCode.slice(-4)}}储蓄卡</p>
         </div>
         <i class="mint-cell-allow-right"></i>
 
@@ -19,49 +19,120 @@
       <div class="input">
         <p class="input-title">提现金额</p>
         <div class="inputarea">
-          <span>￥</span><mt-field type="text"></mt-field>
+          <span>￥</span><mt-field type="text" v-model="amount"></mt-field>
         </div>
       </div>
-      <div class="remainder-tip">
-        <p>可用余额15683.26元</p>
-        <router-link to="">全部提现</router-link>
+      <div class="extract-tip">
+        <p>可用余额{{finance.liquidated}}元</p>
+        <span style="color: #33a1ff;" @click="amount = finance.liquidated">全部提现</span>
       </div>
-      <mt-button >下一步</mt-button>
+      <mt-button @click="nextStep">下一步</mt-button>
     </div>
     <mt-popup position="bottom" class="popup" v-model="vis">
       <p class="popup-title"><a @click="closetc()">x</a>输入密码</p>
-      <p>支付金额1000.00元</p>
+      <p>支付金额{{amount}}元</p>
       <p>单笔收取2元通道费</p>
       <p class="write-input">
         <input type="password"  maxlength="6" class="realInput" v-model="realInput" autofocus>
       </p>
+      <p class="forget"><span @click="$router.push({name: 'fgpwd'})">忘记密码</span></p>
     </mt-popup>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'remainder',
+  name: 'extract',
   data () {
     return {
-      vis: true,
-      realInput: ''
+      display: false,
+      vis: false,
+      realInput: '',
+      bankcard: {},
+      finance: {}, // 财务信息
+      amount: ''
+    }
+  },
+  watch: {
+    realInput (n, o) {
+      if (n.length === 6) {
+        this.goPass()
+      }
     }
   },
   created () {
-    this.$toast({
-      message: '提现金额不能大于可用余额1288.18元',
-      position: 'top',
-      duration: -1
-    })
+    // 获取银行卡
+    this.$http.get('/store/v1/bank-cards').then(
+      res => {
+        if (res.data.length === 0) {
+          this.$toast('您还未绑定银行卡，稍后跳转至绑定银行卡页面')
+          setTimeout(
+            () => {
+              this.$router.push({name: 'cardsmanage'})
+            }, 1000
+          )
+        } else {
+          this.display = true
+          this.bankcard = res.data[0]
+        }
+      }
+    )
+    // 获取账户余额
+    this.$http.get('/store/v1/finances').then(
+      res => {
+        this.finance = res.data
+      }
+    )
   },
   methods: {
+    closetc () {
+      this.vis = false
+    },
+    goCardDetail () {
+      this.$router.push({name: 'carddetails', params: {item: this.bankcard}})
+    },
+    nextStep () {
+      if (this.amount > 0 && this.amount <= this.finance.liquidated) {
+        this.vis = true
+      } else {
+        this.$toast('请输入正确金额')
+      }
+    },
+    goPass () {
+      this.$http.post('/store/v1/extracts', {
+        bankCardId: this.bankcard.id,
+        amount: this.amount,
+        extPassword: this.realInput
+      }).then(
+        res => {
+          console.log(res)
+          this.$router.push({name: 'extractquery', params: {item: res.data}})
+        }
+      ).catch(
+        erro => console.log(erro.response.data.message)
+      )
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.vis) {
+      if (to.name === 'extractquery') {
+        next()
+      } else {
+        this.vis = false
+        next(false)
+      }
+    } else {
+      next()
+    }
   }
 }
 </script>
 
 <style lang="stylus">
-  #remainder{
+  .mint-toast{
+    z-index:9999
+  }
+  #extract{
     background: #f7faff
     .mint-header{
       height: .88rem
@@ -73,7 +144,7 @@ export default {
       }
     }
 
-    .remainder-content{
+    .extract-content{
       padding .3rem 0 0
       .card{
         display flex
@@ -130,7 +201,7 @@ export default {
           }
         }
       }
-      .remainder-tip{
+      .extract-tip{
         background: #ffffff
         padding: 0 .3rem .3rem
         margin-bottom 1.85rem
@@ -202,6 +273,17 @@ export default {
         text-align: center;
         border-bottom: 1px solid #33a1ff;
         font-size .6rem
+      }
+    }
+    .forget{
+      display: flex
+      justify-content flex-end
+      span{
+        display: block
+        color: #33a1ff
+        font-size:.22rem
+        margin-right:1rem
+        margin-top:.5rem
       }
     }
   }

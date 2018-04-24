@@ -43,12 +43,16 @@
         this.$http.post('/common/v1/accounts/login', this.userInfo).then(
           res => {
             console.log(res.data)
+            console.log(res.data.store)
             this.$store.dispatch('login', res.data)
             if (res.data.store && res.data.store.status === 1 && res.data.store.step === 0) {
+              this.$store.dispatch('storeinfochange', res.data.store)
               this.$router.push({name: 'register', params: { register: 'success' }})
             } else if (res.data.store && res.data.store.status === 0) {
+              this.$store.dispatch('storeinfochange', res.data.store)
               this.$router.push({name: 'register', params: { register: 'holdon' }})
             } else if (res.data.store && res.data.store.status === 1 && res.data.store.step === 1) {
+              this.$store.dispatch('storeinfochange', res.data.store)
               this.$router.push({name: 'home'})
             } else {
               this.$router.push({name: 'register'})

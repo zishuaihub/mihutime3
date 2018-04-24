@@ -1,96 +1,50 @@
 <template>
   <div id="storemanage">
     <mt-header title="店铺管理">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
-      <mt-button slot="right" @click.native="revise()">申请修改</mt-button>
+      <mt-button icon="back"  slot="left" @click="$router.push({name: 'mine'})"></mt-button>
+      <mt-button v-if="!(checkflag === 0)" slot="right" @click.native="revise()">申请修改</mt-button>
     </mt-header>
-    <div class="state">
+    <div class="state" v-if="checkflag === 0" @click="revise()">
       <img src="../../../assets/icon/hsgth@3x.png" alt="">
       <p>店铺修改信息目前正在审核中，请等待…</p>
       <i class="mint-cell-allow-right"></i>
     </div>
-
-    <div class="manage-content">
-      <div class="item" @click="avatar()">
-        <p class="item-title">店铺头像</p>
-        <p class="item-content"><img alt=""><i class="mint-cell-allow-right"></i></p>
-      </div>
-      <div class="item">
-        <p class="item-title">店铺名称</p>
-        <p class="item-content">Lady西餐馆</p>
-      </div>
-      <div class="item" @click="des()">
-        <p class="item-title">描述</p>
-        <p class="item-content">新店开业更多优惠等你来拿<i class="mint-cell-allow-right"></i></p>
-      </div>
-      <div class="item">
-        <p class="item-title">所属分站</p>
-        <p class="item-content">合肥站</p>
-      </div>
-      <div class="item">
-        <p class="item-title">区域</p>
-        <p class="item-content">蜀山区世纪大道CBC拓基广场25楼2408</p>
-      </div>
-      <div class="item">
-        <p class="item-title">经营类别</p>
-        <p class="item-content">餐饮</p>
-      </div>
-      <div class="item" @click="week()">
-        <p class="item-title">店铺电话</p>
-        <p class="item-content"><span>周一</span><span>周一</span><span>周一</span><span>周一</span><span>周一</span><span>周一</span><span>周一</span><i class="mint-cell-allow-right"></i></p>
-      </div>
-      <div class="item" @click="opentime()">
-        <p class="item-title">营业时间</p>
-        <p class="item-content">08:00-22:00<i class="mint-cell-allow-right"></i></p>
-      </div>
-      <div class="item" @click="serv()">
-        <p class="item-title">提供服务</p>
-        <p class="item-content"><span>WIFI</span><span>可吸烟</span><span>停车场</span><i class="mint-cell-allow-right"></i></p>
-      </div>
-    </div>
-    <mt-popup v-model="popup">
-      <mt-header title="店铺管理">
-        <router-link to="/" slot="left">
-          <mt-button icon="back"></mt-button>
-        </router-link>
-        <mt-button slot="right"></mt-button>
-      </mt-header>
-      <div class="popup-content" v-if="reviseflag">
-        <mt-field label="店铺名称" placeholder="请输入店铺名称" v-model="storename"></mt-field>
-        <mt-field label="店铺地址" placeholder="请选择" v-model="storeadress"  disabled="disabled" style="background: #fff"><i class="mint-cell-allow-right"></i></mt-field>
-        <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" v-model="storenum"></mt-field>
-        <mt-field label="经营品类" placeholder="请选择" v-model="storecategory" disabled="disabled" style="background: #fff"><i class="mint-cell-allow-right"></i></mt-field>
-        <mt-button class="confirm">申请修改</mt-button>
-
+      <div class="popup-content">
+        <div class="information">
+          <div class="time" style="justify-content: space-between" @click="avatar()">
+            <p>店铺头像</p>
+            <p style="position: relative"><img :src="storeInfo.avatarUrl" alt="" style="width: .8rem; height: .8rem;"><i class="mint-cell-allow-right sp"></i></p>
+          </div>
+          <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeInfo.name" disabled></mt-field>
+          <div class="time" @click="changedesc">
+            <p>描述</p>
+            <p>{{storeInfo.description}}</p>
+          </div>
+          <mt-field label="店铺地址" placeholder="请选择" type="text" v-model="storeInfo.address" disabled></mt-field>
+          <mt-field label="联系电话" placeholder="请输入座机/手机，座机需加区号" type="tel" v-model="storeInfo.phone" disabled></mt-field>
+          <mt-field label="经营品类" placeholder="请选择" type="text" v-model="storeInfo.categoryText" :disabled="true"></mt-field>
+          <div class="time weeks"  @click="weekpicker">
+            <p>营业日</p>
+            <p>
+              <span v-for="item in storeInfo.weeks">{{item.value}}</span>
+            </p>
+          </div>
+          <div class="time" @click="selecttime">
+            <p>营业时间</p>
+            <p><span >{{storeInfo.workAt}}</span></p>
+            <p><img src="../../../assets/icon/rili@3x.png" alt=""></p>
+            <p style="margin-left: 1.3rem"><span>{{storeInfo.workendAt}}</span></p>
+            <p><img src="../../../assets/icon/rili@3x.png" alt=""></p>
+          </div>
+          <div class="time" @click = selectservice>
+            <p>提供服务</p>
+            <p><span style="margin-right: .1rem" v-for="item in storeInfo.services">{{item.name}}</span></p>
+          </div>
+        </div >
       </div>
       <div class="popup-content" v-if="desflag">
         <mt-field v-model="destext"></mt-field>
       </div>
-      <div class="popup-content" v-if="weekflag">
-        <mt-checklist
-          align="right"
-          v-model="weekvalue"
-          :options="['周一', '周二', '周三', '周四', '周五', '周六', '周日',]">
-        </mt-checklist>
-        <mt-button class="confirm">确认</mt-button>
-
-      </div>
-      <div class="popup-content" v-if="servflag">
-        <mt-checklist
-          align="right"
-          v-model="servvalue"
-          :options="['停车', '周二', '周三', '周四', '周五', '周六', '周日',]">
-        </mt-checklist>
-        <mt-button class="confirm">确认</mt-button>
-      </div>
-    </mt-popup>
-    <mt-popup
-      v-model = "popbottom"
-      position= "bottom" bclass="popup-bottom">
-      <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
-    </mt-popup>
   </div>
 </template>
 
@@ -99,71 +53,108 @@ export default {
   name: 'storemanage',
   data () {
     return {
-      reviseflag: false,
+      checkflag: 1,
+      storeInfo: {},
       desflag: false,
-      destext: '一二三',
-      weekflag: false,
-      weekvalue: [],
-      servflag: false,
-      servvalue: [],
-      popup: false,
+      pickerVisible: '',
+      popuphold: false,
       popbottom: false,
-      storename: '',
-      storeadress: '',
-      storenum: '',
-      storecategory: '',
-      pickerValue: '',
-      slots: [
-        {
-          flex: 1,
-          values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
-          className: 'slot1',
-          textAlign: 'right'
-        }, {
-          divider: true,
-          content: '-',
-          className: 'slot2'
-        }, {
-          flex: 1,
-          values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
-          className: 'slot3',
-          textAlign: 'left'
-        }
-      ]
+      cpt: true,
+      pickerflag: '',
+      audit: false,
+      workAt: '',
+      workendAt: ''
     }
   },
   created () {
+    // 获取店铺信息
+    this.$http.get('/store/v1/stores').then(
+      res => {
+        this.storeInfo = res.data
+        console.log(this.storeInfo)
+      }
+    )
+    // 检查审核状态
+    this.$http.get('/store/v1/stores/info-status').then(
+      res => {
+        this.checkflag = res.data.status
+      }
+    )
   },
   methods: {
-    popupreset () {
-      this.popup = false
-      this.popbottom = false
-      this.reviseflag = false
-      this.desflag = false
-      this.weekflag = false
-      this.servflag = false
+    avatar () {
+      this.$router.push({name: 'storeavatar'})
     },
     revise () {
-      this.reviseflag = true
-      this.popup = true
+      this.$router.push({name: 'storechange'})
     },
-    des () {
-      this.popup = true
-      this.desflag = true
+    scategory () {
+      this.commitInfo()
+      this.$router.push({name: 'selectcategory'})
     },
-    opentime () {
-      // this.$refs.picker.open()
-      this.popbottom = true
+    weekpicker () {
+      this.$router.push({name: 'storeweeks', params: {page: 'weeks'}})
     },
-    week () {
-      this.popup = true
-      this.weekflag = true
+    checkin () {
+      if (!this.storeInfo.name) {
+        this.$toast('请输入店铺名称')
+        return false
+      } else if (!this.storeInfo.address) {
+        this.$toast('请输入店铺地址')
+      } else if (!this.storeInfo.phone || this.storeInfo.phone.length < 7) {
+        this.$toast('请输入正确的电话号码')
+      } else if (!this.storeInfo.categoryText) {
+        this.$toast('请选择经营品类')
+      } else if (!this.storeInfo.weeks) {
+        this.$toast('请选择营业日')
+      } else if (!this.storeInfo.workAt) {
+        this.$toast('请选择营业开始时间')
+      } else if (!this.storeInfo.workendAt) {
+        this.$toast('请选择营业结束时间')
+      } else if (!this.storeInfo.services) {
+        this.$toast('请选择提供的服务')
+      } else if (!this.storeInfo.lat || !this.storeInfo.lon) {
+        this.$toast('地址定位失败，请检查定位是否开启并重试')
+      } else {
+        this.$http.post('/store/v1/store-manages', this.storeInfo).then(
+          res => {
+            console.log(res.data)
+            if (res.data.status === 1) {
+              this.popuphold = true
+              this.audit = true
+              this.cpt = false
+            } else if (res.data.status === 0) {
+              this.popuphold = true
+              this.audit = true
+              this.cpt = true
+            } else {
+            }
+          }
+        ).catch(erro => { this.$toast(erro.response.data.message) })
+      }
     },
-    serv () {
-      this.popup = true
-      this.servflag = true
+    pickeropen (para) {
+      this.$refs.timepicker.open()
+      this.pickerflag = para
     },
-    onValuesChange () {}
+    handleConfirm (p) {
+      if (this.pickerflag === 1) {
+        this.workAt = p
+        this.storeInfo.workendAt = this.workendAt
+      } else if (this.pickerflag === 2) {
+        this.workendAt = p
+        this.storeInfo.workendAt = this.workendAt
+      }
+    },
+    selectservice () {
+      this.$router.push({name: 'storeweeks', params: { page: 'service' }})
+    },
+    selecttime () {
+      this.$router.push({name: 'storetime'})
+    },
+    changedesc () {
+      this.$router.push({name: 'storedesc'})
+    }
   },
   beforeRouteLeave (to, from, next) {
     let self = this
@@ -181,6 +172,12 @@ export default {
   #storemanage{
     background: #f7faff
     min-height 100vh
+    .mint-cell-allow-right.sp:after{
+      right:0
+    }
+    input:disabled{
+      background: transparent
+    }
     .mint-header{
       height: .88rem
       .mint-header-title{
@@ -208,6 +205,70 @@ export default {
         height:.35rem
         display: block
         margin-right .2rem
+      }
+    }
+    .information{
+      padding-top .3rem
+      .mint-cell-wrapper{
+        line-height 1.04rem
+        font-size .26rem !important
+        padding-left .3rem
+        padding-right .3rem
+        .mint-cell-text{
+          font-size .26rem
+          color: #161829
+        }
+      }
+      .mint-cell:first-child .mint-cell-wrapper{
+        background-size 0 0
+      }
+      .mint-button--normal{
+        background: #00b4fe
+        width: 94%
+        color: #fff
+        margin-left auto
+        margin-right auto
+        display block
+        .mint-button-text{
+          font-size .32rem
+        }
+      }
+      .time{
+        display: flex
+        align-items:center
+        line-height .9rem
+        padding-left: .3rem
+        padding-right: .3rem
+        background: #ffffff
+        p{
+          color: rgb(84,84,84)
+          display flex
+          align-items center
+          img{
+            height:.35rem
+            width:.4rem
+            display block
+            margin-left:.45rem
+          }
+          span{
+            display: block
+            width: 1rem
+          }
+        }
+        p:first-child{
+          color: #000000
+          margin-right: .9rem
+          white-space: nowrap
+          width: 1rem
+          display: block
+        }
+      }
+      .time.weeks{
+        p{
+          span{
+            width: .75rem
+          }
+        }
       }
     }
     .manage-content{
@@ -264,6 +325,7 @@ export default {
             vertical-align baseline
           }
         }
+
         .confirm {
           width: 94%;
           background: #00b4fe;

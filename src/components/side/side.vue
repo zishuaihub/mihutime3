@@ -1,7 +1,7 @@
 <template>
   <div id="side">
     <mt-header fixed title="">
-      <router-link to="/" slot="left">
+      <router-link to="/">
         <mt-button icon="back"></mt-button>
       </router-link>
       <mt-button slot="right"></mt-button>

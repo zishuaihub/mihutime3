@@ -1,16 +1,14 @@
 <template>
   <div id="setting">
     <mt-header title="设置">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
     <div class="popup-content" >
       <div class="third">
         <div class="third-child">
           <p @click="cgpn(1)">修改手机号<i class="mint-cell-allow-right"></i></p>
-          <p @click="as(2)">修改支付密码<i class="mint-cell-allow-right"></i></p>
+          <p @click="cgpw()">修改支付密码<i class="mint-cell-allow-right"></i></p>
         </div>
         <div class="third-child">
           <p @click="as(1)">店铺收款码<i class="mint-cell-allow-right"></i></p>
@@ -79,6 +77,9 @@ export default {
     },
     cgpn () {
       this.$router.push({name: 'cgpn'})
+    },
+    cgpw () {
+      this.$router.push({name: 'cgpwd'})
     },
     logout () {
       this.popbottom = true

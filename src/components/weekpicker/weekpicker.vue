@@ -128,7 +128,6 @@ export default {
       }
     }
     .popup-content{
-      padding-top .3rem
       .mint-cell-wrapper{
         line-height 1.05rem
         padding-left .3rem

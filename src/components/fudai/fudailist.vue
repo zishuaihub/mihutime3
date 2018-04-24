@@ -1,7 +1,7 @@
 <template>
   <div id="fudailist">
     <mt-header title="福袋列表">
-        <mt-button icon="back" slot="left" @click="$back"></mt-button>
+        <mt-button icon="back" slot="left" @click="$router.push({name: 'home'})"></mt-button>
       <mt-button slot="right" @click.native = addfd()>添加福袋</mt-button>
     </mt-header>
     <div class="main-body" :style="{ height: wrapperHeight + 'px', 'overflow': 'scroll'}">
@@ -19,8 +19,6 @@
         </div>
       </v-loadmore>
     </div>
-
-
   </div>
 </template>
 
@@ -57,8 +55,6 @@ export default {
         document.querySelector('.mint-loadmore-bottom').style.visibility = 'visible'
       }
     }
-  },
-  created () {
   },
   mounted () {
     this.loadPageList()  //  初次访问查询列表
@@ -113,9 +109,19 @@ export default {
       // 福袋未开始
       this.$store.dispatch('walletinfochange', item)
       this.$router.push({name: 'pending'})
+      console.log(item)
     },
     addfd () {
       this.$router.push({name: 'addfd'})
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'fudai') {
+      next(false)
+      this.popupVisible = false
+      console.log('导航被阻止了')
+    } else {
+      next()
     }
   }
 }

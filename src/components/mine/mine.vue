@@ -1,31 +1,31 @@
 <template>
   <div id="mine">
     <mt-header title="我的">
-      <router-link to="/" slot="left">
-        <mt-button icon="back">返回</mt-button>
+      <router-link to="/" >
+        <mt-button icon="back"></mt-button>
       </router-link>
       <router-link to="/mine/setting/setting" slot="right">
         <mt-button icon="add" >设置</mt-button>
       </router-link>
     </mt-header>
     <div class="mine-info">
-      <img alt="">
+      <img :src="mine.avatarUrl" alt="">
       <div class="mine-info-sec">
-        <p>lady主题餐厅</p>
-        <p>180********66</p>
+        <p>{{mine.name}}</p>
+        <p v-if="mine.phone">{{mine.phone.slice(0,3)}}****{{mine.phone.slice(-4)}}</p>
       </div>
       <div class="mine-info-thr">
-        <p>餐饮美食</p>
+        <p>{{mine.categoryText}}</p>
       </div>
     </div>
     <div class="mine-list">
       <mt-cell title="账户余额" to="/mine/balance" is-link>
         <i slot="icon" class="icon iconfont icon-qian" style="color: #f76165;"></i>
-          <span class="text">{{mineList.get}}</span>
+          <span class="text">{{finance.liquidated}}</span>
       </mt-cell>
           <mt-cell title="待结算金额" to="/mine/waitingforsettlement" is-link>
             <i slot="icon" class="icon iconfont icon-qianbao" style="color: #59aaff;"></i>
-              <span class="text">{{mineList.balance}}</span>
+              <span class="text">{{finance.unliquidated}}</span>
           </mt-cell>
           <mt-cell title="结算卡" to="/mine/cardsmanage" is-link>
             <i slot="icon" class="icon iconfont icon-yinhangqia" style="color: #59aaff;"></i>
@@ -36,11 +36,11 @@
               <span class="text"></span>
           </mt-cell>
       <div style="height: .2rem;"></div>
-      <mt-cell title="店铺" to="/mine/traderecord" is-link>
+      <mt-cell title="店铺" to="/mine/storemanage/storemanage" is-link>
         <i slot="icon" class="icon iconfont icon-dianpu1" style="color: #ffb540;"></i>
         <span class="text"></span>
       </mt-cell>
-      <mt-cell title="服务中心" to="/mine/traderecord" is-link>
+      <mt-cell title="服务中心" to="/servicecenter/servicecenter" is-link>
         <i slot="icon" class="icon iconfont icon-kefu" style="color: #f76165;"></i>
         <span class="text"></span>
       </mt-cell>
@@ -58,7 +58,8 @@ export default {
   },
   data () {
     return {
-      mineList: {}
+      mine: {},
+      finance: {}
     }
   },
   mounted () {
@@ -68,9 +69,14 @@ export default {
   },
   methods: {
     getmineList () {
-      this.$http.get('/finances').then(
-        res => { this.mineList = res.data }
-      )
+      // 基础店铺信息
+      this.$http.get('/store/v1/stores').then(
+        res => { this.mine = res.data }
+      ).catch(erro => this.$toast(erro.response.data.message))
+      // 金融财务信息
+      this.$http.get('/store/v1/finances').then(
+        res => { this.finance = res.data }
+      ).catch(erro => this.$toast(erro.response.data.message))
     }
   }
 }

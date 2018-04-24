@@ -1,21 +1,21 @@
 <template>
-  <div id="setpassword">
-    <mt-header title="身份验证">
+  <div id="fgsetpwd">
+    <mt-header title="设置支付密码">
       <mt-button icon="back" slot="left"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
     <div class="pwd-box" v-if="fstdis">
-          <h1>设置支付密码：</h1>
-          <h3>请输入支付密码,完成绑定银行卡</h3>
-          <div class="write-input">
-            <input type="password"  ref="input1" maxlength="6" class="realInput" v-model="realInput1" autofocus >
-          </div>
+      <h1>设置支付密码：</h1>
+      <h3>请输入支付密码,完成修改支付密码</h3>
+      <div class="write-input">
+        <input type="password"  ref="input1" maxlength="6" class="realInput" v-model="realInput1" autofocus >
+      </div>
     </div>
 
     <mt-popup v-if="!fstdis" v-model="vis" position="right">
-      <mt-header title="添加银行卡">
+      <mt-header title="设置支付密码">
         <mt-button icon="back" slot="left" @click.native=""></mt-button>
         <router-link to="" slot="right">
           <mt-button icon="add"></mt-button>
@@ -33,65 +33,65 @@
 </template>
 
 <script>
-import '../../../../assets/icon/iconfont.css'
-export default {
-  name: 'setpassword',
-  data () {
-    return {
-      realInput1: '',
-      realInput2: '',
-      fstdis: true,
-      vis: !this.fstdis,
-      carddone: false
-    }
-  },
-  watch: {
-    realInput1 (n, o) {
-      console.log(n)
-      if (n.length === 6) {
-        this.fstdis = false
+  import '../../../../assets/icon/iconfont.css'
+  export default {
+    name: 'fgsetpwd',
+    data () {
+      return {
+        realInput1: '',
+        realInput2: '',
+        fstdis: true,
+        vis: !this.fstdis,
+        carddone: false
       }
     },
-    realInput2 (n, o) {
-      console.log(n)
-      if (n.length === 6 && this.realInput1 === this.realInput2) {
-        this.nextStep()
-      } else if (n.length === 6) {
-        this.consoleErr()
+    watch: {
+      realInput1 (n, o) {
+        console.log(n)
+        if (n.length === 6) {
+          this.fstdis = false
+        }
+      },
+      realInput2 (n, o) {
+        console.log(n)
+        if (n.length === 6 && this.realInput1 === this.realInput2) {
+          this.nextStep()
+        } else if (n.length === 6) {
+          this.consoleErr()
+        }
       }
-    }
-  },
-  created () {
-    console.log(this.vis)
-  },
-  methods: {
-    goPay () {
-      console.log(this.realInput)
     },
-    nextStep () {
-      this.$http.post('/store/v1/ext-passwords', {
-        password: this.realInput1,
-        rePassword: this.realInput2,
-        validateCode: this.$route.params.validateCode
-      }).then(res => {
+    created () {
+      console.log(this.vis)
+    },
+    methods: {
+      goPay () {
+        console.log(this.realInput)
+      },
+      nextStep () {
+        this.$http.post('/store/v1/ext-passwords/update-password', {
+          password: this.realInput1,
+          rePassword: this.realInput2,
+          validateCode: this.$route.params.validateCode
+        }).then(res => {
+          this.$toast({
+            message: '操作成功',
+            iconClass: 'iconfont icon-selected',
+            duration: 1000
+          })
+          this.$router.push({name: 'setting'})
+        }).catch(erro => {
+          this.$toast(erro.response.data.message)
+        })
+      },
+      consoleErr () {
         this.$toast({
-          message: '操作成功',
-          iconClass: 'iconfont icon-selected',
+          message: '两次输入密码不一致',
           duration: 1000
         })
-        this.$router.push({name: 'cardsmanage'})
-      }).catch(erro => {
-        this.$toast(erro.response.data.message)
-      })
-    },
-    consoleErr () {
-      this.$toast({
-        message: '两次输入密码不一致',
-        duration: 1000
-      })
+      }
     }
   }
-}
 </script>
 
 <style lang="stylus">
@@ -101,7 +101,7 @@ export default {
       font-size .56rem
     }
   }
-  #setpassword{
+  #fgsetpwd{
     .mint-popup{
       width: 100%
       height:100vh

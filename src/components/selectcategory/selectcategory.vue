@@ -13,9 +13,9 @@
           </iscroll-view>
         </div>
         <div class="scroller-right">
-          <iscroll-view class="scroll-view">
+          <iscroll-view class="scroll-view"  :options="{click : true}">
             <ul>
-              <li v-for="item in list2" @click="selected2(item)">{{ item.name }}</li>
+              <li v-for="item in listright" @click="selectedright(item)">{{ item.name }}</li>
             </ul>
           </iscroll-view>
         </div>
@@ -30,12 +30,12 @@ export default {
   data () {
     return {
       select: {},
-      select2: {},
+      selectright: {},
       topStatus: '',
       loading: false,
       isActive: true,
       list: [],
-      list2: [],
+      listright: [],
       storeInfo: {}
     }
   },
@@ -49,28 +49,32 @@ export default {
   methods: {
     // 获取首屏一级菜单数据
     getList () {
-      this.$http.get('/common/v1/categories').then(res => { this.list = res.data; this.select = this.list[0]; this.getList2(res.data[0].id) })
+      this.$http.get('/common/v1/categories').then(res => { this.list = res.data; this.select = this.list[0]; this.getListright(res.data[0].id) })
     },
     // 获取首屏二级菜单数据
-    getList2 (id) {
+    getListright (id) {
       this.$http.put(`/common/v1/categories/${id}/child`).then(
-        res => { this.list2 = res.data }
+        res => { this.listright = res.data }
       )
     },
     selected (item) {
       this.select = item
-      this.getList2(item.id)
+      this.getListright(item.id)
     },
-    selected2 (item) {
-      this.select2 = item
+    selectedright (item) {
+      this.selectright = item
       this.jobdone()
     },
     jobdone () {
-      this.storeInfo.categoryId = this.select2.id
-      this.storeInfo.categoryText = this.select2.name
+      this.storeInfo.categoryId = this.selectright.id
+      this.storeInfo.categoryText = this.selectright.name
       // 提交信息
       this.$store.dispatch('storeinfochange', this.storeInfo)
-      this.$router.push('register')
+      if (this.$route.params.page === 'storechange') {
+        this.$router.push({name: 'storechange'})
+      } else {
+        this.$router.push({name: 'register'})
+      }
     }
   }
 }

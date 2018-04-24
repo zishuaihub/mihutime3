@@ -2,8 +2,8 @@
   <div id="balance">
     <div class="balance-top">
       <mt-header title="余额">
-        <mt-button icon="back" @click.native="$router.back()" slot="left"></mt-button>
-        <router-link to="/trade-record" slot="right">
+        <mt-button icon="back" @click.native="$router.push({name: 'mine'})" slot="left"></mt-button>
+        <router-link to="/mine/balancedetails" slot="right">
           <mt-button >明细</mt-button>
         </router-link>
       </mt-header>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="balance-bottom">
-      <mt-cell title="提现" to="/mine/balancedetails" is-link>
+      <mt-cell title="提现" to="/mine/extract" is-link>
         <i slot="icon" class="icon iconfont icon-jinbitixian" style="color: #f76165;"></i>
         <span class="text"></span>
       </mt-cell>

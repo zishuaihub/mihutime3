@@ -1,16 +1,14 @@
 <template>
   <div id="servicecenter">
     <mt-header title="服务中心">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back"  slot="left" @click="$router.back()"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
     <div class="service-content">
       <div class="first">
         <p>亲爱的 <span>杨树</span> </p>
         <p>已经准备好为您服务...</p>
-        <p><span>客服电话</span><span>400-0000-000 <img alt=""></span></p>
+        <p @click="popbottom = true"><span>客服电话</span><span>400-0000-000 <img src="../../assets/icon/bluephone@3x.png" alt=""></span></p>
       </div>
       <div class="service-swiper">
           <swiper :options="swiperOption" ref="mySwiper" class="swiper-box">
@@ -51,8 +49,11 @@
       </div>
     </mt-popup>
     <mt-popup
-      v-model = "popbottom"
-      position= "bottom" bclass="popup-bottom">
+      v-model="popbottom"
+      position="bottom">
+      <div class="popup-menu">联系客服:400-9999-8888</div>
+      <div class="popup-menu"><a href="tel:18555501932">拨打</a></div>
+      <div class="popup-menu" @click="popbottom = false">取消</div>
     </mt-popup>
   </div>
 </template>
@@ -248,9 +249,31 @@ export default {
         }
       }
     }
-    .mint-popup.mint-popup-bottom{
-      height: auto
+    .mint-popup-bottom{
+      width: 100%
+      height auto
+      background transparent
+      .popup-menu{
+        line-height 1rem
+        text-align center
+        background #ffffff
+        border-bottom 1px solid #e2e4e9
+        a{
+          display: block
+          width: 100%
+          height: 100%
+          color: #000
+        }
+      }
+      .popup-menu:first-child{
+        border-top-left-radius:.15rem;
+        border-top-right-radius:.15rem;
+      }
+      .popup-menu:last-child{
+        border:none
+      }
     }
+
   }
 
 </style>

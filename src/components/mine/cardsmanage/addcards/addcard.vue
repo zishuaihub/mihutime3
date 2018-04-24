@@ -1,7 +1,7 @@
 <template>
   <div id="addcard">
     <mt-header title="添加银行卡">
-      <mt-button icon="back" slot="left" @click.native="bankListPopupVisible = false"></mt-button>
+      <mt-button icon="back" slot="left" @click.native="$router.back()"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
@@ -9,28 +9,41 @@
     <div class="addcard-content">
       <p class="content-header">建议绑定商户本人的银行卡</p>
       <div class="list">
-        <div class="item">
-          <span class="left">银行类型</span> <span class="sp">请选择</span>
-          <select name="bankcards" id="bankcards">
+        <label class="item">
+            <span class="left">银行类型</span> <span class="sp">{{selectedtext}}</span>
+          <select name="bankcards" id="bankcards" style="width: 0;height: 0;" v-model="selected">
             <option :value="item.id" v-for="item in bankcards">{{item.name}}</option>
           </select>
           <i class="mint-cell-allow-right"></i>
-        </div>
-        <div class="item">
+        </label>
+        <label class="item">
           <span class="left">银行卡号</span>
           <mt-field type="number" v-model="cardnum" disableClear></mt-field>
-        </div>
-        <div class="item">
+        </label>
+        <label class="item">
           <span class="left">持卡人</span>
           <mt-field v-model="username" disableClear></mt-field>
-        </div>
+        </label>
       </div>
       <p><mt-checklist
         v-model="value"
         :options="['同意用户协议']">
       </mt-checklist></p>
-      <mt-button class="next">添加</mt-button>
+      <mt-button class="next" @click="next">添加</mt-button>
     </div>
+    <mt-popup v-model="carddone" position="right">
+      <mt-header title="提示">
+        <mt-button icon="back" slot="left" @click.native="welldown"></mt-button>
+        <router-link to="" slot="right">
+          <mt-button icon="add"></mt-button>
+        </router-link>
+      </mt-header>
+      <div class="pwd-box">
+        <img src="../../../../assets/icon/sucess@3x.png" alt="" style="width: .8rem;height: .8rem;margin-bottom: .4rem">
+        <p style="color: #333;font-size: .3rem;margin-bottom: 4.95rem">添加银行卡成功</p>
+        <mt-button @click="welldown">完成</mt-button>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -42,7 +55,27 @@ export default {
       username: '',
       cardnum: '',
       value: [],
-      bankcards: []
+      bankcards: [],
+      selected: '',
+      selectedtext: '请选择',
+      agree: false,
+      carddone: false
+    }
+  },
+  watch: {
+    selected (n, o) {
+      console.log(n)
+      this.selectedtext = this.bankcards.filter(
+        res => { return res.id === n }
+      )[0].name
+    },
+    value (n, o) {
+      if (n.length > 0) {
+        this.agree = true
+      } else {
+        this.agree = false
+      }
+      console.log(this.agree)
     }
   },
   created () {
@@ -54,6 +87,26 @@ export default {
   },
   methods: {
     radioFun () {
+    },
+    next () {
+      if (this.agree) {
+        this.$http.post('/store/v1/bank-cards', {
+          name: this.username,
+          bankCode: this.cardnum,
+          bankTypeId: this.selected,
+          validateCode: this.$route.params.validateCode
+        }).then(res => {
+          console.log(res.data)
+          this.carddone = true
+        }).catch(
+          erro => this.$toast(erro.response.data.message)
+        )
+      } else {
+        this.$toast('你还未同意用户协议')
+      }
+    },
+    welldown () {
+      this.$router.push({name: 'mine'})
     }
   }
 }
@@ -110,6 +163,12 @@ export default {
           .mint-field{
             width: 5rem
           }
+          select{
+            -webkit-appearance: none
+            -moz-appearance: none
+            appearance: none
+            border-color:#ffffff
+          }
         }
         .item:last-child{
           border-bottom:none
@@ -134,6 +193,36 @@ export default {
         line-height .8rem
         margin-top .6rem
       }
+    }
+    .mint-popup{
+      width: 100%
+      height:100%
+
+      .pwd-box{
+        text-align center
+
+        padding-top 1.5rem
+        h1{
+          font-size .48rem
+          color: #000
+          font-weight 500
+          margin-bottom .3rem
+        }
+        h3{
+          color: #c1c4d5
+          font-size .24rem
+          font-weight:normal
+          margin-bottom 1rem
+        }
+        .mint-button--normal{
+          width 4rem
+          height:.7rem
+          background #ffffff
+          border:1px solid #33a1ff
+          color: #33a1ff
+        }
+      }
+
     }
   }
 

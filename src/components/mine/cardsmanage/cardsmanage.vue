@@ -1,8 +1,8 @@
 <template>
   <div id="cardsmanage">
     <mt-header title="结算卡">
-      <mt-button icon="back" slot="left" @click.native="$router.back()"></mt-button>
-        <mt-button icon="add" @cilck="bankListPopupVisible = true" slot="right" v-if="!cards.length">添加银行卡</mt-button>
+      <mt-button icon="back" slot="left" @click.native="$router.push({name: 'mine'})"></mt-button>
+      <mt-button icon="add" @click="addcard" slot="right" v-if="addcd">添加银行卡</mt-button>
     </mt-header>
     <div v-if="cards">
       <div @click="carddetail(item)" v-for="item in cards" :class='["bankItem-"+item.bankTypeId, "cardslist"]'>
@@ -13,7 +13,7 @@
         <p class="cardnum"><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span> <span>{{item.bankCode.slice(-4)}}</span></p>
       </div>
     </div>
-    <div class="none" v-if="!cards.length">
+    <div class="none" v-if="addcd">
       <img src="../../../assets/cards@3x.png" alt="" class="img-responsive card-logo">
       <p>您还没有添加银行卡</p>
       <mt-button @click="addcard">添加银行卡</mt-button>
@@ -54,6 +54,7 @@ export default {
       bankListPopupVisible: true,
       cardnum: '',
       username: '',
+      addcd: false,
       options: [
         {
           label: '被禁用',
@@ -85,6 +86,9 @@ export default {
     getCards () {
       this.$http.get('/store/v1/bank-cards').then(res => {
         this.cards = res.data
+        if (this.cards.length < 1) {
+          this.addcd = true
+        }
         console.log(res.data)
       }
     )

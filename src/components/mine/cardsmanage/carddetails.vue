@@ -1,10 +1,8 @@
 <template>
   <div id="carddetails" :class='["bankItem-"+item.bankTypeId]'>
       <mt-header title="银行卡管理">
-        <mt-button icon="back" slot="left"></mt-button>
-        <router-link to="" slot="right">
-          <mt-button icon="add" @click.native="popupVisible = !popupVisible">●●●</mt-button>
-        </router-link>
+        <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
+        <mt-button icon="add" slot="right" @click.native="popupVisible = !popupVisible">●●●</mt-button>
       </mt-header>
 
     <div class="card-item">
@@ -50,7 +48,7 @@ export default {
       this.popupVisible = false
     },
     relieve () {
-      this.$http.post('')
+      this.$router.push({name: 'relieve', params: {id: this.item.id}})
     }
   }
 }

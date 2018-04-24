@@ -67,6 +67,7 @@
       sendOver (sendMseDisabled) {
         if (sendMseDisabled === 0) {
           this.clicked = false
+          this.gain = true
           return false
         } else {
           sendMseDisabled--

@@ -98,15 +98,27 @@ export default {
     comfirm () {
       if (this.wallet.status && this.wallet.status === 1) {
         this.$http.put(`/store/v1/wallets/${this.wallet.id}`, this.wallet).then(
-          () => this.$router.push({name: 'fudailist'})
+          () => {
+            this.$router.push({name: 'fudailist'})
+            this.$store.dispatch('walletinfochange', {})
+          }
+        ).catch(
+          erro => {
+            this.$toast(erro.response.message)
+            this.$store.dispatch('walletinfochange', {})
+          }
         )
       } else {
         this.$http.post('/store/v1/wallets', this.wallet).then(
           res => {
             console.log(res)
             this.$router.push({name: 'fudailist'})
+            this.$store.dispatch('walletinfochange', {})
           }
-        ).catch(error => this.$toast(error.response.data.message))
+        ).catch(error => {
+          this.$toast(error.response.data.message)
+          this.$store.dispatch('walletinfochange', {})
+        })
       }
     }
   }

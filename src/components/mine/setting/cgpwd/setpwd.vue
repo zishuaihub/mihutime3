@@ -1,31 +1,44 @@
 <template>
   <div id="setpwd">
     <mt-header title="修改支付密码">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button icon="back" slot="left" @click="$router.back()"></mt-button>
       <router-link to="" slot="right">
         <mt-button icon="add"></mt-button>
       </router-link>
     </mt-header>
-    <div class="pwd-box" v-if="fstdis">
+    <div class="pwd-box">
           <h1>修改支付密码：</h1>
-          <h3>请输入就支付密码，完成身份验证</h3>
+          <h3>请输入旧支付密码，完成身份验证</h3>
           <div class="write-input">
             <input type="password"  ref="input1" maxlength="6" class="realInput" v-model="realInput1" autofocus >
           </div>
     </div>
 
-    <mt-popup v-if="!fstdis" v-model="vis" position="right">
+    <mt-popup v-model="step2" position="right">
       <mt-header title="修改支付密码">
-        <mt-button icon="back" slot="left" @click.native=""></mt-button>
+        <mt-button icon="back" slot="left" @click.native="$router.back()"></mt-button>
         <router-link to="" slot="right">
           <mt-button icon="add"></mt-button>
         </router-link>
       </mt-header>
       <div class="pwd-box">
+        <h1>输入新支付密码：</h1>
+        <h3>输入新支付密码，完成修改密码</h3>
+        <div class="write-input">
+          <input type="password"  ref="input2" maxlength="6" class="realInput" v-model="realInput2" autofocus >
+        </div>
+      </div>
+    </mt-popup>
+    <mt-popup v-model="step3" position="right">
+      <mt-header title="修改支付密码">
+        <mt-button icon="back" slot="left" @click.native="$router.back()"></mt-button>
+          <mt-button icon="add" slot="right"></mt-button>
+      </mt-header>
+      <div class="pwd-box">
         <h1>重新输入新支付密码：</h1>
         <h3>再次输入新密码，保证密码一致</h3>
         <div class="write-input">
-          <input type="password"  ref="input2" maxlength="6" class="realInput" v-model="realInput2" autofocus >
+          <input type="password"  ref="input3" maxlength="6" class="realInput" v-model="realInput3" autofocus >
         </div>
       </div>
     </mt-popup>
@@ -40,23 +53,31 @@ export default {
     return {
       realInput1: '',
       realInput2: '',
-      fstdis: true,
-      vis: !this.fstdis
+      realInput3: '',
+      step2: false,
+      step3: false
     }
   },
   watch: {
     realInput1 (n, o) {
       console.log(n)
       if (n.length === 6) {
-        this.fstdis = false
+        this.getValidate()
       }
     },
     realInput2 (n, o) {
       console.log(n)
       if (n.length === 6) {
-        this.nextStep()
-      } else {
-        this.consoleErr()
+        this.step3 = true
+      }
+    },
+    realInput3 (n, o) {
+      if (n.length === 6) {
+        if (this.realInput2 === this.realInput3) {
+          this.changepassword()
+        } else {
+          this.$toast('您两次输入密码不一致，请重新输入！')
+        }
       }
     }
   },
@@ -67,18 +88,56 @@ export default {
     goPay () {
       console.log(this.realInput)
     },
+    changepassword () {
+      this.$http.post('/store/v1/ext-passwords/update-password', {
+        password: this.realInput2,
+        rePassword: this.realInput3,
+        validateCode: this.validateCode
+      }).then(res => {
+        console.log(res.data)
+        this.$toast('密码修改成功！')
+        this.$router.push({name: 'mine'})
+      }).catch(erro => {
+        this.$toast(erro.response.data.message)
+      })
+    },
     nextStep () {
       this.$toast({
         message: '操作成功',
-        iconClass: 'iconfont icon-selected',
-        duration: -1
+        iconClass: 'iconfont icon-selected'
       })
     },
     consoleErr () {
       this.$toast({
-        message: '两次输入密码不一致',
-        duration: -1
+        message: '两次输入密码不一致'
       })
+    },
+    getValidate () {
+      this.$http.post('/store/v1/ext-passwords/validate', {
+        oldPassword: this.realInput1
+      }).then(res => {
+        this.validateCode = res.data.validateCode
+        this.step2 = true
+      }).catch(
+        erro => {
+          this.$toast(erro.response.data.message)
+        }
+      )
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.step3) {
+      if (to.name === 'mine') {
+        next()
+        return false
+      }
+      next(false)
+      this.step3 = false
+    } else if (this.step2) {
+      next(false)
+      this.step2 = false
+    } else {
+      next()
     }
   }
 }

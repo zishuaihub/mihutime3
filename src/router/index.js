@@ -5,7 +5,6 @@ import Side from '../components/side/side'
 import ShopCart from '../components/shopcart/shopcart'
 import Mine from '../components/mine/mine'
 import login from '../components/login/login'
-import Extract from '../components/finance/extract/extract'
 import Traderecord from '../components/mine/traderecord/traderecord'
 import Setting from '../components/mine/setting/setting'
 import cgpn from '../components/mine/setting/cgpn/cgpn'
@@ -14,6 +13,7 @@ import nwpn from '../components/mine/setting/cgpn/nwpn'
 import cgpwd from '../components/mine/setting/cgpwd/cgpwd'
 import setpwd from '../components/mine/setting/cgpwd/setpwd'
 import fgpwd from '../components/mine/setting/cgpwd/fgpwd'
+import fgsetpwd from '../components/mine/setting/cgpwd/fgsetpwd'
 
 import qrcode from '../components/mine/setting/qrcode'
 import Cardsmanage from '../components/mine/cardsmanage/cardsmanage'
@@ -32,9 +32,11 @@ import notice from '../components/notice/notice'
 import withdraw from '../components/notice/withdraw'
 import balance from '../components/mine/balance/balance'
 import balancedetails from '../components/mine/balance/balancedetails'
-import remainder from '../components/mine/balance/remainder'
-import query from '../components/mine/balance/query'
+import extract from '../components/mine/balance/extract'
+import extractquery from '../components/mine/balance/extractquery'
+import extractdetail from '../components/mine/balance/extractdetail'
 import cardslist from '../components/mine/cardsmanage/cardslist'
+import relieve from '../components/mine/cardsmanage/relieve'
 import carddetails from '../components/mine/cardsmanage/carddetails'
 import addcard from '../components/mine/cardsmanage/addcards/addcard'
 import verification from '../components/mine/cardsmanage/addcards/verification'
@@ -44,6 +46,12 @@ import settlementdetail from '../components/mine/settlement/settlementdetail'
 import waitingforsettlement from '../components/mine/settlement/waitingforsettlement'
 import waitingforsettlementdetails from '../components/mine/settlement/waitingforsettlementdetails'
 import storemanage from '../components/mine/storemanage/storemanage'
+import storechange from '../components/mine/storemanage/storechange'
+import storeavatar from '../components/mine/storemanage/storeavatar'
+import storeweeks from '../components/mine/storemanage/storeweeks'
+import storetime from '../components/mine/storemanage/storetime'
+import storedesc from '../components/mine/storemanage/storedesc'
+
 import servicecenter from '../components/servicecenter/servicecenter'
 import seranrtemp from '../components/servicecenter/seranrtemp'
 import record from '../components/bill/record'
@@ -96,11 +104,6 @@ export default new Router({
       path: '/mine/balance',
       name: 'balance',
       component: balance
-    },
-    {
-      path: '/finance/extract',
-      name: 'extract',
-      component: Extract
     },
     {
       path: '/mine/setting/setting',
@@ -183,14 +186,19 @@ export default new Router({
       component: withdraw
     },
     {
-      path: '/mine/remainder',
-      name: 'remainder',
-      component: remainder
+      path: '/mine/extract',
+      name: 'extract',
+      component: extract
     },
     {
-      path: '/mine/query',
-      name: 'query',
-      component: query
+      path: '/mine/extractquery',
+      name: 'extractquery',
+      component: extractquery
+    },
+    {
+      path: '/mine/extractdetail',
+      name: 'extractdetail',
+      component: extractdetail
     },
     {
       path: '/mine/balancedetails',
@@ -211,6 +219,11 @@ export default new Router({
       path: '/mine/cardsmanage/carddetails',
       name: 'carddetails',
       component: carddetails
+    },
+    {
+      path: '/mine/cardsmanage/relieve',
+      name: 'relieve',
+      component: relieve
     },
     {
       path: '/mine/cardsmanage/addcards/addcard',
@@ -248,6 +261,31 @@ export default new Router({
       component: storemanage
     },
     {
+      path: '/mine/storemanage/storedesc',
+      name: 'storedesc',
+      component: storedesc
+    },
+    {
+      path: '/mine/storemanage/storeavatar',
+      name: 'storeavatar',
+      component: storeavatar
+    },
+    {
+      path: '/mine/storemanage/storeweeks',
+      name: 'storeweeks',
+      component: storeweeks
+    },
+    {
+      path: '/mine/storemanage/storetime',
+      name: 'storetime',
+      component: storetime
+    },
+    {
+      path: '/mine/storemanage/storechange',
+      name: 'storechange',
+      component: storechange
+    },
+    {
       path: '/servicecenter/servicecenter',
       name: 'servicecenter',
       component: servicecenter
@@ -281,6 +319,11 @@ export default new Router({
       path: '/mine/setting/cgpwd/cgpwd',
       name: 'cgpwd',
       component: cgpwd
+    },
+    {
+      path: '/mine/setting/cgpwd/fgsetpwd',
+      name: 'fgsetpwd',
+      component: fgsetpwd
     },
     {
       path: '/mine/setting/cgpwd/setpwd',
