@@ -24,6 +24,7 @@ import fudailist from '../components/fudai/fudailist'
 import addfd from '../components/fudai/addfd'
 import fudai from '../components/fudai/fudai'
 import fudaistate from '../components/fudai/fudaistate'
+import drawrecord from '../components/fudai/drawrecord'
 import noticelist from '../components/notice/noticelist'
 import pending from '../components/notice/pending'
 import paymentdetail from '../components/notice/paymentdetail'
@@ -154,6 +155,11 @@ export default new Router({
       path: '/fudaistate',
       name: 'fudaistate',
       component: fudaistate
+    },
+    {
+      path: '/drawrecord',
+      name: 'drawrecord',
+      component: drawrecord
     },
     {
       path: '/noticelist',

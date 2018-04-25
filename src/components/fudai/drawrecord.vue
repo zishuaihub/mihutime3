@@ -1,47 +1,46 @@
 <template>
-  <div id="side">
+  <div id="drawrecord">
     <mt-header title=""></mt-header>
     <div class="main-body" :style="{ height: wrapperHeight + 'px', overflow: 'scroll'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-        <div class="wallet-record">
-          <div class="wallet-record_body"  v-for="(items, index) in pageList">
-            <div class="wallet-record_count"  v-if="index === 0 || items.time !== pageList[index-1].time">
-              <p class="day">{{items.time}}</p>
-              <p class="user"></p>
-            </div>
-            <div class="wallet-record_list">
-              <div v-for="item in items.data" class="wallet-record-wrapper">
-                <div class="wallet-record-header">
-                  <div class="cont"> <p><span>订单编号：{{item.sn}}</span></p><p><span style="color: #33a1ff" v-if="item.status===1">待支付</span><span  v-if="!(item.status===1)">已支付</span></p> </div>
-                </div>
-                <div class="wallet-record_item">
-                  <img :src="item.avatarUrl" class="wallet-record_item_avatar">
-                  <div class="desc">
-                    <p class="username">{{item.userName}} <span v-if="item.userPhone">{{item.userPhone.slice(0,3)}}****{{item.userPhone.slice(-4)}}</span> </p>
-                    <div class="time">
-                      <p>{{item.createdAt}}</p>
-                    </div>
+          <div class="wallet-record">
+            <div class="wallet-record_body"  v-for="(items, index) in pageList">
+              <div class="wallet-record_count"  v-if="index === 0 || items.time !== pageList[index-1].time">
+                <p class="day">{{items.time}}</p>
+                <p class="user">{{show? '已': '未'}}使用/人 {{items.nums}}</p>
+              </div>
+              <div class="wallet-record_list">
+                <div v-for="item in items.data" class="wallet-record-wrapper">
+                  <div class="wallet-record-header">
+                    <div class="cont"> <p><span></span></p><p><span></span><span></span></p> </div>
                   </div>
-                  <div class="number" :class="show? '' : 'empty-number'">
-                    <p>{{(item.status===1)?'+':''}}{{item.storeAmount}}</p>
+                  <div class="wallet-record_item">
+                    <img :src="item.userAvatar" class="wallet-record_item_avatar">
+                    <div class="desc">
+                      <p class="username">{{item.userName}} <span v-if="item.userPhone">{{item.userPhone.slice(0,3)}}****{{item.userPhone.slice(-4)}}</span> </p>
+                      <div class="time">
+                        <p>{{item.createdAt}}</p>
+                      </div>
+                    </div>
+                    <div class="number" :class="show? '' : 'empty-number'">
+                      <p>{{item.amount}}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </v-loadmore>
     </div>
 
-    <div class="tabbar">
-      <div class="tabItem tabItem_1" :class = "show ? 'active' : ''" @click="toggleStatus(1)">
-        <p>待支付</p>
+      <div class="tabbar">
+        <div class="tabItem tabItem_1" :class = "show ? 'active' : ''" @click="toggleStatus(2)">
+          <p>已使用</p>
+        </div>
+        <div class="tabItem tabItem_2" :class = "show ?  '': 'active'" @click="toggleStatus(1)">
+          <p>未使用</p>
+        </div>
       </div>
-      <div class="tabItem tabItem_2" :class = "show ?  '': 'active'" @click="toggleStatus(2)">
-        <p>已完成</p>
-      </div>
-    </div>
-    <tabbar></tabbar>
   </div>
 </template>
 
@@ -52,9 +51,9 @@
     components: {
       tabbar,
       'v-loadmore': Loadmore  // 为组件起别名，vue转换template标签时不会区分大小写，例如：loadMore这种标签转换完就会变成loadmore，容易出现一些匹配问题
-      // 推荐应用组件时用a-b形式起名
+        // 推荐应用组件时用a-b形式起名
     },
-    name: 'side',
+    name: 'drawrecord',
     data () {
       return {
         show: true,
@@ -67,7 +66,7 @@
         allLoaded: false, //  是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
         scrollMode: 'auto', //  移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
         wrapperHeight: 0,
-        ajaxUrl: '/store/v1/orders/unpayed'
+        index: 1
       }
     },
     watch: {
@@ -88,13 +87,9 @@
     methods: {
       toggleStatus (index) {
         this.show = !this.show
-        if (index === 1) {
-          this.ajaxUrl = '/store/v1/orders/unpayed'
-        } else {
-          this.ajaxUrl = '/store/v1/orders/finish'
-        }
+        this.index = index
         this.listReset()
-        this.loadPageList()
+        this.loadPageList(this.index)
       },
       loadTop: function () { //  组件提供的下拉触发方法
         //  下拉加载
@@ -108,10 +103,12 @@
       },
       loadPageList: function (index) {
         // 查询数据
-        return this.$http.get(this.ajaxUrl, {
+        return this.$http.get(`/store/v1/wallet-records/${this.$route.params.id}`, {
           params: {
             'pre-page': this.searchCondition.pageSize,
-            'page': this.searchCondition.pageNo
+            'page': this.searchCondition.pageNo,
+            'id': this.$route.params.id,
+            'status': index
           }
         }).then(res => {
           console.log(res.data)
@@ -157,7 +154,7 @@
 </script>
 
 <style lang="stylus">
-  #side
+  #drawrecord
     .mint-header{
       height: .88rem
 

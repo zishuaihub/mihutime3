@@ -115,9 +115,7 @@
       background-size 100% auto
       position: relative
       .bottom{
-        width: 100%
-        position: absolute
-        bottom 0
+        margin-top:1.8rem
         p{
             color #a0a3b2
             line-height .75rem
@@ -156,6 +154,7 @@
               color: #33a1ff
               border:1px solid #33a1ff
               background #ffffff
+              font-size:.22rem
             }
             .verification.clicked{
               width:2rem

@@ -10,16 +10,16 @@
           <div class="inner"></div>
           <div>
             <ul>
-              <li><img src="../../assets/icon/homedetail@3x.png" alt="">明细</li>
-              <li><img src="../../assets/icon/homeewm@3x.png" alt="">收款码</li>
+              <li @click="$router.push({name: 'side'})"><img src="../../assets/icon/homedetail@3x.png" alt="">明细</li>
+              <li @click="$router.push({name: 'qrcode'})"><img src="../../assets/icon/homeewm@3x.png" alt="">收款码</li>
             </ul>
           </div>
         </div>
         <h3 class="category">{{store.categoryText}}</h3>
         <div class="seller-top">
           <p>今日成交额（元）</p>
-          <p>{{turnoversp}}</p>
-          <p>(<span>28</span>笔)</p>
+          <p>{{finances.todayAmount}}</p>
+          <p>(<span>{{finances.todayCount}}</span>笔)</p>
         </div>
         <div class="frame">
           <div class="wave-wrapp">
@@ -44,12 +44,12 @@
                 <img src="../../assets/icon/fudaiicon.png" alt="">
                 <p>我的福袋</p>
               </div>
-              <div class="tabs-item">
+              <div class="tabs-item" @click="$router.push({name: 'balance'})">
                 <img src="../../assets/icon/qianbaoicon.png" alt="">
                 <p>我的钱包</p>
               </div>
               <div class="tabs-item">
-                <img src="../../assets/icon/skm.png" alt="">
+                <img src="../../assets/icon/skm.png" alt="" @click="$router.push({name: 'qrcode'})">
                 <p>店铺二维码</p>
               </div>
               <div class="tabs-item">
@@ -70,11 +70,8 @@
           </swiper>
         </div>
         <div class="message-title"  @click="txym()">
-          <mt-cell
-            title="新消息通知"
-            is-link
-            value="更多" >
-          </mt-cell>
+          <p>新消息通知</p>
+          <p>更多<i class="mint-cell-allow-right"></i></p>
         </div>
         <div class="messagelist">
           <mt-cell title="新功能上线了">
@@ -107,7 +104,6 @@
       return {
         store: {},
         finances: {},
-        turnover: 15000.10,
         swiperOption: {
           pagination: {
             el: '.swiper-pagination',
@@ -118,21 +114,12 @@
       }
     },
     computed: {
-      balance () {
-        return this.finances.blance
-      },
-      turnoversp () {
-        return this.thousandBitSeparator(this.turnover.toFixed(2))
-      }
-      // swiper () {
-      //   return this.$refs.mySwiper.swiper
-      // }
     },
     created () {
     },
     mounted () {
       this.$http.get('/store/v1/stores').then(res => {
-        console.log(res)
+        console.log(res.data)
         this.store = res.data
       }).catch(error => console.log(error.response))
       // 获取财务信息
@@ -145,7 +132,7 @@
         this.$router.push({name: 'fudailist'})
       },
       txym () {
-        this.$router.push({name: 'extract', params: { balance: this.finances.balance }})
+        this.$router.push({name: 'noticelist'})
       },
       more () {
         this.moreflag = !this.moreflag
@@ -459,20 +446,17 @@
          }
         }
         .message-title{
+          display: flex
+          justify-content space-between
+          height:.83rem
+          padding-left .3rem
+          padding-right .5rem
+          padding-top: .4rem
+          color: #a0a3b2
+          position: relative
           .mint-cell-allow-right::after{
-            top:56%;
-          }
-          .mint-cell-wrapper{
-            background: none
-            line-height normal!important
-            padding-top .28rem
-          }
-          .mint-cell-text{
-            color: #a0a3b2
-            font-size .24rem
-          }
-          .mint-cell:last-child{
-            background: none
+            right:.3rem
+            top:.5rem
           }
         }
         .messagelist {

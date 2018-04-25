@@ -1,14 +1,14 @@
 <template>
-  <div id="withdraw">
+  <div id="extractdetail">
     <mt-header title="提现详情">
       <mt-button icon="back" slot="left" @click="$router.push({name: 'extractquery', params: {item: item}})"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
-    <div class="withdraw-content">
+    <div class="extractdetail-content">
       <h1>-{{item.amount}}</h1>
       <h2>提现成功</h2>
     </div>
-    <div class="withdraw-list">
+    <div class="extractdetail-list">
     <div class="left">
       流水号
     </div>
@@ -16,7 +16,7 @@
       {{item.sn}}
     </div>
   </div>
-    <div class="withdraw-list">
+    <div class="extractdetail-list">
       <div class="left">
         提现时间
       </div>
@@ -24,7 +24,7 @@
         {{item.createdAt}}
       </div>
     </div>
-    <div class="withdraw-list">
+    <div class="extractdetail-list">
       <div class="left">
         交易类型
       </div>
@@ -32,7 +32,7 @@
         提现
       </div>
     </div>
-    <div class="withdraw-list">
+    <div class="extractdetail-list">
       <div class="left">
         提现账户
       </div>
@@ -40,7 +40,7 @@
         {{item.storeName}}({{item.userPhone}})
       </div>
     </div>
-    <div class="withdraw-list">
+    <div class="extractdetail-list">
       <div class="left">
         收款账户
       </div>
@@ -48,7 +48,7 @@
         {{item.bankCode.slice(0, 4)}}  ****  ****  {{item.bankCode.slice(-4)}}（招商银行）
       </div>
     </div>
-    <div class="withdraw-list" v-if="item.toAccountedAt">
+    <div class="extractdetail-list" v-if="item.toAccountedAt">
       <div class="left">
         到账时间
       </div>
@@ -56,7 +56,7 @@
         {{item.toAccountedAt}}
       </div>
     </div>
-    <div class="withdraw-list">
+    <div class="extractdetail-list">
       <div class="left">
         到账状态
       </div>
@@ -69,7 +69,7 @@
 
 <script>
 export default {
-  name: 'withdraw',
+  name: 'extractdetail',
   data () {
     return {
       item: {}
@@ -84,7 +84,7 @@ export default {
 </script>
 
 <style lang="stylus">
-  #withdraw{
+  #extractdetail{
     background #f7faff
     min-height:100vh
     .mint-header{
@@ -98,7 +98,7 @@ export default {
         }
       }
     }
-    .withdraw-content{
+    .extractdetail-content{
       background: #fff
       padding-top .96rem
       h1{
@@ -115,7 +115,7 @@ export default {
         margin-top .25rem
       }
     }
-    .withdraw-list{
+    .extractdetail-list{
       display: flex
       padding-left .3rem
       padding-right .3rem
@@ -131,7 +131,7 @@ export default {
         color: #333333
       }
     }
-    .withdraw-list:last-child{
+    .extractdetail-list:last-child{
       padding-bottom .4rem
     }
   }

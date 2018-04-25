@@ -43,6 +43,16 @@
           <p>至{{wallet.effectiveEndAt}}</p>
         </div>
       </div>
+      <div class="list avatar" v-if="userWallet.length" @click="goaway">
+        <div class="left">
+          <p>领取记录</p>
+        </div>
+        <div class="right">
+          <p v-for="(item, index) in userWallet">
+            <img :src="item.userAvatar" alt="" v-if="index < 6">
+          </p>
+        </div>
+      </div>
       <div class="list">
         <div class="left">
           <p>每人限领</p>
@@ -96,7 +106,8 @@ export default {
     return {
       popupVisible: false,
       wallet: {},
-      routerflag: true
+      routerflag: true,
+      userWallet: []
     }
   },
   created () {
@@ -104,12 +115,14 @@ export default {
   mounted () {
     this.wallet = this.$store.state.Wallet
     console.log(this.wallet)
+    this.$http.get(`/store/v1/wallets/${this.wallet.id}`).then(
+      res => { this.userWallet = res.data.userWallet }
+    )
   },
   methods: {
     revise () {
       this.popupVisible = false
       this.routerflag = false
-      this.$store.dispatch('')
       this.$router.push({name: 'addfd', params: {change: true}})
     },
     deleteit () {
@@ -145,6 +158,10 @@ export default {
     fixback () {
       this.routerflag = false
       this.$back()
+    },
+    goaway () {
+      this.routerflag = false
+      this.$router.push({name: 'drawrecord', params: {id: this.wallet.id}})
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -216,6 +233,17 @@ export default {
       .list:last-child{
         border-bottom none
         padding-bottom .65rem
+      }
+      .list.avatar{
+        .right{
+          display: flex
+          img{
+            width: .5rem
+            height: .5rem
+            margin-left .1rem
+            display block
+          }
+        }
       }
     }
     .mint-popup-bottom{

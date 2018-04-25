@@ -1,9 +1,7 @@
 <template>
   <div id="notice">
     <mt-header title="站内通知">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back" slot="left"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
     <div class="notice-content">
