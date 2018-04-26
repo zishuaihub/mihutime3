@@ -23,6 +23,7 @@ import selectcategory from '../components/selectcategory/selectcategory'
 import fudailist from '../components/fudai/fudailist'
 import addfd from '../components/fudai/addfd'
 import fudai from '../components/fudai/fudai'
+import fudaiagain from '../components/fudai/fudaiagain'
 import fudaistate from '../components/fudai/fudaistate'
 import drawrecord from '../components/fudai/drawrecord'
 import noticelist from '../components/notice/noticelist'
@@ -150,6 +151,11 @@ export default new Router({
       path: '/fudai',
       name: 'fudai',
       component: fudai
+    },
+    {
+      path: '/fudaiagain',
+      name: 'fudaiagain',
+      component: fudaiagain
     },
     {
       path: '/fudaistate',

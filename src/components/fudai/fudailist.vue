@@ -116,7 +116,7 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
-    if (to.name === 'fudai') {
+    if (to.name === 'fudai' || to.name === 'fudaiagain') {
       next(false)
       this.popupVisible = false
       console.log('导航被阻止了')

@@ -116,10 +116,10 @@
             this.$router.push({name: 'extractdetail', params: {item: item}})
             break
           case 3:
-            this.$router.push({name: 'settlementdetail'})
+            this.$router.push({name: 'settlementdetail', params: {id: item.id}})
             break
           case 4:
-            this.$router.push({name: 'order'})
+            this.$router.push({name: 'paymentdetail', params: {id: item.id}})
             break
           case 5:
             this.$router.push({name: 'wallet'})

@@ -5,7 +5,7 @@
       <mt-button slot="right">联系客服</mt-button>
     </mt-header>
     <div class="adressInfo">
-      <p><img src="../../assets/icon/hsgth@3x.png" alt="">请按照格式填写地址，以免影响门店搜索和活动报名</p>
+      <p><img src="../../../static/icon/hsgth@3x.png" alt="">请按照格式填写地址，以免影响门店搜索和活动报名</p>
       <p>例1：道路+门牌号，“人民东路18号”</p>
       <p>例2：道路+门牌号+所在建筑+楼层，“四川北路1552号欢乐广场1楼”</p>
     </div>

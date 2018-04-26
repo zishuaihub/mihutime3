@@ -5,7 +5,7 @@
       <mt-button slot="right"></mt-button>
     </mt-header>
     <div class="addfd-info">
-      <p><img src="../../assets/icon/hsgth@3x.png" alt="">请按照下面信息提示，依次填写相关福袋信息</p>
+      <p><img src="../../../static/icon/hsgth@3x.png" alt="">请按照下面信息提示，依次填写相关福袋信息</p>
       <p>提示一：红包金额默认设置区间在2~200元之间，超过将无法进行</p>
       <p>提示二：红包数量设置区间在100~500个之间，否则将无法进行活动</p>
     </div>
@@ -29,7 +29,7 @@
           <mt-field label="活动描述" placeholder="请输入活动描述" v-model="fudaiInfo.title"></mt-field>
           <div class="addinfo">
             <p style="margin-bottom: .2rem">消费须知(点击下方消费须知可编辑)</p>
-            <p  ><textarea placeholder="" v-model="fudaiInfo.describe"></textarea></p>
+            <p  ><textarea placeholder="" v-model="consumeNotes"></textarea></p>
           </div>
           <div style="width: 2.1rem;height: 1.6rem;position: relative;">
             <input type="file" @click="popphoto=true"  @change="uploadImg($event)" class="uploadimg" style="width: 2.1rem;height: 1.6rem;opacity: 0;position: absolute;">
@@ -74,7 +74,7 @@
         popup: false,
         popphoto: false,
         options: {
-          img: 'http://ofyaji162.bkt.clouddn.com/bg1.jpg',
+          img: '',
           info: true,
           size: 1,
           outputType: 'jpeg',
@@ -107,6 +107,11 @@
       }
     },
     mounted () {
+      this.consumeNotes = this.$http.get('/store/v1/stores').then(
+        res => {
+          this.consumeNotes = res.data.consumeNotes
+        }
+      )
     },
     methods: {
       nextStep () {
@@ -174,13 +179,14 @@
       },
       jobdone () {
         this.job = false
-        if (!this.fudaiInfo.describe) {
+        if (!this.consumeNotes) {
           this.$toast('请填写消费须知')
         } else if (!this.fudaiInfo.title) {
           this.$toast('请填写活动描述')
         } else if (!this.fudaiInfo.file && !this.fudaiInfo.walletImg) {
           this.$toast('请上传活动滚动图')
         } else {
+          this.fudaiInfo.describe = this.consumeNotes
           this.$store.dispatch('walletinfochange', this.fudaiInfo)
           this.$router.push({name: 'fudai'})
         }

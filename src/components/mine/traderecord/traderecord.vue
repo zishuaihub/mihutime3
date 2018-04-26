@@ -17,7 +17,7 @@
       </h1>
       <div class="mint-header-button is-right">
         <button class="mint-button mint-button--default mint-button--normal" @click="selectdate()">
-          <label class="mint-button-text"><img src="../../../assets/icon/rilisx@3x.png" style="width: .4rem;height: .35rem;"></label>
+          <label class="mint-button-text"><img src="../../../../static/icon/rilisx@3x.png" style="width: .4rem;height: .35rem;"></label>
         </button>
       </div>
     </header>

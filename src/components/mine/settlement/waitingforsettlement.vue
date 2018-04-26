@@ -14,9 +14,9 @@
             <div style="font-size: 1.2rem;color: #ffffff;margin-bottom: .65rem">{{finance.todaySettlement}}</div>
             <div class="overview">
               <p v-if=" parseInt(finance.yesterdayAmount) == 0">昨日成交额/元&nbsp;0.00</p>
-              <p v-if=" parseInt(finance.yesterdayAmount)!==0 ">昨日成交额/元 +{{finance.yesterdayAmount}}<img src="../../../assets/icon/up@3x.png" alt=""></p>
+              <p v-if=" parseInt(finance.yesterdayAmount)!==0 ">昨日成交额/元 +{{finance.yesterdayAmount}}<img src="../../../../static/icon/up@3x.png" alt=""></p>
               <p v-if=" parseInt(finance.settlementAmount) == 0" >待结算/元&nbsp;0.00</p>
-              <p v-if=" parseInt(finance.settlementAmount)!==0" >待结算/元+{{finance.settlementAmount}}<img src="../../../assets/icon/up@3x.png" alt=""></p>
+              <p v-if=" parseInt(finance.settlementAmount)!==0" >待结算/元+{{finance.settlementAmount}}<img src="../../../../static/icon/up@3x.png" alt=""></p>
             </div>
           </div>
           <div class="list-title">

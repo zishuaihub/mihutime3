@@ -20,7 +20,7 @@
           <p @click="as(2)">检查更新<i class="mint-cell-allow-right"></i></p>
         </div>
         <div class="third-child">
-          <p @click="logout">退出账号</p>
+          <p @click="popbottom = true">退出账号</p>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="popup-content">
         <div class="about">
           <div class="logo">
-            <img src="../../../assets/icon/logo-014@3x.png" alt="">
+            <img src="../../../../static/icon/logo-014@3x.png" alt="">
           </div>
           <div class="about-info">
             <h2>福袋介绍</h2>
@@ -50,8 +50,8 @@
       v-model="popbottom"
       position="bottom">
       <div class="popup-menu" @click="">退出不会删除任何历史数据</div>
-      <div class="popup-menu" @click="">退出登录</div>
-      <div class="popup-menu" @click="">取消</div>
+      <div class="popup-menu" @click="logout">退出登录</div>
+      <div class="popup-menu" @click="popbottom= false">取消</div>
     </mt-popup>
   </div>
 </template>
@@ -82,7 +82,9 @@ export default {
       this.$router.push({name: 'cgpwd'})
     },
     logout () {
-      this.popbottom = true
+      this.$store.dispatch('logout')
+      this.popbottom = false
+      this.$router.push({name: 'login'})
     }
   },
   beforeRouteLeave (to, from, next) {

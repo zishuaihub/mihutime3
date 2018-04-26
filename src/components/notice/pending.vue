@@ -152,7 +152,8 @@ export default {
       )
     },
     again () {
-      this.$router.push({name: 'addfd'})
+      this.routerflag = false
+      this.$router.push({name: 'fudaiagain', params: {id: this.wallet.id}})
     },
     shared () {},
     fixback () {

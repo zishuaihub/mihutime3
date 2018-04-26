@@ -7,9 +7,9 @@
     <div class="time">
       <p>营业时间</p>
       <p><span  @click="pickeropen(1)" >{{storeInfo.workAt}}</span></p>
-      <p @click="pickeropen(1)"><img src="../../../assets/icon/rili@3x.png" alt=""></p>
+      <p @click="pickeropen(1)"><img src="../../../../static/icon/rili@3x.png" alt=""></p>
       <p style="margin-left: 1.3rem"><span @click="pickeropen(2)">{{storeInfo.workendAt}}</span></p>
-      <p @click="pickeropen(2)"><img src="../../../assets/icon/rili@3x.png" alt=""></p>
+      <p @click="pickeropen(2)"><img src="../../../../static/icon/rili@3x.png" alt=""></p>
     </div>
     <mt-button class="confirm" @click = commit()>确认</mt-button>
     <mt-datetime-picker ref="timepicker"

@@ -1,9 +1,8 @@
 <template>
   <div id="register">
     <mt-header title="基本信息">
-        <mt-button icon="back" slot="left" @click = $back ></mt-button>
-      <mt-button slot="right">联系客服</mt-button>
-
+        <mt-button icon="back" slot="left" @click = $router.push({name:'login'}) ></mt-button>
+        <mt-button slot="right" @click="popbottom = true">联系客服</mt-button>
     </mt-header>
     <div v-if="blank" class="information">
       <mt-field label="店铺名称" placeholder="请输入店铺名称" type="text" v-model="storeInfo.name"></mt-field>
@@ -19,9 +18,9 @@
       <div class="time">
         <p>营业时间</p>
         <p><span  @click="pickeropen(1)" ><span v-if="workflag1">开始时间</span>{{workAt}}</span></p>
-        <p @click="pickeropen(1)"><img src="../../assets/icon/rili@3x.png" alt=""></p>
+        <p @click="pickeropen(1)"><img src="../../../static/icon/rili@3x.png" alt=""></p>
         <p style="margin-left: 1.3rem"><span @click="pickeropen(2)"><span v-if="workflag2">结束时间</span>{{workendAt}}</span></p>
-        <p @click="pickeropen(2)"><img src="../../assets/icon/rili@3x.png" alt=""></p>
+        <p @click="pickeropen(2)"><img src="../../../static/icon/rili@3x.png" alt=""></p>
       </div>
       <div class="time" @click = selectservice>
         <p>提供服务</p>
@@ -34,10 +33,8 @@
       class="popup-hold"
       closeOnClickModal="false">
       <mt-header title="等待验证">
-        <router-link to="/" slot="left">
-          <mt-button icon="back"></mt-button>
-        </router-link>
-        <mt-button slot="right">联系客服</mt-button>
+        <mt-button icon="back"  slot="left" @click="holdback()"></mt-button>
+        <mt-button slot="right"  @click="popbottom = true">联系客服</mt-button>
       </mt-header>
       <div class="process">
         <div class="process-icon">
@@ -75,13 +72,20 @@
       type="time"
       @confirm="handleConfirm">
     </mt-datetime-picker>
+    <mt-popup
+      v-model="popbottom"
+      position="bottom">
+      <div class="popup-menu">联系客服:400-9999-8888</div>
+      <div class="popup-menu"><a href="tel:18555501932">拨打</a></div>
+      <div class="popup-menu" @click="popbottom = false">取消</div>
+    </mt-popup>
   </div>
 
 </template>
 
 <script>
   // TODO: 提供服务小右箭头
-  import '../../assets/icon/iconfont.css'
+  import '../../../static/icon/iconfont.css'
   // TODO: 添加联系客服
   export default {
     name: 'register',
@@ -90,6 +94,7 @@
         blank: false,
         pickerVisible: '',
         popuphold: false,
+        popbottom: false,
         cpt: true,
         storeInfo: {
         },
@@ -227,6 +232,22 @@
       auditsuccess () {
         this.$router.push({name: 'home'})
         this.$http.post('/store/v1/stores/step').then()
+      },
+      holdback () {
+        if (this.popbottom) { this.popbottom = false } else { this.popuphold = false }
+      }
+    },
+    beforeRouteLeave (to, from, next) {
+      if (to.name === 'home') {
+        next()
+      } else if (this.popbottom) {
+        next(false)
+        this.popbottom = false
+      } else if (this.popuphold) {
+        this.popuphold = false
+        next(false)
+      } else {
+        next()
       }
     }
   }
@@ -400,6 +421,30 @@
         }
       }
     }
+    .mint-popup-bottom{
+      width: 100%
+      height auto
+      .popup-menu{
+        line-height 1rem
+        text-align center
+        background #ffffff
+        border-bottom 1px solid #e2e4e9
+        a{
+          display: block
+          width: 100%
+          height: 100%
+          color: #000
+        }
+      }
+      .popup-menu:first-child{
+        border-top-left-radius:.15rem;
+        border-top-right-radius:.15rem;
+      }
+      .popup-menu:last-child{
+        border:none
+      }
+    }
+
   }
 
 </style>

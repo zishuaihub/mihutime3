@@ -5,7 +5,7 @@
       <mt-button v-if="!(checkflag === 0)" slot="right" @click.native="revise()">申请修改</mt-button>
     </mt-header>
     <div class="state" v-if="checkflag === 0" @click="revise()">
-      <img src="../../../assets/icon/hsgth@3x.png" alt="">
+      <img src="../../../../static/icon/hsgth@3x.png" alt="">
       <p>店铺修改信息目前正在审核中，请等待…</p>
       <i class="mint-cell-allow-right"></i>
     </div>
@@ -32,9 +32,9 @@
           <div class="time" @click="selecttime">
             <p>营业时间</p>
             <p><span >{{storeInfo.workAt}}</span></p>
-            <p><img src="../../../assets/icon/rili@3x.png" alt=""></p>
+            <p><img src="../../../../static/icon/rili@3x.png" alt=""></p>
             <p style="margin-left: 1.3rem"><span>{{storeInfo.workendAt}}</span></p>
-            <p><img src="../../../assets/icon/rili@3x.png" alt=""></p>
+            <p><img src="../../../../static/icon/rili@3x.png" alt=""></p>
           </div>
           <div class="time" @click = selectservice>
             <p>提供服务</p>

@@ -1,15 +1,13 @@
 <template>
   <div id="paymentdetail">
     <mt-header title="支付详情">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back"  slot="left" @click="$router.back()"></mt-button>
       <mt-button slot="right"></mt-button>
     </mt-header>
-    <div class="paymentdetail-content">
-      <p><img  alt="">微信用户XXXX</p>
-      <h1>-1000.25</h1>
-      <h2>提现成功</h2>
+    <div class="paymentdetail-content" v-if="item">
+      <p><img :src="item.data.avatarUrl"  alt="">{{item.data.userName}}</p>
+      <h1>{{item.data.storeAmount}}</h1>
+      <h2>支付成功</h2>
     </div>
     <div class="paymentdetail-wrapper">
       <div class="paymentdetail-list">
@@ -17,7 +15,7 @@
           订单金额
         </div>
         <div class="right">
-          100.00
+          {{item.data.orderAmount}}
         </div>
       </div>
       <div class="paymentdetail-list">
@@ -25,7 +23,7 @@
           折扣
         </div>
         <div class="right">
-          -30.00
+          -{{item.data.storeDiscountAmount}}
         </div>
       </div>
       <div class="paymentdetail-list">
@@ -33,7 +31,7 @@
           付款方式
         </div>
         <div class="right">
-          微信
+          {{item.data.paymentText}}
         </div>
       </div>
       <div class="paymentdetail-list">
@@ -41,7 +39,7 @@
           支付说明
         </div>
         <div class="right">
-          微信用户XXXX
+          {{}}
         </div>
       </div>
       <div class="paymentdetail-list">
@@ -49,7 +47,7 @@
           创建时间
         </div>
         <div class="right">
-          2018-09-20
+          {{item.data.createdAt}}
         </div>
       </div>
       <div class="paymentdetail-list">
@@ -57,24 +55,24 @@
           交易订单号
         </div>
         <div class="right">
-          998798284287643253
+          {{item.data.sn}}
         </div>
       </div>
     </div>
     <div class="cell-wrapper">
       <mt-cell
         title="备注"
-        to="//github.com"
+        to="/home"
         is-link>
       </mt-cell>
       <mt-cell
         title="查看往来记录"
-        to="//github.com"
+        to="/home"
         is-link>
       </mt-cell>
       <mt-cell
         title="对此订单有疑问"
-        to="//github.com"
+        to="/home"
         is-link>
       </mt-cell>
     </div>
@@ -86,9 +84,15 @@ export default {
   name: 'paymentdetail',
   data () {
     return {
+      item: {}
     }
   },
   created () {
+    this.$http.get(`/store/v1/messages/${this.$route.params.id}`).then(
+      res => {
+        this.item = res.data
+      }
+    )
   },
   methods: {
   }

@@ -10,11 +10,11 @@
           <img :src="item.bankType.ico" alt="">
           <p>{{item.bankType.name}}</p>
         </div>
-        <p class="cardnum"><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../assets/icon/dotdotdot@3x.png" alt=""></span> <span>{{item.bankCode.slice(-4)}}</span></p>
+        <p class="cardnum"><span><img src="../../../../static/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../../static/icon/dotdotdot@3x.png" alt=""></span><span><img src="../../../../static/icon/dotdotdot@3x.png" alt=""></span> <span>{{item.bankCode.slice(-4)}}</span></p>
       </div>
     </div>
     <div class="none" v-if="addcd">
-      <img src="../../../assets/cards@3x.png" alt="" class="img-responsive card-logo">
+      <img src="../../../../static/images/cards@3x.png" alt="" class="img-responsive card-logo">
       <p>您还没有添加银行卡</p>
       <mt-button @click="addcard">添加银行卡</mt-button>
     </div>

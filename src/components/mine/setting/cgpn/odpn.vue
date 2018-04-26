@@ -49,13 +49,11 @@
           this.$toast(res.data.message)
           this.clicked = !this.clicked
           this.gain = !this.gain
-          // TODO: test
           this.sendOver(s)
         }).catch(
           error => {
             console.log(error.response.data.message)
             this.$toast(error.response.data.message)
-            this.gain = !this.gain
           }
         )
       },

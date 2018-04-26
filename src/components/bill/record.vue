@@ -14,7 +14,7 @@
               <p>{{item.createdAt.substring(0,7) }}</p>
               <p>待结算1000.00元</p>
             </div>
-            <img src="../../assets/icon/rili@3x.png" alt="">
+            <img src="../../../static/icon/rili@3x.png" alt="">
           </div>
           <div class="item">
             <div class="name">{{item.name}}</div>

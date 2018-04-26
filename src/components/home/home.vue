@@ -10,8 +10,8 @@
           <div class="inner"></div>
           <div>
             <ul>
-              <li @click="$router.push({name: 'side'})"><img src="../../assets/icon/homedetail@3x.png" alt="">明细</li>
-              <li @click="$router.push({name: 'qrcode'})"><img src="../../assets/icon/homeewm@3x.png" alt="">收款码</li>
+              <li @click="$router.push({name: 'side'})"><img src="../../../static/icon/homedetail@3x.png" alt="">明细</li>
+              <li @click="$router.push({name: 'qrcode'})"><img src="../../../static/icon/homeewm@3x.png" alt="">收款码</li>
             </ul>
           </div>
         </div>
@@ -41,19 +41,19 @@
         <div class="tabs">
             <div class="tabs-items">
               <div class="tabs-item" @click="fudai">
-                <img src="../../assets/icon/fudaiicon.png" alt="">
+                <img src="../../../static/icon/fudaiicon.png" alt="">
                 <p>我的福袋</p>
               </div>
               <div class="tabs-item" @click="$router.push({name: 'balance'})">
-                <img src="../../assets/icon/qianbaoicon.png" alt="">
+                <img src="../../../static/icon/qianbaoicon.png" alt="">
                 <p>我的钱包</p>
               </div>
               <div class="tabs-item">
-                <img src="../../assets/icon/skm.png" alt="" @click="$router.push({name: 'qrcode'})">
+                <img src="../../../static/icon/skm.png" alt="" @click="$router.push({name: 'qrcode'})">
                 <p>店铺二维码</p>
               </div>
               <div class="tabs-item">
-                <img src="../../assets/icon/gdgn.png" alt="">
+                <img src="../../../static/icon/gdgn.png" alt="">
                 <p>更多功能</p>
               </div>
             </div>
@@ -62,9 +62,9 @@
         <div class="seller-swiper">
           <swiper :options="swiperOption" ref="mySwiper" class="swiper-box">
             <!-- slides -->
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
+            <swiper-slide><img src="../../../static/images/swiper.png" alt="" class="img-responsive"></swiper-slide>
+            <swiper-slide><img src="../../../static/images/swiper.png" alt="" class="img-responsive"></swiper-slide>
+            <swiper-slide><img src="../../../static/images/swiper.png" alt="" class="img-responsive"></swiper-slide>
             <!-- Optional controls -->
             <div class="swiper-pagination"  slot="pagination"></div>
           </swiper>
@@ -74,14 +74,13 @@
           <p>更多<i class="mint-cell-allow-right"></i></p>
         </div>
         <div class="messagelist">
-          <mt-cell title="新功能上线了">
-            <span>1小时前</span>
-            <img slot="icon" src="../../assets/icon/messagelisticon.png">
-          </mt-cell>
-          <mt-cell title="您有一笔新订单：¥50.00">
-            <span>5小时前</span>
-            <img slot="icon" src="../../assets/icon/messagelisticon.png">
-          </mt-cell>
+          <div v-for="(item, index) in notice" v-if="index < 5" @click="goDetail(item)">
+            <mt-cell :title="item.title">
+              <span>{{item.sendAt}}</span>
+              <img slot="icon" src="../../../static/icon/messagelisticon.png">
+            </mt-cell>
+          </div>
+
         </div>
       </div>
     </div>
@@ -104,6 +103,7 @@
       return {
         store: {},
         finances: {},
+        notice: {},
         swiperOption: {
           pagination: {
             el: '.swiper-pagination',
@@ -126,6 +126,12 @@
       this.$http.get('/store/v1/finances').then(
         res => { this.finances = res.data; console.log(this.finances) }
       )
+      this.$http.get('/store/v1/messages?per-page=10&page=1').then(
+        res => {
+          this.notice = res.data
+        }
+      )
+      this.scoket()
     },
     methods: {
       fudai () {
@@ -140,6 +146,58 @@
       clearpop () {
         if (this.moreflag === true) {
           this.moreflag = false
+        }
+      },
+      scoket () {
+        let scoketUrl
+        this.$http.get('/common/v1/websockets').then(res => {
+          scoketUrl = res.data
+          let exampleSocket = new WebSocket(`ws://${scoketUrl}`)
+          exampleSocket.onopen = function (event) {
+            let login = {
+              action: 'login',
+              type: 'store',
+              receiverId: 20
+            }
+            login = JSON.stringify(login)
+            exampleSocket.send(login)
+          }
+          exampleSocket.onmessage = function (event) {
+            let data = event.data
+            data = JSON.parse(data).data
+            if (data.type === 'notice') {
+              this.notice.unshift(data)
+            }
+            console.log(data)
+          }
+        })
+      },
+      goDetail (item) {
+        switch (item.itemType) {
+          case 1:
+            this.$router.push({name: 'notice'})
+            break
+          case 2:
+            this.$router.push({name: 'extractdetail', params: {item: item}})
+            break
+          case 3:
+            this.$router.push({name: 'settlementdetail', params: {id: item.id}})
+            break
+          case 4:
+            this.$router.push({name: 'paymentdetail', params: {id: item.id}})
+            break
+          case 5:
+            this.$router.push({name: 'wallet'})
+            break
+          case 6:
+            this.$router.push({name: 'storeInfo'})
+            break
+          case 7:
+            this.$router.push({name: 'userWallet'})
+            break
+          case 8:
+            this.$router.push({name: 'bankCard'})
+            break
         }
       },
       // transarr (arr, len) {
@@ -245,7 +303,6 @@
           text-align center
           color: #c7e6ff
           font-size .2rem
-          height: .3rem
           line-height: .3rem
           width:1rem;
           background rgba(86,96,233,1)

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import '../../../../assets/icon/iconfont.css'
+import '../../../../../static/icon/iconfont.css'
 export default {
   name: 'setpassword',
   data () {

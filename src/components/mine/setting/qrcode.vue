@@ -8,7 +8,7 @@
     <div class="qr-content">
       <p>扫码进店铺 立即买单</p>
       <p>lady茶餐厅收款码</p>
-      <p><img src="../../../assets/icon/paysign@3x.png" alt=""></p>
+      <p><img src="../../../../static/icon/paysign@3x.png" alt=""></p>
       <p class="ewm"><img :src="qrcode" alt=""></p>
     </div>
     <p class="hsb"><router-link to="">历史订单</router-link></p>

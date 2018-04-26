@@ -1,20 +1,22 @@
 <template>
   <div id="login">
-    <div class="loginarea">
-      <div class="inputarea">
-        <div class="inputarea-user">
-          <input type="text" placeholder="请输入手机号" v-model="userInfo.phone">
-          <img class="inputarea-icon" src="../../assets/icon/phone@3x.png" alt="" >
+    <div class="colorfix" style="background: #031425">
+      <img src="../../../static/images/loginbanner.png" alt="" style="display: block;width: 100%;">
+      <div class="loginarea">
+        <div class="inputarea">
+          <div class="inputarea-user">
+            <input type="text" placeholder="请输入手机号" v-model="userInfo.phone">
+            <img class="inputarea-icon" src="../../../static/icon/phone@3x.png" alt="" >
+          </div>
+          <div class="inputarea-password">
+            <input type="password" placeholder="请输入验证码" v-model="userInfo.code">
+            <img class="inputarea-icon"  src="../../../static/icon/lock@3x.png" alt="" >
+            <button @click="clickedFun(60)" :disabled="clicked" class="verification" :class="{ 'clicked': clicked}">发送验证码 <span v-if="clicked">{{sendMseDisabled}}s</span> </button>
+          </div>
+          <button @click="login" :disabled="!(userInfo.phone && userInfo.code)">登录</button>
         </div>
-        <div class="inputarea-password">
-          <input type="password" placeholder="请输入验证码" v-model="userInfo.code">
-          <img class="inputarea-icon"  src="../../assets/icon/lock@3x.png" alt="" >
-          <button @click="clickedFun(60)" :disabled="clicked" class="verification" :class="{ 'clicked': clicked}">发送验证码 <span v-if="clicked">{{sendMseDisabled}}s</span> </button>
-        </div>
-        <button @click="login" :disabled="!(userInfo.phone && userInfo.code)">登录</button>
       </div>
     </div>
-
     <div class="bottom">
       <p>纸象优惠 V20.0正式版</p>
     </div>
@@ -109,13 +111,9 @@
     #login
       width:100%;
       height:100vh;
-      background: #ffffff
-      padding-top 6.6rem
-      background url("../../assets/loginbanner.png") center top no-repeat
-      background-size 100% auto
       position: relative
       .bottom{
-        margin-top:1.8rem
+        padding-top:1.5rem
         p{
             color #a0a3b2
             line-height .75rem
@@ -128,7 +126,8 @@
           padding-left .3rem
           padding-right .3rem
           padding-top 1.1rem
-          border-radius .16rem;
+          border-top-left-radius:.16rem
+          border-top-right-radius:.16rem
           background #ffffff
           .inputarea
             padding-left .3rem

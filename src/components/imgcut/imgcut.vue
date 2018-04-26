@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       options: {
-        img: 'http://ofyaji162.bkt.clouddn.com/bg1.jpg',
+        img: '',
         info: true,
         size: 1,
         outputType: 'jpeg',

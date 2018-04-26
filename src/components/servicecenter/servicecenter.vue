@@ -8,14 +8,14 @@
       <div class="first">
         <p>亲爱的 <span>杨树</span> </p>
         <p>已经准备好为您服务...</p>
-        <p @click="popbottom = true"><span>客服电话</span><span>400-0000-000 <img src="../../assets/icon/bluephone@3x.png" alt=""></span></p>
+        <p @click="popbottom = true"><span>客服电话</span><span>400-0000-000 <img src="../../../static/icon/bluephone@3x.png" alt=""></span></p>
       </div>
       <div class="service-swiper">
           <swiper :options="swiperOption" ref="mySwiper" class="swiper-box">
             <!-- slides -->
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
-            <swiper-slide><img src="../../assets/swiper.png" alt="" class="img-responsive"></swiper-slide>
+            <swiper-slide><img src="../../../static/images/swiper.png" alt="" class="img-responsive"></swiper-slide>
+            <swiper-slide><img src="../../../static/images/swiper.png" alt="" class="img-responsive"></swiper-slide>
+            <swiper-slide><img src="../../../static/images/swiper.png" alt="" class="img-responsive"></swiper-slide>
             <!-- Optional controls -->
             <div class="swiper-pagination"  slot="pagination"></div>
           </swiper>

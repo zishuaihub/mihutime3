@@ -1,6 +1,19 @@
 <template>
   <div id="drawrecord">
-    <mt-header title=""></mt-header>
+    <header class="mint-header">
+      <div class="mint-header-button is-left">
+        <button @click="$router.back()" class="mint-button mint-button--default mint-button--normal">
+          <span class="mint-button-icon"><i class="mintui mintui-back"></i></span>
+          <label class="mint-button-text"></label>
+        </button>
+      </div>
+      <h1 class="mint-header-title"></h1>
+      <div class="mint-header-button is-right">
+        <button class="mint-button mint-button--default mint-button--normal"><!---->
+          <label class="mint-button-text"></label>
+        </button>
+      </div>
+    </header>
     <div class="main-body" :style="{ height: wrapperHeight + 'px', overflow: 'scroll'}">
       <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
           <div class="wallet-record">
@@ -66,7 +79,7 @@
         allLoaded: false, //  是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
         scrollMode: 'auto', //  移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
         wrapperHeight: 0,
-        index: 1
+        index: 2
       }
     },
     watch: {

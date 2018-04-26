@@ -8,7 +8,7 @@
     </mt-header>
     <div class="cards-content">
       <div class="none">
-        <img src="../../../assets/cards@3x.png" alt="" class="img-responsive card-logo">
+        <img src="../../../../static/images/cards@3x.png" alt="" class="img-responsive card-logo">
         <p>您还没有添加银行卡</p>
         <mt-button>添加银行卡</mt-button>
       </div>

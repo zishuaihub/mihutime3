@@ -39,7 +39,7 @@
         </router-link>
       </mt-header>
       <div class="pwd-box">
-        <img src="../../../../assets/icon/sucess@3x.png" alt="" style="width: .8rem;height: .8rem;margin-bottom: .4rem">
+        <img src="../../../../../static/icon/sucess@3x.png" alt="" style="width: .8rem;height: .8rem;margin-bottom: .4rem">
         <p style="color: #333;font-size: .3rem;margin-bottom: 4.95rem">添加银行卡成功</p>
         <mt-button @click="welldown">完成</mt-button>
       </div>
