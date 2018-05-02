@@ -158,6 +158,7 @@
 
 <style lang="stylus">
   #side
+    padding-bottom .8rem
     .mint-header{
       height: .88rem
 

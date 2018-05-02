@@ -52,7 +52,7 @@
                 <img src="../../../static/icon/skm.png" alt="" @click="$router.push({name: 'qrcode'})">
                 <p>店铺二维码</p>
               </div>
-              <div class="tabs-item">
+              <div class="tabs-item" @click="$router.push({name: 'adress'})">
                 <img src="../../../static/icon/gdgn.png" alt="">
                 <p>更多功能</p>
               </div>

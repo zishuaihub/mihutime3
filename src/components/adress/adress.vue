@@ -2,7 +2,7 @@
   <div id="adress">
     <mt-header title="地址">
       <mt-button slot="left" icon="back" @click="$router.back()"></mt-button>
-      <mt-button slot="right">联系客服</mt-button>
+      <mt-button slot="right">{{tips}}</mt-button>
     </mt-header>
     <div class="adressInfo">
       <p><img src="../../../static/icon/hsgth@3x.png" alt="">请按照格式填写地址，以免影响门店搜索和活动报名</p>
@@ -49,6 +49,7 @@ export default {
     let self = this
     return {
       // 地图定位
+      tips: '',
       adressDetails: '',
       popupBottom: false,
       AMap: {},
@@ -194,14 +195,17 @@ export default {
   created () {
     // 获取省市区
     this.getRegions()
+    document.addEventListener('deviceready', this.onDeviceReady, false)
   },
   mounted () {
     // 获取状态管理中的店铺信息
     this.storeInfo = this.$store.state.Store
     // 获取经纬度
-    this.getPosition()
   },
   methods: {
+    onDeviceReady () {
+      this.getPosition()
+    },
     onValuesChange (picker, values) {
       this.values0 = picker.getSlotValue(0)
       this.values1 = picker.getSlotValue(1)
@@ -228,6 +232,22 @@ export default {
       }
     },
     getPosition () {
+
+      // TODO: 原生定位失败
+      window.plugins.aMapLocationPlugin.getCurrentPosition(function (position) {
+        console.log('Latitude: ' + position.coords.latitude + '\n' +
+          'Longitude: ' + position.coords.longitude + '\n' +
+          'Altitude: ' + position.coords.altitude + '\n' +
+          'Accuracy: ' + position.coords.accuracy + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+          'Heading: ' + position.coords.heading + '\n' +
+          'Speed: ' + position.coords.speed + '\n' +
+          'Timestamp: ' + position.timestamp)
+      }, function (response) {
+        // this.$toast(`${response.message},错误码${response.code}`)
+        console.log('定位失败')
+      })
+      // IP定位
       this.$http.get('/common/v1/locations/ip-location').then(
         res => {
           this.center = res.data.location

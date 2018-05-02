@@ -17,9 +17,6 @@ Vue.config.productionTip = false
 Axios.defaults.baseURL = 'https://coupon.test.mihutime.com/'
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$http = Axios
-Vue.prototype.$back = function () {
-  router.go(-1)
-}
 
 /* eslint-disable no-new */
 Vue.use(VueAMap)
@@ -36,13 +33,24 @@ VueAMap.initAMapApiLoader({
   v: '1.4.4'
 })
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
-})
+// new Vue({
+//   el: '#app',
+//   router,
+//   store,
+//   template: '<App/>',
+//   components: { App }
+// })
+
+document.addEventListener('deviceready', function () {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    template: '<App/>',
+    components: { App }
+  })
+}, false)
+
 // 全局导航钩子
 router.beforeEach((to, from, next) => {
   // 判断该路由是否需要登录权限
